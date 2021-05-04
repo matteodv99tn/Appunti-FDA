@@ -1,0 +1,101 @@
+\chapter{Teoria del controllo classico}
+	In generale il \textit{mondo} è descritto nel dominio del tempo $t$; in particolare i modelli dello stesso sono descritti da equazioni differenziali  che relazionano l'uscita $y(t)$ con l'ingresso $u(t)$. Questo tipo di analisi viene denominata \de{teoria del controllo moderno}.
+	
+	La \de{teoria del controllo classico} invece non analizza il sistema sisma nel dominio del tempo, ma la analizza utilizzando una \de{variabile complessa} $s$; in questo dominio i modelli non sono descritti da equazioni differenziali ma da equazioni algebriche (semplificando l'aspetto matematico). Per questo è necessario determinare l'operatore $\L$ che permette di transitare dal dominio del tempo al dominio della variabile complessa e viceversa utilizzando $\L^{-1}$. 
+	
+	\paragraph{Vantaggi e svantaggi del controllo classico} Vantaggio della teoria del controllo classico  è che essa è più intuitiva in quanto non sono presenti equazioni differenziali ed è fortemente caratterizzata da grafici/disegni. Un problema di questa teoria è che essa non si presta bene allo studio di sistemi non lineari e/o MIMO.
+	
+	Un vantaggio ulteriore di questa teoria è che permette di analizzare i sistemi nel dominio della frequenza.
+	
+\section{Trasformata di Laplace}
+	Lo strumento matematico che permette di effettuare il passaggio matematico dal dominio del tempo $t\in \mathds R$ al dominio della variabile complessa $s\in \mathds C$ è la \de{trasformata di Laplace} $\L$. In particolare la variabile complessa $s$ è composta da una parte reale $\sigma$ e una parte immaginaria $\omega$ come
+	\begin{equation}
+		 s = \sigma  + j \omega \qquad \leftarrow j = \sqrt{-1}
+	\end{equation}
+	
+	\begin{concetto}
+		Considerando una funzione $f(t)$ nel tempo e la variabile complessa $s$, allora la funzione $F(s)$ definita come segue, 
+		se esiste,   è chiamata \de{trasformata di Laplace} di $f(t)$:
+		\begin{equation}
+			F(s) = \int_0^\infty f(t) \, e^{-st}\, dt \qquad \leftarrow \quad s = \sigma + j\omega
+		\end{equation}
+	\end{concetto}
+	Il problema dell'esistenza della trasformata dipende dalla convergenza dell'integrale ad un valore finito (e in generale è dipendente dal valore di $s$).
+	
+	\paragraph{Trasformata di una funzione a scalino} Considerando una funzione \textit{ a scalino} come in \textbf{FIGURA} dove per $t<0$ la funzione $f$ vale 0 e per $t>0$ vale che $f(t)=1$.
+	
+	\begin{nota}
+		Tutti i segnali che studiamo in questo corso sono nulli per $t<0$ in quanto al condizione iniziale del sistema è racchiusa dalle variabili di stato del sistema stesso.
+	\end{nota}
+	\begin{nota}
+		Lo scalino è un segnale importante in quanto evidenzia sia le proprietà \textit{ di equilibrio} che le proprietà \textit{transitorie} del sistema dinamico
+	\end{nota}
+
+	A questo punto definita $f(t) = \textrm{scal}(t)$, allora
+	\[F(s) = \int_0^\infty \textrm{scal}(t) e^{-st} \, dt = \int_0 ^t e^{-st}\, dt = - \left.\frac{e^{-st}}{s}\right|_0^\infty = - 0 + \frac 1 s \]
+	La trasformata di Laplace della funzione scalino può dunque essere scritta come:
+	\begin{equation}
+		\Rightarrow \qquad \L \big[\textrm{scal}(t)\big] = \frac 1 s
+	\end{equation}
+	
+	\paragraph{Trasformata del segnale impulso} L'impulso è un segnale di durata infinitesima e ampiezza infinita; questo tipo di segnale è comodo per modellare fenomeni impulsivi come gli urti. Esso ha inoltre un \textit{legame a doppio filo} con le condizioni iniziali di un sistema dinamico. \\	
+	L'impulso è definito come
+	\[\textrm{imp}(t) = \lim_{\epsilon \rightarrow 0} \textrm{imp}_\epsilon(t) \qquad \leftarrow \textrm{imp}_\epsilon(t) = \begin{cases}
+		1/\epsilon \qquad & 0 \leq t \leq \epsilon \\ 0 & \textrm{altrove}
+	\end{cases}\]
+	Si può dunque osservare che l'area sottesa alla curva ha sempre valore unitario. Per calcolare la trasformata di Laplace di questa funzione allora è necessario considerare
+	\[F(s)=\int_0^\infty \textrm{imp}(t) e^{-st}\, dt = \lim_{\epsilon\rightarrow 0} \int_0^\epsilon \frac 1 \epsilon e^{-st}\, dt = \lim_{\epsilon\rightarrow 0} \left[\frac{e^{-st}}{-s\epsilon}\right]_0^\epsilon = \lim_{\epsilon\rightarrow 0} \frac{e^{-s\epsilon} - 1 }{-s\epsilon} = 1  \]
+	\begin{equation}
+		\Rightarrow \qquad	\L\Big[ \textrm{imp}(t)\Big] = 1
+	\end{equation}
+	
+	\subsection{Proprietà della trasformata di Laplace}
+		\begin{enumerate}
+			\item la trasformata di Laplace è un operatore lineare, e dunque
+			\[ \L\big[\alpha \, f(t) + \beta\, g(t)\big]  = \alpha \, \L\big[f(t)\big] + \beta \, \L\big[y(t)\big] \]
+			
+			\item vale la traslazione nel dominio del tempo, ossia dato un ritardo $\tau$ la trasformazione
+			\[ \L\big[f(t-\tau)\big] = L\big[f(t)\big]\, e^{-s\tau} = F(s) e^{-s\tau} \]
+			
+			\item vale la traslazione nel dominio della variabile complessa, ossia
+			\[ \L\big[ e^{at} f(t) \big] = F(s-a) \qquad a\in \mathds R	\]
+		
+	\end{enumerate}
+	
+	\paragraph{Trasformazione esponenziale} Considerando una funzione $f$ che è esponenziale solamente per $t>0$, ossia
+	\[f(t) = e^{at} \textrm{scal}(t)\]
+	allora la sua trasformata può essere espressa come 
+	\[ \L \Big[e^{at} \textrm{scal}(t)\Big] = \frac{1}{s-a}\]
+	
+	\paragraph{Trasformata di segnali (co)sinusoidali} Considerando una funzione $f(t) = \cos(\omega t)$ per valori di tempo positivo, ossia
+	\[f(t) = \cos(\omega t) \, \textrm{scal}(t)\]
+	Utilizzando le formula di Eulero tale funzione può essere espressa come
+	\[ f(t) = \frac{e^{j\omega t} + e^{-j\omega t}}{2} \textrm{scal}(t)\]
+	Utilizzando le proprietà della trasformata di Laplace è possibile determinare la funzione nel dominio complesso come
+	\begin{align*}
+	\L\big[f(t)\big] & = \frac 1 2 \L \left[e^{j\omega t} \textrm{scal}(t)\right] + \frac 1 2 \L \left[e^{-j\omega t} \textrm{scal}(t)\right] = \frac 1 2 \frac{1}{s-j\omega}  + \frac 1 2 \frac{1}{s+j\omega} \\
+	& = \frac{s}{s^2+\omega^2}
+	\end{align*}  
+	Analogamente per segnali sinusoidali vale che
+	\begin{equation}
+		\L\Big[\sin(\omega t) \, \textrm{scal}(t)\Big] = \frac{\omega}{s^2+\omega^2}
+	\end{equation}
+	Utilizzando le proprietà della trasformata, allora è possibile determinare il valore del coseno esponenziale pari a
+	\[ \L \Big[e^{at} \cos(\omega t) \textrm{scal}(t)\Big] = \frac{s-a}{(s-a)^2+\omega^2} \qquad \L \Big[e^{at} \sin(\omega t) \textrm{scal}(t)\Big] = \frac{\omega}{(s-a)^2+\omega^2} \]
+	
+	
+	\paragraph{Derivata nel dominio del tempo} Per determinare la trasformata della derivata di $f$ (supponendo di conoscere $\L[f]$) basta applicare la legge
+	\[ \L\big[\dot f(t)\big] = s\, F(s) - f(0) \]
+	dove $f(0)$ sono le condizioni iniziali del sistema. Per questo motivo spesso si considera $s$ come l'\textbf{operatore derivata}.
+	
+	\paragraph{Integrale nel dominio del tempo} Per determinare la trasformata di Laplace dell'integrale di una funzione vale che
+	\[ \L\left[\int_0^t f(t)\, dt\right] = \frac 1 s F(s) \]
+	L'espressione $1/s$ è detto dunque \textbf{operatore integrale}. 
+	
+	\paragraph{Trasformazione rampa} Considerando un segnale rampa determinato come
+	\[\textrm{ramp}(t) = t\, \textrm{scal}(t)\]
+	allora la sua trasformata può essere calcolata utilizzando la proprietà dell'integrale scalino vale che
+	\[ \L\big[\textrm{ramp}(t)\big] = \frac{1}{s^2}\]
+	
+	\paragraph{Proprietà} E' possibile dimostrare che la derivata nel dominio di $s$ coincide con la moltiplicazione per il tempo, utilizzando la relazione
+	\[ \L\big[t\, f(t)\big] = - \frac{d}{ds} F(s)   \]

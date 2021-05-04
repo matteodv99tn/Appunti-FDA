@@ -1,0 +1,943 @@
+\chapter{Teoria del controllo classico}
+	In generale il \textit{mondo} è descritto nel dominio del tempo $t$; in particolare i modelli dello stesso sono descritti da equazioni differenziali  che relazionano l'uscita $y(t)$ con l'ingresso $u(t)$. Questo tipo di analisi viene denominata \de{teoria del controllo moderno}.
+	
+	La \de{teoria del controllo classico} invece non analizza il sistema sisma nel dominio del tempo, ma la analizza utilizzando una \de{variabile complessa} $s$; in questo dominio i modelli non sono descritti da equazioni differenziali ma da equazioni algebriche (semplificando l'aspetto matematico). Per questo è necessario determinare l'operatore $\L$ che permette di transitare dal dominio del tempo al dominio della variabile complessa e viceversa utilizzando $\L^{-1}$. 
+	
+	\paragraph{Vantaggi e svantaggi del controllo classico} Vantaggio della teoria del controllo classico  è che essa è più intuitiva in quanto non sono presenti equazioni differenziali ed è fortemente caratterizzata da grafici/disegni. Un problema di questa teoria è che essa non si presta bene allo studio di sistemi non lineari e/o MIMO.
+	
+	Un vantaggio ulteriore di questa teoria è che permette di analizzare i sistemi nel dominio della frequenza.
+	
+\section{Trasformata di Laplace}
+	Lo strumento matematico che permette di effettuare il passaggio matematico dal dominio del tempo $t\in \mathds R$ al dominio della variabile complessa $s\in \mathds C$ è la \de{trasformata di Laplace} $\L$. In particolare la variabile complessa $s$ è composta da una parte reale $\sigma$ e una parte immaginaria $\omega$ come
+	\begin{equation}
+		 s = \sigma  + j \omega \qquad \leftarrow j = \sqrt{-1}
+	\end{equation}
+	
+	\begin{concetto}
+		Considerando una funzione $f(t)$ nel tempo e la variabile complessa $s$, allora la funzione $F(s)$ definita come segue, 
+		se esiste,   è chiamata \de{trasformata di Laplace} di $f(t)$:
+		\begin{equation}
+			F(s) = \int_0^\infty f(t) \, e^{-st}\, dt \qquad \leftarrow \quad s = \sigma + j\omega
+		\end{equation}
+	\end{concetto}
+	Il problema dell'esistenza della trasformata dipende dalla convergenza dell'integrale ad un valore finito (e in generale è dipendente dal valore di $s$).
+	
+	\paragraph{Trasformata di una funzione a scalino} Considerando una funzione \textit{ a scalino} come in figura \ref{fscal} dove per $t<0$ la funzione $f$ vale 0 e per $t>0$ vale che $f(t)=1$.
+	
+	\figura{3.5}{1.5}{scalino}{funzione scalino.}{fscal}
+	
+	\begin{nota}
+		Tutti i segnali che studiamo in questo corso sono nulli per $t<0$ in quanto al condizione iniziale del sistema è racchiusa dalle variabili di stato del sistema stesso.
+	\end{nota}
+	\begin{nota}
+		Lo scalino è un segnale importante in quanto evidenzia sia le proprietà \textit{ di equilibrio} che le proprietà \textit{transitorie} del sistema dinamico
+	\end{nota}
+
+	A questo punto definita $f(t) = \textrm{scal}(t)$, allora
+	\[F(s) = \int_0^\infty \textrm{scal}(t) e^{-st} \, dt = \int_0 ^t e^{-st}\, dt = - \left.\frac{e^{-st}}{s}\right|_0^\infty = - 0 + \frac 1 s \]
+	La trasformata di Laplace della funzione scalino può dunque essere scritta come:
+	\begin{equation}
+		\Rightarrow \qquad \L \big[\textrm{scal}(t)\big] = \frac 1 s
+	\end{equation}
+	
+	\paragraph{Trasformata del segnale impulso} L'impulso è un segnale di durata infinitesima e ampiezza infinita; questo tipo di segnale è comodo per modellare fenomeni impulsivi come gli urti. Esso ha inoltre un \textit{legame a doppio filo} con le condizioni iniziali di un sistema dinamico. \\	
+	L'impulso è definito come
+	\[\textrm{imp}(t) = \lim_{\epsilon \rightarrow 0} \textrm{imp}_\epsilon(t) \qquad \leftarrow \textrm{imp}_\epsilon(t) = \begin{cases}
+		1/\epsilon \qquad & 0 \leq t \leq \epsilon \\ 0 & \textrm{altrove}
+	\end{cases}\]
+	
+	\figura{3.5}{1.5}{impulso}{funzione impulso}{fimp}
+
+	Si può dunque osservare che l'area sottesa alla curva ha sempre valore unitario. Per calcolare la trasformata di Laplace di questa funzione allora è necessario considerare
+	\[F(s)=\int_0^\infty \textrm{imp}(t) e^{-st}\, dt = \lim_{\epsilon\rightarrow 0} \int_0^\epsilon \frac 1 \epsilon e^{-st}\, dt = \lim_{\epsilon\rightarrow 0} \left[\frac{e^{-st}}{-s\epsilon}\right]_0^\epsilon = \lim_{\epsilon\rightarrow 0} \frac{e^{-s\epsilon} - 1 }{-s\epsilon} = 1  \]
+	\begin{equation}
+		\Rightarrow \qquad	\L\Big[ \textrm{imp}(t)\Big] = 1
+	\end{equation}
+	
+	\subsection{Proprietà della trasformata di Laplace}
+		La trasformata di Laplace presenta 3 proprietà fondamentali, in particolare:
+		\begin{enumerate}[i)]
+			\item è un operatore lineare, e dunque
+			\[ \L\big[\alpha \, f(t) + \beta\, g(t)\big]  = \alpha \, \L\big[f(t)\big] + \beta \, \L\big[y(t)\big] \]
+			
+			\item vale la traslazione nel dominio del tempo, ossia dato un ritardo $\tau$ la trasformazione
+			\[ \L\big[f(t-\tau)\big] = L\big[f(t)\big]\, e^{-s\tau} = F(s) e^{-s\tau} \]
+			
+			\item vale la traslazione nel dominio della variabile complessa, ossia
+			\[ \L\big[ e^{at} f(t) \big] = F(s-a) \qquad a\in \mathds R	\]
+		
+	\end{enumerate}
+	
+	\subsubsection{Altre trasformazioni}
+	
+	\begin{multicols}{2}	
+		\paragraph{Trasformazione esponenziale} Considerando una funzione $f$ che è esponenziale solamente per $t>0$, ossia definita come $f(t) = e^{at} \scal(t)$, allora la sua trasformata può essere determinata utilizzando le proprietà della trasformata stessa come traslazione del segnale impulso e dunque 
+		\[ \L \Big[e^{at} \textrm{scal}(t)\Big] = \frac{1}{s-a}\]
+		
+		\paragraph{Trasformata di segnali (co)sinusoidali} Considerando una funzione cosinusoidale $f(t) = \cos(\omega t) \scal(t)$ solamente per valori di tempo positivo, allora essa può essere riscritta utilizzando la relazione di Eulero nella forma
+		\begin{align*}
+			f(t) & = \cos(\omega t) \, \textrm{scal}(t)\\ 
+			& = \frac{e^{j\omega t} + e^{-j\omega t}}{2} \textrm{scal}(t)
+		\end{align*}
+		Utilizzando le proprietà della trasformata di Laplace è possibile esprimere la funzione nel dominio complesso secondo l'espressione
+		\begin{align*}
+		\L\big[f(t)\big] & = \frac 1 2 \L \left[e^{j\omega t} \textrm{scal}(t)\right] + \frac 1 2 \L \left[e^{-j\omega t} \textrm{scal}(t)\right] 	\\ & = \frac 1 2 \frac{1}{s-j\omega}  + \frac 1 2 \frac{1}{s+j\omega} \\
+		& = \frac{s}{s^2+\omega^2}
+		\end{align*}  
+	
+		Effettuando le stesse considerazioni per segnali sinusoidali (solamente per tempi positivi) si ottiene la trasformata
+		\begin{equation}
+			\L\Big[\sin(\omega t) \, \textrm{scal}(t)\Big] = \frac{\omega}{s^2+\omega^2}
+		\end{equation}
+	
+		Utilizzando le proprietà della trasformata come traslazione nel dominio della variabile complessa, allora è possibile determinare il valore del (co)seno esponenziale pari a
+		\begin{align*}
+			\L \Big[e^{at} \cos(\omega t) \textrm{scal}(t)\Big] & = \frac{s-a}{(s-a)^2+\omega^2} \\  \L \Big[e^{at} \sin(\omega t) \textrm{scal}(t)\Big] & = \frac{\omega}{(s-a)^2+\omega^2} 
+		\end{align*}
+		
+		
+		\paragraph{Derivata nel dominio del tempo} Per determinare la trasformata della derivata di $f$ (supponendo di conoscere $\L[f]$) basta applicare la legge
+		\[ \L\big[\dot f(t)\big] = s\, F(s) - f(0) \]
+		dove $f(0)$ sono le condizioni iniziali del sistema. Per questo motivo spesso si considera $s$ come l'\de{operatore derivata}.
+		
+		\paragraph{Integrale nel dominio del tempo} Per determinare la trasformata di Laplace dell'integrale di una funzione vale che
+		\[ \L\left[\int_0^t f(t)\, dt\right] = \frac 1 s F(s) \]
+		L'espressione $1/s$ è detto dunque \de{operatore integrale}. 
+		
+		\paragraph{Trasformazione rampa} Considerando un segnale rampa determinato come
+		\[\textrm{ramp}(t) = t\, \textrm{scal}(t)\]
+		allora la sua trasformata può essere calcolata considerando l'integrale della funzione scalino arrivando al risultato
+		\[ \L\big[\textrm{ramp}(t)\big] = \frac{1}{s^2}\]
+	\end{multicols}
+	
+	\paragraph{Proprietà} E' possibile dimostrare che la derivata nel dominio di $s$ coincide con la moltiplicazione per il tempo, utilizzando la relazione
+	\[ - \frac{d}{ds} F(s) = \L\big[t\, f(t)\big]   \]
+	
+\section{Trasformazione inversa: antitrasformata di Laplace}
+		L'\de{antitrasformata di Laplace} $\aL$ permette di effettuare il passaggio dal dominio della variabile complessa $s$ al dominio del tempo $t$, ossia nota $F(s) = \L\big[f(t)\big]$, l'obiettivo è di determinare $f(t)$. 
+		
+		Per effettuare il passaggio da un dominio all'altro permettono di definire il valore di $f$ all'istante di tempo iniziale $t=t_0=0$ utilizzando il \de{teorema del valore iniziale} e il valore asintotico della funzione per $t\rightarrow \infty$ utilizzando il \de{teorema del valore finale}.
+		
+		\subsubsection{Teorema del valore iniziale}
+		Ipotesi di partenza per il teorema del valore iniziale è che la funzione $F(s)$ nella variabile complessa $s$ sia esprimibile come il rapporto di due polinomi, e dunque $F(s)$ è una \de{trasformata di Laplace razionale}:
+		\begin{equation}
+			F(s) = \frac{N(s)}{D(s)} \qquad \textrm{: $N(s),D(s)$ polinomi}
+		\end{equation}
+		\begin{esempio}{: trasformata razionale e non razionale}
+			Un esempio di trasformata razionale è la funzione
+			\[F(s) = \frac{s+1}{s^2+2s + 2}\]
+			Non è razionale una funzione del tipo $F(s)=\cos s $ e dunque su di essa non si può applicare il teorema del valore iniziale.
+		\end{esempio}
+	
+		\paragraph{Enunciato} {\itshape Data la funzione di Laplace $F(s)$, allora il valore della funzione $f(t)$ al tempo iniziale $t = 0$ può essere calcolata come}
+		\begin{equation}
+			f(t=0) = \lim_{s\rightarrow \infty} s\, F(s)
+		\end{equation}
+		
+		\subsubsection{Teorema del valore finale}
+		Analogamente al caso precedente è possibile applicare questo teorema solamente se la trasformata di Laplace $F(s)$ deve essere razionale e suoi \de{poli} (radici del denominatore $D(s)$) devono essere a parte reale negativa o devono essere nulli.
+		
+		\paragraph{Enunciato} { \itshape Data la trasformata di Laplace $F(t)$, è possibile determinare il valore asintotico della funzione $f(t)$ nel dominio del tempo utilizzando la relazione}
+		\begin{equation}
+			\lim_{t\rightarrow \infty} f(t) = \lim_{s\rightarrow 0} s\, F(s)
+		\end{equation} 
+	
+	\subsection{Antitrasformata di Laplace}
+		Per determinare l'espressione  della funzione $f(t)$ nel dominio del tempo, nota $F(s)$, è possibile utilizzare l'\de{antitrasformata di Fourier}
+		\begin{equation}
+			f(t) = \frac 1 {2\pi j} \int_{\sigma - j\omega} ^{\sigma+j\omega} F(s)\, e^{st}\, dt \qquad t \geq 0 \, \sigma \in \mathds R 
+		\end{equation}
+		Nonostante questa espressione sia analiticamente corretta, tendenzialmente si utilizza il \de{metodo di Heaviside} per determinare l'antitrasformata $\aL$; questo metodo può essere applicato solamente se la trasformata di Laplace $F(s)$ è razionale e il grado del denominatore deve essere maggiore (strettamente) del grado del numeratore ($\textrm{gr}(D) > \textrm{gr}(N)$) e si basa su due passaggi:
+		\begin{enumerate}
+			\item scomporre la trasformata $F(s)$ in una combinazione lineare di trasformate di Laplace note (come quelle viste in precedenza);
+			\item sfruttando la linearità dell'antitrasformata $\aL$ è possibile determinare $f(t)$ come combinazione lineare delle antitrasformate note.
+		\end{enumerate}
+		
+		\begin{nota}
+			L'ipotesi di trasformata di Laplace $F(s)$ razionale risulta sempre verificata lavorando per sistemi dinamici lineari tempo invarianti. L'ipotesi sul grado dei polinomi risulta invece essere \textit{facilmente aggirabile}.
+		\end{nota}
+	
+		La vera \textit{difficoltà} nell'applicazione del metodo di Heaviside è quella calcolare la scomposizione della trasformata di Laplace $F(s)$.
+		
+		\subsubsection{Trasformata a poli reali distinti}
+			Si consideri il caso di una trasformata $F(s)$ con poli reali distinti come
+			\[ F(s) = \frac{s+2}{s(s+6)(s+1)} \]
+			Verificato che $F(s)$ è razionale e che il grado del denominatore (3) è superiore al grado del numeratore (1), allora è possibile applicare il metodo di Heaviside.
+			
+			A questo punto per applicare il metodo è necessario effettuare la scomposizione della funzione, in particolare cercando 3 coefficienti $A, B , C$ tali che
+			\[ F(s) = \frac{s+2}{s(s+6)(s+1)} = \frac A s \frac  B {s+6} +\frac C {s + 1}   \]
+			Supponendo di poter determinare i valori dei parametri $A,B,C$, allora l'antitrasformata dalla funzione risulta valere
+			\[ f(t) = \aL \big[F(s)\big] = A \, \scal (t) + B\, e^{-6t}\scal(t) + C \, e^{-t} \scal(t) \]
+		
+			Per determinare i coefficienti è necessario effettuare la somma per ottenere
+			\begin{align*}
+				\frac{s+2}{s(s+6)(s+1)} & = \frac{ A(s+6)(s+1) + B s(s+1) + Cs(s+6) }{s(s+6)(s+1)} \\
+				 & = \frac{s^2\big(A+B+C\big)  + s\big(7A + B + 6C\big) + 6A }{s(s+6)(s+1)} \\
+			\end{align*}
+			A questo punto per determinare i coefficienti $A,B,C$ è sufficiente considerare il sistema lineare ottenuto eguagliando i coefficienti (che Heaviside è riuscito a dimostrare essere sempre risolvibile) dei termini dei due numeratori:
+			\[ \begin{cases}
+				A+B+C = 0 \\ 7A+B+6C = 1 \\ 6A = 2
+			\end{cases} \qquad \Rightarrow \quad A = \frac 1 3  \quad B = - \frac{2}{15} \quad C = - \frac{1}{5} \]
+			Un secondo metodo per determinare i coefficienti è quello di considerare che polinomi equivalenti devono assumere lo stesso valore se sono valutati nello stesso punto; considerando i polinomi
+			\[ \varphi_a(s)=s+2 \qquad \varphi_b(s) = A(s+6)(s+1) + B s(s+1) + Cs(s+6)  \]
+			Effettuando le valutazioni in \textit{punti intelligenti} è possibile determinare i valori dei coefficienti del problema:
+			\begin{align*}
+				\varphi_a(0) & =\varphi_b(0) \qquad &&\Rightarrow \quad 2 = 6A \qquad &&\Rightarrow A = \frac 1 3 \\
+				\varphi_a(-1) & =\varphi_b(-1) \qquad &&\Rightarrow \quad 1 = -5C \qquad &&\Rightarrow C = -\frac 1 5 \\
+				\varphi_a(-6) & =\varphi_b(-6) \qquad &&\Rightarrow \quad -4 = 30B \qquad &&\Rightarrow C = -\frac 2 {15} \\
+			\end{align*}
+			Si osserva dunque che i \textit{valori intelligenti} in cui valutare il numeratore sono i poli della trasformata $F(s)$.
+			
+		\subsubsection{Trasformata a poli reali multipli}
+			In questo caso è possibile considerare come trasformata di Laplace la seguente funzione rispetto alla quale valgono le ipotesi di Heaviside:
+			\[F(s) = \frac{s+2}{s^2(s+1)}\]
+			Effettuando la \de{scomposizione di Heaviside} allora la trasformata precedente viene espressa come
+			\[ F(s) = \frac A {s} + \frac{B}{s^2} + \frac{C}{s+1} \]
+			\begin{nota}
+				Si deve porre attenzione ad aggiungere alla scomposizione anche i termini di ordine inferiore (delle radici multiple).
+			\end{nota}
+			Tramite l'antitrasformazione è possibile definire
+			\[ f(t) = \aL \big[F(s)\big] = A\, \scal(t) + B\, \ramp(t) + C \, e^{-t}\scal(t) \]
+			
+			Analogamente al caso precedente è possibile determinare i vari coefficienti valutando i polinomi in punti strategici:
+			\begin{align*}
+				\frac{s+2}{s^2(s+1)} & = \frac{ As (s+1) + B(s+1) + Cs^2}{s^2(s+1)} = \frac{s^2(A+C) + s(A+B) + B}{s^2(s+1)}
+			\end{align*}
+			Utilizzando il secondo metodo è possibile considerare il numeratore a sinistra $\varphi_a$ e di destra $\varphi_b$ e eguagliarli nei punti:
+			\begin{align*}
+				\varphi_a(0) & =\varphi_b(0) \qquad &&\Rightarrow \quad 2= B \qquad &&\Rightarrow B = 2 \\
+				\varphi_a(-1) & =\varphi_b(-1) \qquad &&\Rightarrow \quad 1 = C \qquad &&\Rightarrow C = 1 \\
+				\varphi_a(-2) & =\varphi_b(-2) \qquad &&\Rightarrow \quad 0 = 2A - 2 +4 \qquad &&\Rightarrow A = -A \\
+			\end{align*}
+			\begin{nota}
+				In questo caso è stato possibile definire solamente 2 punti speciali; per determinare il terzo parametro è necessario scegliere in un'altro punto che non sia un polo.
+			\end{nota}
+		
+		\subsubsection{Trasformata a poli complessi coniugati}			
+			\[ F(s) = \frac 1 {s \big(s^2+2s + 2\big)} \]
+			Verificato che la trasformata di Laplace $F(s)$ soddisfa le ipotesi del metodo di Heaviside, allora è necessario determinare i poli come le radici del denominatore, ottenendo:
+			\[ s_1 = 0 \qquad s_{2,3} = \frac{-2\pm\sqrt{4-8}}{2} = -1 \pm j \]
+			Applicando la scomposizione di Heaviside sulla funzione di partenza è possibile seguire l'approccio delle radici reali distinte ottenendo il risultato
+			\begin{align*}
+				F(s) = \frac 1 {s \big(s^2+2s + 2\big)} & = \frac{1}{s(s+ 1 + j)(s+1-j)} = \frac A s +\frac B {s+1+j} + \frac C {s+1-j} 
+			\end{align*}
+			In questa relazione incognita è l'antitrasformata degli ultimi due termini; l'idea è di riuscire a combinare queste frazioni per ottenere un'espressione del tipo
+			\[F(s) = \frac A s + \frac{\beta s + \alpha}{s^2+2s+2} = \frac A s + \gamma \frac{s-a}{\big(s-a\big)^2+\omega^2} + \delta \frac{\omega}{\big(s-a\big)^2 + \omega^2}\]
+			Quest'ultima relazione (che deve essere verificata) permette di antitrasformare $F(s)$ ottenendo
+			\[f(t) = A\, \scal(t) + \gamma e^{at} \cos(\omega t) \scal(t) + \gamma e^{at} \sin(\omega t)\scal(t)\]
+			
+			\paragraph{Determinazione dei coefficienti} Per determinare i coefficienti $A, \alpha,\beta$ delle espressioni precedenti è sufficiente risolvere i sistemi lineari; in particolare:
+			\[ \frac 1 {s \big(s^2+2s + 2\big)} = \frac A s + \frac{\beta s + \alpha}{s^2+2s+2} = \frac {s^2(A+\beta) + s(2A + \alpha) + 2A} {s \big(s^2+2s + 2\big)} \]
+			Il sistema associato all'equivalenza è determinato da
+			\[\begin{cases}
+				A + \beta = 0 \\ 2 A + \alpha = 0 \\ 2 A = 1
+			\end{cases} \qquad \Rightarrow \quad A = \frac 1 2 \quad \alpha = - 1 \quad \beta = - \frac 1 2\]
+			Concentrandoci sul termine dei poli complessi coniugati, è necessario effettuare la scomposizione per determinare i valori di $\gamma$ e $\delta$ come visto in precedenza, ossia
+			\[ \frac{-\frac 1 2 s - 1}{s^2+2s+2} = \gamma \frac{s-a}{(s-a)^2 + \omega^2} + \gamma \frac \omega {(s-a)^2 + \omega^2} = \frac{\gamma s - \gamma a+ \delta \omega}{(s-a)^2+\omega^2} \]
+			Eguagliando il denominatore si ottiene
+			\[ s^2+2s + s = (s-a)^2 + \omega^2 = s^2-2as + \big(a^2+\omega^2\big) \qquad \Rightarrow \quad a = -1 \quad \omega = 1 \]
+			\begin{nota}
+				$\omega$ prevederebbe anche una soluzione negativa, tuttavia si considera sempre il valore positivo in quanto associato ad una pulsazione di un segnale che non ha fisicamente senso se fosse negativa.
+			\end{nota}
+			Eguagliando ora il numeratore si ottiene
+			\[ -\frac 1 2 s - 1 = \gamma s +\gamma + \delta \qquad \Rightarrow \quad \gamma = \delta = -\frac 1 2 \]
+		
+		\subsubsection{Trasformata a poli complessi coniugati multipli}
+			\[ F(s) = \frac{1}{\big(s^2 + 2s + 2\big)^2} \]
+			Questa trasformata di Laplace presenta dunque 2 poli complessi coniugati di molteplicità algebrica doppia, con soli:
+			\[ s_{1,2,3,4} = -1\pm j\]
+			Analogamente al caso precedente si effettua una scomposizione di Heaviside per scomporre la trasformata nell'espressione del tipo
+			\[ F(s) = \frac{\beta s+ \alpha}{s^2+2s + 2} + \frac{\dots}{\big(s^2+2s+2\big)^2} \]
+			Di questa relazione il primo addendo può essere antitrasformato considerando le relazioni viste in precedenza, mentre interessante è stabilire quanto vale il secondo termine. Considerando il termine nel dominio nel tempo come segue, esso può essere trasformato come
+			\[ e^t \sin(\omega t) \scal(t) \quad \xrightarrow{\L, \omega=1} \quad \frac 1 {\big(s+1\big)^2+1} = \frac 1 {s^2+2s+2} =H(s) \]
+			Utilizzando le proprietà della trasformata di Laplace, moltiplicando nel tempo la funzione $f$ permette di determinare
+			\[ t e^t \sin(\omega t) \scal(t) \quad \xrightarrow{\L,\omega = 1} \quad - \frac{d\, H(s)}{ds} = - \Big[-1 \big(s^2+2s+2)^{-2} \big(2s+2\big) \Big] = \frac{2s+2}{\big(s^2+2s+2\big)^2} \]
+			Questo rappresenta (intuitivamente) la rappresentazione del secondo termine per antitrasformare la funzione $F(s)$.
+			
+		\subsubsection{Grado del denominatore minore di quello del numeratore}			
+			\begin{nota}
+				Per sistemi lineari tempo invarianti al più può accadere che il grado del numeratore sia pari al grado del denominatore:
+				\[ \textrm{gr}(D)=\textrm{gr}(N) \]
+			\end{nota}
+			Per antitrasformare funzioni $F(s)$ con gradi di numeratore e denominatore uguali l'idea è quella di scomporre preliminarmente con Heaviside in una forma
+			\[ F(s) = \frac{N(s)}{D(s)} = \frac{\tilde{N}(s)}{D(s)} +\alpha  \]
+			In questo caso la trasformata razionale $\tilde N(s)/D(s)$ presenta un numeratore di grado inferiore e dunque, come visto in precedenza, può essere antitrasformato semplicemente. Il secondo termine $\alpha$ viene semplicemente antitrasformato in un valore $\alpha \imp(t)$.
+			
+			\begin{esempio}{}
+				\[F(s)=\frac{s+2}{s+3} \quad \rightarrow \quad \frac{\beta}{s+3} + \alpha\]
+				Per determinare i valori dei parametri $\alpha, \beta$ è sufficiente risolvere la relazione determinata da
+				\[ \frac{s+2}{s+3} = \frac{\beta + (s+3)\alpha}{s+3} \qquad \Rightarrow \begin{cases}
+					\alpha= 1\\
+					\beta + 3 \alpha = 2
+				\end{cases}  \]
+				Da questo sistema si determinano i parametri $\alpha=1, \beta=-1$ e dunque la trasformata (e relativa antitrasformata) può essere espressa come
+				\begin{align*}
+					F(s) & = \frac{-1}{s+3} + 1 \\
+					f(t) & = \aL \Big[F(s)\Big] = -1 e^{-3t} \scal(t) + \imp(t)
+				\end{align*}
+			\end{esempio}
+		
+\section{Applicazione di Laplace a sistemi dinamici lineari tempo invarianti}
+	In generale dato un sistema lineare tempo invariante descritto nella variabile del tempo $t$, la sua trasformazione può essere effettuata tramite la trasformata di Laplace $\L$ secondo le espressioni:
+	\[ \left\{ \begin{split}
+		\L \Big[\dot x = \A x + \B x\Big] \qquad \Rightarrow \quad \L \Big[\dot x(t)\Big]  = \A \L\big[x(t)\big] + \B \, \L \big[x(t)\big] \\
+		\L \Big[y = \C x + \D x\Big] \qquad \Rightarrow \quad \L \Big[y(t)\Big]  = \C \L\big[x(t)\big] + \D \, \L \big[x(t)\big]
+	\end{split} \right.\]
+	I vari vettori $x,\dot x, y, u$ nel dominio del tempo possono essere riscritti, attraverso la trasformata $\L$, come dei vettori nel dominio della variabile complessa $s$ con la nomenclatura $X(s) = \L \big[x(t)\big]$, $U(s) = \L\big[u(t)\big]$ e $Y(s) = \L\big[y(t)\big]$. Sfruttando le proprietà della trasformata, la derivata $\dot x$ dello stato $x$ può essere calcolata come $\L\big[\dot x(t)\big] = s\, X(s) - x_0$, dove $x_0$ è il valore della variabile di stato al tempo $t = 0$.
+	
+	Applicando queste definizioni ai sistemi definiti in precedenza è possibile riscrivere il sistema delle trasformate di Laplace come:
+	\[\begin{cases}
+		s X(s) -x_0 = \A \, X(s) + \B \,  U (s)  \\
+		Y(s) = \C \, X(s) + \D \, U(s)
+	\end{cases} \qquad \Rightarrow \quad \begin{cases}
+		X (sI - \A ) = x_0 + \B U \\ Y = \C x + \D U
+	\end{cases}\]
+	Invertendo opportunamente le equazioni è dunque possibile stabilire il valore dello stato $X$ e dell'uscita $Y$ nel dominio della variabile complessa $s$ come:
+	\begin{equation} \label{eq:vcomp:statouscita}
+		\begin{split}
+			X& = \big(sI - \A\big)^{-1} x_0 + \big(sI-\A\big)^{-1}\B U \\  Y & = \C \big(sI-A\big)^{-1} x_0 + \Big[\C \big(sI-\A\big)^{-1} \B + \D\Big] U 
+		\end{split}
+	\end{equation}		
+	In questa equazione è possibile osservare che li \textit{ingredienti} necessari a calcolare stato $x$ e uscita $y$ nel dominio del tempo si ritrovano anche tramite Laplace nel dominio della variabile complessa $s$; nel tempo infatti era necessario conoscere le condizioni iniziali $x_0$ al tempo  $t=0$, come nel dominio di Laplace è noto $x_0$, nel tempo è necessario conoscere  la storia di $u(t)$ che è racchiusa in Laplace dal termine $U(s)$. La struttura del movimento di stato e uscita nel dominio della variabile complessa è consistente (ossia è presente un contributo di movimento libero e dal movimento forzato) come nella struttura del movimento nel dominio del tempo.	
+	
+	Il vantaggio di utilizzare il metodo di Laplace è che esso semplifica i calcoli per determinare la soluzione del movimento. In particolare alla matrice esponenziale (difficile da calcolare) è associata la matrice inversa $(sI-\A)^{-1}$ e all'integrale per lo stato è associato il prodotto di matrici	 $\big(sI-\A\big)^{-1}\B U$.
+	
+	
+	\subsection{Analisi del movimento di stato e uscita}
+		Considerando il movimento di stato e la matrice quadrata $\A$ come composta da elementi $a_{ij}$, allora risulta evidente che
+		\[ \big(sI- \A\big) = \begin{bmatrix}
+			s - a_{11}  & \dots & a_{1n} \\
+			\vdots & \ddots \\
+			-a_{n1} & &s-a_{nn} 
+		\end{bmatrix} \]
+		Per invertire questa matrice è necessario determinare il \textbf{polinomi caratteristico} della matrice pari a $\varphi(s) = \det\big(sI-\A\big)$ e verificando che
+		\[ \big(sI- \A\big)^{-1} = \frac 1 {\varphi(s)} \underbrace{\begin{bmatrix}
+			k_{11}(s) & \dots & k_{1n}(s) \\ \vdots & \ddots & \\ k_{n1}(s) & &k_{nn}(s)
+		\end{bmatrix}}_{\mathcal K}  \]
+		dove $k_{ij}(s)$ sono dei polinomi in $s$ di grado massimo pari a $n-1$ in quanto collegati al calcolo dei complementi algebrici della matrice $sI-\A$.
+		
+		Avendo espresso il termine $\big(sI- \A\big)^{-1}$ come $\frac{1}{\varphi(s)} \mathcal K$, allora il termine  $\big(sI-\A\big)^{-1}\B$ presente nell'equazione \ref{eq:vcomp:statouscita} può essere riscritto come
+		\[ \big(sI- \A\big)^{-1} = \frac 1 {\varphi(s)} \mathcal K \, \B \quad \rightarrow \quad \frac{\mathcal W(s)}{\varphi(s)} \]
+		dove $\mathcal W$ è un vettore ottenuta come combinazione lineare (dovuta a $\B$) di elementi presenti in $\mathcal K(s)$ che sono polinomi in $s$ di grado al massimo $n-1$.
+		
+		Analogamente il termine $\C (sI-\A)^{-1}\B + \D$ , scelto per semplicità per un sistema di tipo SISO, può essere riscritto come un polinomio $M(s)$ che è combinazione lineare dovuta a $\B$ e $\C$ degli elementi polinomiali di $\mathcal K$ e dunque di grado al più pari a $n-1$:
+		\[ \C \frac 1 {\varphi(s)} \mathcal K(s) \, \B + \D \quad \xrightarrow{\textrm{SISO}} \quad \frac{1}{\varphi(s)} {\C \mathcal K \mathcal B} + \D = \frac{1}{\varphi(s)} M(s) + \D = \frac{N(s)}{\varphi(s)}\] 
+		In questa espressione il numeratore $N(s)$ è un polinomio di grado al più $n$ (minore di $n$ se $\D = 0$).
+			
+		\begin{concetto}
+			Lavorando con sistemi dinamici lineari tempo invarianti, le trasformate associate con cui si ha a che fare hanno la seguente caratteristica:
+			\begin{itemize}
+				\item sono sempre razionali, ossia le trasformate possono essere espresse come un rapporto di polinomi $F(s)=N(s)/D(s)$;
+				\item il grado del numeratore è sempre minore o uguale al grado del denominatore ($\textrm{gr}(D) \geq \textrm{gr}(N)$).
+			\end{itemize}
+		\end{concetto}
+			
+\section{Stabilità di un sistema}
+	Dato un sistema dinamico descritto in forma di stato $\dot x = f(x,u)$ e $y = g(x,u)$, noti $x_0$ e $u(t)$ è allora possibile determinarne il relativo movimento. Una domanda che ci si può porre è quella di chiedersi cosa succede al movimento del sistema quando si cambiano i dati del problema rispetto ai valori nominali.
+	
+	La \de{stabilità} studia dunque la \textbf{differenza} tra \textbf{movimento nominale} $\hat x, \hat y$ e \textbf{movimento perturbato} $\tilde x, \tilde y$:
+	\[\textrm{stabilità:} \qquad \| \tilde x(t) - \hat x(t) \|\]
+	
+	La perturbazione, in questo corso (per semplicità), si deve considerare applicata rispetto solamente alle variazione delle condizioni iniziali $\tilde x_0 \neq \hat x_0$. 
+	Questa \textit{riduzione} alla casualità nel considerare solamente la condizione iniziale deriva dal fatto che essa è la variabile del problema che è maggiormente incerta nella realtà. Si osserva inoltre che le perturbazioni sull'ingresso sono riconducibili a perturbazioni sulle condizioni iniziali $x_0$ del sistema stesso.
+	
+	In linea generale la stabilità può essere studiata indifferentemente sia rispetto alle variabili di stato $\|\tilde x(t) - \hat x(t)\|$ nella cosiddetta \de{stabilità interna}, me è anche possibile studiare la \de{stabilità esterna} dovuta all'equilibrio dell'uscita $\|\tilde y(t) - \hat y(t) \|$.
+	\begin{concetto}
+		La \de{stabilità di un movimento} rispetto a perturbazioni sulle condizioni iniziali $x_0$ rispetto al movimento nominale. Ad esse possono susseguirsi 3 possibilità:
+		\begin{enumerate}
+			\item il movimento perturbato diverge da quello nominale. In questo caso il movimento nominale è \de{instabile};
+			\item il movimento perturbato è diverso da quello nominale ma \textit{non si allontana troppo dallo stesso}. In questo caso il movimento nominale è \de{stabile} (\de{semplicemente});
+			\item il movimento perturbato converge al movimento nominale ed esso è detto \de{asintoticamente stabile}.
+		\end{enumerate}
+	
+	\end{concetto}
+	La classificazione delle proprietà di stabilità del movimento dipende strettamente dal sistema dinamico che si sta analizzando e dal modello utilizzato per o stesso (per esempio un pendolo con attrito è asintoticamente stabile, un pendolo senza attrito è stabile semplicemente).
+	
+	\paragraph{Osservazioni} In generale la stabilità di un movimento è una proprietà locale, ossia solo alcuni movimenti sono stabili e solamente il alcune condizioni e per una perturbazione limitata rispetto allo stato iniziale che si sta considerando. Si definisce dunque la \de{regione di attrazione} come l'insieme delle condizioni iniziali per cui il movimento è asintoticamente stabile al valore $\hat x_0$. Quando la regione di attrazione coincide con tutte le possibili condizioni iniziali si parla di \textbf{stabilità asintotica globale}.
+			
+			
+	\subsection{Stabilità del movimento per sistemi lineari tempo invarianti}
+		Considerando la stabilità del movimento d'uscita $|\tilde y(t) - \hat y(t)\|$, allora il movimento nominale nel caso di sistemi lineari tempo invariante può essere espresso nel dominio della variabile complessa come
+		\[\hat Y(s) = \C\big(sI - \A\big)^{-1}\hat x_0 + \Big[ \C \big(sI-\A\big)^{-1} \B + \D \Big] \hat U(s) \]
+		mentre il movimento perturbato (nel dominio della variabile complessa) è dato dall'espressione:
+		\[\tilde  Y(s) = \C\big(sI - \A\big)^{-1}\tilde x_0 + \Big[ \C \big(sI-\A\big)^{-1} \B + \D \Big] \tilde U(s) \] 
+		
+		Algebricamente è possibile determinare la variazione di uscita $\Delta y$ tra valore nominale e valore perturbato come
+		\[ \Delta y(s) = \hat Y(s) - \tilde y(s) = \C \big(sI-\A\big)^{-1} \big(\hat x_0 - \tilde x_0\big) = \C \big(sI-\A\big)^{-1} \Delta x_0   \]
+		
+		A questo punto si osservare che la stabilità del movimento di un sistema lineare tempo invariante è associata al concetto di \textbf{movimento libero} del sistema. Inoltre la stabilità di questi sistemi non dipende dal particolare movimento considerato, ma assume \textit{valenza generale} e dunque la proprietà di stabilità è una proprietà di sistema che vale per tutti i movimenti.
+		
+		Si può anche osservare che la perturbazione $\Delta x_0$ sulla condizione iniziale è solamente un \textit{fattore di scala} rispetto alla variazione $\Delta Y_0$. Se si dimostra che il sistema è asintoticamente stabile, allora la regione di stabilità è globale.
+		
+		\begin{concetto}
+			Lo studio del movimento di stato/uscita perturbato al fronte di cambiamenti/perturbazioni iniziali è equivalente (salvo alcune eccezioni che verranno discusse) allo studio del movimento dello studio d'uscita a fronte di un impulso in ingresso.
+		\end{concetto}
+		Questa affermazione non può essere attualmente dimostrata, ma risulterà essere verificata nel seguito. Questo concetto viene applicato per semplificare ulteriormente l'analisi dei sistemi.
+		
+		E' possibile notare che l'approccio allo studio della stabilità  analizzando la risposta all'impulso di un sistema è equivalente allo studio del movimento perturbato sulle condizioni iniziali per il seguente motivo; considerando la variazione dell'uscita
+		\[ \Delta Y = \C \big(sI - \A\big)^{-1} \, \Delta x_0 \]
+		Considerando il segnale impulso che descrive $U(s) = 1$ allora
+		\[ Y(s) = \Big[ \C \big(sI - \A\big)^{-1} \B + \D \Big] U(s) \quad \xrightarrow{u(t) = \imp} \quad \Big[ \C \big(sI - \A\big)^{-1} \B + \D \Big] 1 \]
+		Osservando le due relazioni è possibile che sia  $ \C \big(sI - \A\big)^{-1}$, sia $\C \big(sI - \A\big)^{-1} \B + \D $ possono essere descritti come un rapporto di un polinomio (rispettivamente $N(s),W(s)$) per il determinante $\det \big(sI-\A\big)$ e dunque è possibile osservare l'analogia tra i due comportamenti.
+		
+		E' altresì possibile notare che è più \textit{conveniente} studiare la risposta all'impulso del sistema (anziché il relativo moto perturbato); considerano il caso di un sistema SISO di ordine $n$, allora l'uscita $\Delta Y(s)$ può dipendere da $n$ condizioni iniziali $\Delta x_0$ e dunque
+		\[\Delta Y = \C \big(sI - \A\big)^{-1} \, \Delta x_0 \qquad \textrm{1 uscita, $n$ condizioni iniziali}\]
+		Nel caso \textit{semplice} di considerare un solo impulso è possibile osservare che l'uscita dipende da una sola funziona
+		\[ Y(s) =  \Big[ \C \big(sI - \A\big)^{-1} \B + \D \Big] 1 \]
+		
+		
+	\subsection{Criteri di stabilità di sistemi lineari tempo invarianti tramite l'analisi della risposta all'impulso}
+		In generale l'uscita  $Y(s) =  \C \big(sI - \A\big)^{-1} \B + \D $ può avere un comportamento convergente  a 0 e dunque è possibile affermare che il \textbf{sistema} è \textbf{asintoticamente stabile}. Se l'uscita invece risulta divergere a $\pm \infty$, allora il \textbf{sistema} è detto \textbf{instabile} in quanto la piccola perturbazione provoca l'allontanamento del meccanismo dallo stato di equilibrio. Nel caso in cui l'uscita converge asintoticamente ad un valore non nullo, allora il \textbf{sistema} è \textbf{semplicemente stabile}.
+		
+		Noto che l'uscita $Y(s) =N(s)/D(s)$ è espressa come il rapporto di un polinomio, allora applicando il metodo di Heaviside è possibile scomporla in una serie di fattori legate alla stessa dalle radici del denominatore:
+		\[ Y(s) = \frac{N(s)}{D(s)} = \frac A {(\dots)} + \frac B {(\dots)} + \dots \]
+		
+		Nel caso di radici del denominatore $D(s)$ semplici (non multiple) reali, allora le funzioni associate ai vari termini nel dominio del tempo sono delle funzioni esponenziali del tipo $e^{-at}$ dove $a$ è il coefficiente a numeratore della radice di $D(s)$ considerata. Quindi se le radici sono positive l'esponenziale diverge, per radici nulle l'esponenziale è costante e pari a 1 e per radici negative l'uscita tende a convergere a 0 nel dominio del tempo.
+		
+		Nel caso invece di poli complessi coniugati distinti allora, come visto nella descrizione del metodo di Heaviside, si ottiene un segnale nella forma $e^{-\sigma t} \sin(\omega t)$; anche in questo caso il segnale (co)sinusoidale viene smorzato/amplificato dall'esponenziale come visto nel caso di radici reali.
+		
+		Se le radici del denominatore sono multiple, allora i termini che costruiscono l'uscita che sono del tipo $1/s^2,1/s^3$  tendono a divergere con legge polinomiale (le rispettive antitrasformate sono associate a $t$ e $t^2$). Nel caso di radici del tipo
+		\[ \frac 1 {(s+a)^2} \rightarrow t e^{-at}  \quad \begin{cases}
+			\textrm{diverge se la radice è positiva }(a < 0) \\
+			\textrm{converge se la radice è negativa }(a > 0)
+		\end{cases}\]
+	
+		\paragraph{Teorema di stabilità per sistemi lineari tempo invarianti} La stabilità di un sistema lineare tempo invriante dipende dalla sua riposta all'impulso e dunque
+		\[ Y(s) = \Big[\C\big(sI-\A\big)^{-A} \B + \D\Big] = \frac {N(s)}{\det\big(sI-\A\big)}\]
+		In particolare il \textbf{sistema} è \textbf{asintoticamente stabile} se e solo se tutte le radici del polinomio al denominatore hanno parte reale negativa, è \textbf{semplicemente stabile} se e solo se esiste una sola radice (non multipla) con parte reale nulla mentre le altre radici sono tutte a parte reale negativa; infine se esiste almeno una radice con parte reale positiva allora il sistema è \textbf{instabile}; è anche instabile la situazione in cui la radice a parte reale nulla è multipla.
+		
+		\vspace{3mm}
+		In pratica l'analisi di stabilità di un sistema lineare tempo invariante si pratica calcolando in primo luogo l'uscita $Y(s) =  \C \big(sI - \A\big)^{-1} \B + \D $ e successivamente vi si calcolano le radici del denominatore (ossia i \textbf{poli}) che lo compongono; solo in ultimo luogo si applica il criterio di stabilità.
+		
+		\begin{esempio}{: determinazione della stabilità di un sistema lineare tempo invariante}
+			Si consideri un sistema di stato e uscita pari a 
+			\[ \dot X = \begin{bmatrix}
+				-2 & 0 \\ 0 & 4
+			\end{bmatrix} X + \begin{bmatrix}
+				1 \\ 1
+			\end{bmatrix} U \qquad Y = \begin{bmatrix}
+				1  & 1
+			\end{bmatrix} Y + \begin{bmatrix} 0
+			\end{bmatrix} U\] 
+		
+			Per studiare la stabilità di questo sistema dinamico è necessario effettuare il calcolo
+			\begin{align*}
+				\C \big(sI-\A\big)^{-1} \B + \D & = \big[1 \quad 1\big] \frac 1 {(s+2)(s-4)} \begin{bmatrix}
+					s- 2 & 0 \\ 0 & s + 2 
+				\end{bmatrix}  \begin{bmatrix}
+					1 \\ 1
+				\end{bmatrix} \\ & =  \frac 1 {(s+2)(s-4)} \big[1 \quad 1\big] \begin{bmatrix}
+					s-4 \\ s+ 2
+				\end{bmatrix} \\
+				& = \frac{2s - 2}{(s+2)(s-4)}
+			\end{align*}
+			Osservando che le radici del denominatore sono $s_1 = -2,s_2 = 4$ di cui $s_2$ ha parte reale positiva, per il teorema della stabilità dei sistemi lineari tempo invarianti è possibile affermare che il sistema è instabile.
+		\end{esempio}
+		
+		Un primo commento che si può effettuare è che le radici del denominatore $D(s)$ sono quelle di $\det\big(sI-\A\big) = \varphi(s)$, ossia coincidono con le radici del polinomio caratteristico della matrice $\A$ (ossia i suoi \de{autovalori}); quest'ultimo percorso (calcolo degli autovalori) è tuttavia sconsigliato in quanto può portare in difetto il teorema di stabilità e dunque si perde la garanzia dell'operato. \\
+		In generale dunque la stabilità di un sistema lineare tempo invariante dipende dalle proprietà della matrice di stato, tra cui i suoi autovalori (ma questa non è l'unica proprietà da verificare).
+		
+		Nel caso di sistemi di ordine elevato (maggiori di 3) può risultare difficile calcolare le radici del denominatore $D(s)$ e per questo esistono dei nuovi criteri che permettono di controllare la stabilità senza determinare i poli (controllando i coefficienti).
+		
+	\subsection{Criteri di stabilità basati sull'analisi diretta del polinomio del denominatore}
+		Questo tipo di criterio viene tendenzialmente utilizzato quando il polinomio al denominatore è tendenzialmente complesso e determinarne i poli non è \textit{facile} ed immediato. In generale il polinomio $D(s)$ del denominatore può essere espresso come
+		\[ D(s) = d_0 s^n + d_1 s^{n-1} + \dots + d_{n-1} s + d_n \]
+		
+		La \de{condizione necessaria di asintotica stabilità} afferma che tutti i coefficienti dei polinomi devono essere non nulli ($d_i\neq 0$) e tutti i coefficienti devono avere segni concordi. Quando ciò non è verificato è dunque possibile affermare che il sistema non è asintoticamente stabile. In generale per polinomi $D(s)$ relativamente piccoli (grado $n=1,2$) tale condizione oltre ad essere necessaria è anche sufficiente.
+		
+		Esiste inoltre una \de{condizione necessaria e sufficiente di asintotica stabilità} si basa sul fatto che tutti i coefficienti della prima colonna della \de{tabella di Routh} devono essere diversi da zero e concordi in segno.
+		
+		\paragraph{Tabella di Routh} La tabella di Routh presenta come prima riga i coefficienti di pedice pari (zero compreso), mentre la seconda riga contiene i coefficienti di pedice dispari (se essi non sono presenti, si pone uno zero). Dato il polinomio di garado $n$, allora la tabella ha $n+1$ righe; le righe successive (indicate dalle lettere $h,k,l$) sono determinate  secondo la legge
+		\[ l_i = -\frac 1 {k_1} \det \begin{bmatrix}
+			h_1 & h_{i+1} \\
+			k_1 & k_{i+1}
+		\end{bmatrix} \] 
+		\begin{SCtable}[0.5][bth]
+			\begin{tabular}{ r | c  c c c }
+				prima riga & $d_0$ &  $d_2$ & $d_2$ & $\dots$ \\
+				seconda riga & $d_1$ &  $d_3$ & $d_5$ & $\dots$ \\
+				& $\vdots$ \\
+				& $h_1$ & $h_2$ & $h_3$ & $\dots$\\
+				& $k_1$ & $k_2$ & $k_3$ & $\dots$\\
+				& $l_1$ & $l_2$ & $l_3$ & $\dots$\\
+			\end{tabular}
+			\caption{tabella di Routh}
+		\end{SCtable}
+	
+		\begin{esempio}{: tabella di Routh di un polinomio quadratico}
+			Si consideri il polinomio di secondo grado del tipo $D(s) = d_0s^2 + d_1 s + d_2$; la matrice di Routh deve dunque essere composta da 3 righe e risulta valere
+			\begin{center}
+			\begin{tabular}{r | c c} 
+				prima & $d_0$ & $d_2$ \\
+				seconda & $d_1$ & 0 \\ 
+				terza &  $*=d_2$ & 0
+			\end{tabular}
+			\end{center}
+			Il termine $*$  della terza riga (prima colonna) è ottenuta verificando che
+			\[ * = - \frac 1 {d_1} \det \begin{bmatrix}
+				d_0 & d_2 \\ d_1 & 0
+			\end{bmatrix} = d_2 \]
+		
+			A questo punto è possibile osservare che i coefficienti della tabella coincidono con i coefficienti del polinomio caratteristico $D(s)$; nel caso quadratico in particolare la condizione necessaria di avere coefficienti $d_i\neq0$ non nulli e concordi, allora tale criterio diventa anche sufficiente.
+		\end{esempio}
+		
+		
+		\paragraph{Relazione tra autovettori e poli} A questo punto è lecito chiedersi la relazione che si istituisce tra gli autovalori della matrice di stato $\A$ e i poli del polinomio associato alla matrice $\C\big(sI- \A\big)^{-1}\B + \D$. In precedenza sembra che gli autovalori della matrice $\A$ coincidessero con i poli della matrice mostrata, ma questo non sempre è verificato.
+		
+		Si consideri per esempio il sistema dinamico del tipo
+		\[ \dot X = \begin{bmatrix}
+			0 & 0 \\ 0& 0 
+		\end{bmatrix} X + \begin{bmatrix}
+			1 \\ 1 
+		\end{bmatrix} U \qquad Y = \begin{bmatrix}
+			1 & 1 
+		\end{bmatrix} X + \big[0\big]U \]
+		
+		In questo caso gli autovalori della matrice di stato $\A$ sono due valori coincidenti nulli $\lambda_1 = \lambda_2 = 0$. Se questi valori coincidessero con i poli di $D(s)$, allora per i criteri si stabilità si potrebbe affermare che il sistema è instabile. Effettuando tuttavia i calcoli è possibile calcolare
+		\begin{align*}
+			\C\big(sI- \A\big)^{-1}\B + \D & = \begin{bmatrix}
+				1 & 1
+			\end{bmatrix} \frac 1 {s^{\cancel{2}}} \begin{bmatrix}
+				\cancel{s} & 0 \\ 0 & \cancel{s}
+			\end{bmatrix} \begin{bmatrix}
+				1 \\ 1 
+			\end{bmatrix} + \big[0] \\
+			& =\frac 1 s \begin{bmatrix}
+				1 & 1
+			\end{bmatrix}  \begin{bmatrix}
+				1 \\ 1 
+			\end{bmatrix} = \frac 2 s  
+		\end{align*}
+		A questo punto si verifica che il polinomio a denominatore è pari a $D(s) = s$: il sistema è dunque stabile in quanto è presente una sola radice nulla (e non due come si sarebbe affermato considerando gli autovalori della matrice $\A$).
+		
+		In generale è possibile utilizzare gli autovalori della matrice di stato solamente se essi sono \textit{regolari}, ossia se molteplicità geometria e algebrica degli autovalori coincidano, in altri casi non si può garantire l'uguaglianza.
+		
+		Per enunciare dunque un criterio di stabilità analogo a quello visto applicato alle radici di $D(s)$ ma applicato agli autovalori della matrice di stato $\A$ occorrerebbe analizzare altre proprietà della matrice. 
+		
+		\vspace{3mm}
+		
+		Esiste inoltre un'altra importante considerazione da fare quando si relazionano i poli di $\C\big(sI- \A\big)^{-1}\B + \D$ e gli autovalori della matrice di stato $\A$: essa prende il nome di \textbf{presenza di parti nascoste in un sistema dinamico}.  In particolare gli autovettori/autovalori di $\A$ sono associati alla stabilità interna del sistema, mentre analizzando la risposta all'impulso del sistema si controlla la stabilità esterna del sistema stesso. Queste risposte che noi abbiamo approssimato come uguali, non sono sempre verificate.
+		
+		\begin{esempio}{}
+			Si consideri il sistema dinamico modellato dalle espressioni
+			\[ \dot X = \begin{bmatrix}
+				1 & 0 \\ 1& -2 
+			\end{bmatrix} X + \begin{bmatrix}
+				0 \\ 1 
+			\end{bmatrix} U \qquad Y = \begin{bmatrix}
+				1 & 1 
+			\end{bmatrix} X  \]
+			Essendo la matrice di stato $\A$ triangolare inferiore è possibile affermare che gli autovalori della stessa coincidono con i valori sulla diagonale $\lambda_1=1,\lambda_2 = -2$. Considerando invece il polinomio razionale $\C\big(sI- \A\big)^{-1}\B + \D$ si determina che esso è pari a 
+			\[\C\big(sI- \A\big)^{-1}\B = \frac{\cancel{s-1}}{\cancel{(s-1)}(s+2)} = \frac 1 {s+2}\]
+			Si osserva dunque che il denominatore $D(s)$ presenta una sola radice pari a $s_1 = -2$ (la radice $\lambda_1=1$ è stata dunque \textit{persa}); questo è dovuto al fatto che sono pressenti delle \textit{parti nascoste} nel sistema dinamico.
+			
+			\textbf{DA RIVEDERE QUESTA PARTE} lezione 30 marzo
+		\end{esempio}
+	
+		\begin{esempio}{}
+			Si consideri il sistema dinamico modellato dalle espressioni
+			\[ \dot X = \begin{bmatrix}
+				1 & 1 \\ 0& -2 
+			\end{bmatrix} X + \begin{bmatrix}
+				1 \\ 1 
+			\end{bmatrix} U \qquad Y = \begin{bmatrix}
+				0 & 1 
+			\end{bmatrix} X  \]
+			Essendo la matrice di stato $\A$ triangolare gli autovalori della stessa si trovano sulla diagonale e sono pari a $\lambda_1=1,\lambda_2 = -2$. Considerando invece il polinomio razionale $\C\big(sI- \A\big)^{-1}\B + \D$ svolgendo i calcoli si determina che esso vale
+			\[\C\big(sI- \A\big)^{-1}\B = \frac{s-1}{(s+2)(s-1)} = \frac 1 {s+2}\]
+			Come nell'esempio precedente si osserva con gli autovalori della matrice di stato $\A$ non coincidono con il polo del denominatore $D(s)$ che vale $s_1 = -2$
+			
+			\textbf{FARE SCHEMA E RIVEDERE}
+		\end{esempio}
+		
+		\paragraph{Nota} L'ispezione delle equazioni di stato non sempre permette di individuare se il sistema è completamente raggiungibile/osservabile;  strumenti che possono essere utilizzati per rispondere a questo tipo di quesito sono:
+		\begin{itemize}
+			\item l'analisi dell'ordine del polinomio $D(s)$ rispetto all'ordine del sistema;
+			\item effettuare dei test specifici di raggiungibilità e di osservabilità.
+		\end{itemize}
+	
+		\paragraph{Osservazioni sulla stabilità di sistemi lineari tempo invarianti} Ipotizzando (per semplicità) che il sistema sia completamente raggiungibile/osservabile, allora la stabilità di un sistema lineare tempo invariante è una \de{proprietà strutturale} del sistema stesso, ossia rappresentazioni equivalenti del sistema (scelta diversa delle variabili di stato) non impatta sulle conclusioni che si ottengono per la stabilità.
+		
+		Un'altra osservazione che si può asserire rispetto a sistemi asintoticamente stabili è che l'uscita asintotica ($y(t\rightarrow\infty)$) dipende solamente dall'ingresso $u(t)$ e non dalle condizioni iniziali del sistema. Questo generalmente è dunque un aspetto desiderato nelle applicazioni reali in quanto \textit{eliminano} gli effetti di disturbo.
+		
+		Per sistemi lineari tempo invarianti asintoticamente stabili l'equilibrio esiste ed è sempre unico; per questo tipo di sistemi tutti gli autovalori sono a parte reale negativa e dunque il determinante della matrice di stato è diverso da $0$. In questo caso dunque esiste l'inversa di $\A$ che permette di determinare l'unico equilibrio del sistema. Da questa osservazione deriva che in questo tipo di sistema per ingressi costanti l'uscita asintotica tende al movimento di equilibrio.
+		
+	\subsection{Stabilità per sistemi non lineari}
+		La stabilità è associata al movimento, e non ai sistemi, per questo può essere solamente associata ai sistemi lineari tempo invarianti (per come visto in precedenza) ed è dunque una cosa che va tenuta a mente. Per affrontare questo tipo di problema esistono delle particolari tecniche.
+		
+		Noi in particolare analizziamo tecniche adatte allo studio della stabilità del movimento di equilibrio del sistema.
+		
+		\paragraph{Metodo indiretto di Lyapunov} Questo metodo per analizzare la stabilità del movimento di sistemi non lineari si bassa sulla linearizzazione del sistema attorno al movimento di equilibrio stesso che risulta in un sistema lineare tempo invariante (analizzabile con i criteri precedentemente mostrati).
+		
+		Se analizzando il problema il sistema lineare risulta essere semplicemente stabile in realtà non si può asserire alcuna conclusione per quanto riguarda la stabilità del sistema non lineare di origine.
+		
+		\paragraph{Metodo grafico per sistemi scalari} Un secondo metodo per analizzare sistemi non lineari scalari (ossia di ordine 1) è quello di utilizzare un metodo grafico che si basa sull'interpretazione del grafico stesso. L'idea è quella dunque di simulare graficamente l'effetto di una perturbazione delle condizioni iniziali (influenzando di fatto la variabile di stato) e analizzare cosa accade al movimento perturbato. \\
+		Le operazioni da eseguire possono essere riassunte nei seguenti passi:
+		\begin{enumerate}
+			\item in primo luogo si rappresenta la dinamica del sistema non lineare facendo riferimento al suo movimento di equilibrio in un diagramma. Questo significa rappresentare l'equazione $\dot x = f(x,\ov u)$ che regola la dinamica del sistema non lineare. Essendo il sistema scalare questa funzione dipende solamente da una variabile $x$ e per questo può essere rappresentata nel piano cartesiano;
+			
+			\item nel grafico è possibile individuare i punti di equilibrio del sistema, ossia i punti in cui la funzione $f$ intercetta l'asse delle ascisse (in quanto i punti di equilibrio sono gli stati $x$ per i quali la loro derivata è nulla e dunque $f(x,\ov u)=\dot x = 0$). Indichiamo dunque con $x^*$ il punto di equilibrio (ossia il movimento nominale $\hat x$);
+			
+			\item a questo punto è possibile provare a perturbare il movimento per studiare l'andamento del movimento perturbato 
+		\end{enumerate}
+	
+		\paragraph{Lezion 13/04} Di fatto la stabilità, che studia la risposta di una perturbazione $\delta x_0$ sullo stato (stabilità interna), noi la analizziamo come la risposta all'impulso (perchè nel mondo di Laplace l'impulso diventa una costante) che determina la stabilità esterna. Questo ha permesso di stabilire un criterio di stabilità bassato sulle radici del polinomio $D(s)$.
+		
+		\paragraph{Relazioni tra stabilità interna ed esterna} Se il sistema è completamente raggiungibile / osservabile, allora il concetto di stabilità interna coincide con quello di stabilità esterna; in questo caso si osserva che il denominatore $D(s)$ coincide con il polinomio caratteristico $\varphi(s)$ della matrice di stato $\A$ e i poli di $D(s)$ coincidono con gli autovalori della matrice di stato stessa.
+		
+		L'analisi di stabilità interna si basa sia sugli autovalori della matrice di stato $\A$, sia dai suoi autovettori.
+		
+		Un sistema è detto \textbf{BIBO} (\textit{Bounded Input, Bounded Output}) stabile se e solo se ad ogni ingresso limitato corrisponde un'uscita anch'essa limitata. A questo punto si può dimostrare che condizione necessaria e sufficiente affinché un sistema SISO lineare tempo invariante sia BIBO stabile è che le radici del denominatore $D(s)$ siano tutte a parte reale negativa.
+		
+		\paragraph{Equilibrio per sistemi non lineari} Per determinare la stabilità dell'equilibrio di sistemi non lineari è possibile effettuare l'analisi del sistema linearizzato (analizzandone i poli), oppure è possibile impostare un metodo grafico che tuttavia vale solamente per sistemi scalari.
+		
+		Quest'ultimo metodo approccia lo studio di stabilità riprendendo la definizione originaria di stabilità come perturbazione sulle condizioni iniziali (per sistemi scalari, essendoci una sola variabile di stato, il concetto di raggiungibilità / osservabilità si banalizzano e \textit{non sono un problema}).
+		
+		Un'ulteriore osservazione può essere effettuata analizzando la stabilità di un sistema linearizzato; considerando un primo sistema del tipo
+		\[ \Sigma_1 : \begin{cases}
+			\dot x = x^3 + u \\ y = x
+		\end{cases}\]
+		effettuando l'analisi con il metodo grafico si osserva che l'equilibrio $\overline x = 0$ (considerando $\overline u = 0$) è instabile in quanto allontanandosi leggermente dalla posizione, si ha una divergenza della variabile di stato. Effettuando una linearizzazione del sistema si determinano le matrici che la caratterizzano che sono
+		\[ \A= \big[0\big] \qquad \B = \big[1] \qquad \C = \big[ 1\big] \qquad \D = \big[0\big]\]
+		Si osserva dunque che $\C \big(sI-\A\big)^{-1} \B + \D = \frac 1 s$ e il denominatore $D(s)=s$ è uno scalare la cui radice è $s=0$; nel caso di sistema lineare il sistema sarebbe caratterizzato dalla definizione \textit{semplicemente stabile} che è incongruente con la definizione ottenuta dalla via grafica.
+		
+		Tuttavia non è possibile asserire che un sistema linearizzato semplicemente stabile è in realtà instabile, in quanto considerando il sistema
+		\[ \Sigma_1 : \begin{cases}
+			\dot x = -x^3 + u \\ y = x
+		\end{cases}\]
+		graficamente risulta osservabile che il sistema è stabile, mentre dalla linearizzazione si porterebbe ad affermare che il sistema rimane sempre semplicemente stabile.
+		
+		In generale dunque quando il sistema linearizzato è semplicemente stabile, allora non è possibile asserire alcuna conclusione sulla stabilità del sistema stesso.
+	
+\section{Funzione di trasferimento per sistemi lineari tempo invarianti}
+	Dato un sistema dinamico lineare tempo invariante
+	\[ y(s) = \C \big(sI-\A\big)^{-1} x_0  + \Big[ \C \big(sI-\A\big)^{-1} \B + \D\Big] U(s) \]
+	Imponendo una condizione iniziale per cui $x_0 = 0$ allora è possibile scrivere il sistema dipendente dalla \de{funzione di trasferimento} $\G(s)$ del sistema:
+	\[ y(s) =  \underbrace{\Big[ \C \big(sI-\A\big)^{-1} \B + \D\Big]}_{\mathcal G(s)} U(s) \]
+	La funzione di trasferimento rappresenta di fatto il legame tra ingresso e uscita del sistema espressa nel dominio di Laplace. Questa funzione dipende solamente dalle caratteristiche del sistema. Considerando che nel dominio del tempo l'uscita sarebbe scritta come
+	\[ y(t) = \C \int_0^t e^{\A(t-\tau)} \B u(\tau) \, d\tau + \D u(t) \]
+	e chiaramente è molto più \textit{complessa} che la funzione di trasferimento nel dominio della variabile complessa $s$ ottenuta tramite la trasformata di Laplace.
+	
+	\paragraph{Note sulla funzione di trasferimento} La funzione di trasferimento può essere calcolata in due modi:
+	\begin{itemize}
+		\item tramite definizione come segue, rispetto alla quale è necessario conoscere il modello ($\A,\B,\C,\D$) del sistema
+		\[ \G(s) =  \C \big(sI-\A\big)^{-1} \B + \D \]
+		\item un'altro metodo è quello di calcolare la funzione di trasferimento come
+		\[ \G(s) = \frac{Y(s)}{U(s)}\]
+		Questo è un metodo sperimentale in quanto potendo determinare degli ingressi $u(t)$ e rilevando l'uscita $y(t)$, tramite la trasformata di Laplace, è possibile determinare la funzione di trasferimento senza nemmeno conoscere il modello del sistema.
+	\end{itemize}
+	
+	Inoltre è possibile osservare che la funzione di trasferimento rappresenta la trasformata di Laplace della risposta all'impulso del sistema (dal fatto che la trasformata $\L(\imp(t))=1$, allora $Y(s) = \G(s) \cdot 1$ ).
+	
+	Nel caso di un sistema SISO, la funzione di trasferimento $\G(s)$ è data da un rapporto tra un numeratore $N(s)$, che determinano gli \de{zeri} della funzione di trasferimento, e un denominatore $D(s)$ che ne determina i \de{poli}. Nel caso di un sistema MIMO la funzione di trasferimento $\G(s)$ è di fatto una \de{matrice di trasferimento} nella quale ogni elemento è un rapporto tra un numeratore e un denominatore (che è sempre costante) e rappresenta il legame tra l'$i-$esima uscita e il $j-$esimo ingresso.
+	
+	A questo punto l'analisi di stabilità di sistemi lineari tempo invarianti si effettua studiando la posizione nel piano complesso dei poli della funzione di trasferimento $\G(s)$. Quando il sistema è completamente raggiungibile/osservabile, i poli della funzione di trasferimento coincidono con gli autovalori della matrice di stato $\A$.
+	
+	La funzione di trasferimento è inoltre una proprietà strutturale dei sistemi lineari tempo invarianti, ossia essa è indipendente dalla scelta del riferimento diverso per le variabili di stato
+	
+	\subsection{Parametrizzazioni della funzione di trasferimento}
+		La funzione di trasferimento $\G(s)$ può essere espressa in maniera alternativa; essa sarà sempre composta da un rapporto tra il numeratore $N(s)$ e il denominatore $D(s)$, dove tuttavia è possibile osservare un'insieme di forme equivalenti nella \textbf{forma fattorizzata} o nella \textbf{forma polinomiale} considerando l'esempio
+		\[ (s+1)(s+2) = s^2 + 3s + 2\]
+		A questo punto è possibile scrivere le 3 formulazioni alternative: polinomiale (dove i $2n-1$ parametri sono i coefficienti $\alpha_i,\beta_i$ dei polinomi), forma fattorizzata di Nyquist (dove $z_i = \eta_i +i\alpha_i$ sono gli zeri reali e \textbf{CONTROLLARE}) e forma fattorizzata di Bode
+		\begin{align*}
+			\G(s) & = \frac{\beta_n s^n + \beta_{n-1}s^{n-1} + \dots + \beta_1 s + \beta_0}{s_n + \alpha_{n-1}s^{n-1} + \dots + \alpha_0}
+		 \\
+			& = \frac{\rho}{s^g} \frac{\prod_i (s-z_i) \prod_i \big(
+				s^2 +2\eta_i\alpha_i s + \alpha_i^2\big)}{\prod_i (s-p_i) \prod_i \big(
+				s^2 +2\xi_i\omega_i s + \omega_i^2\big)} \\		& = \frac \mu {s^g} \frac{\prod_i \big( \tau_i s + 1 \big) \prod_i \left(\frac{s^2}{\alpha_i^2}  + 2\frac {\eta_i}{\alpha_i} s + 1 	\right) }{ \prod_i \big( T_i s + 1 \big) \prod_i \left(\frac{s^2}{\omega_i^2}  + 2\frac {\xi_i}{\omega_i} s + 1 \right) }				
+		\end{align*}
+		
+		\textbf{DA TERMIANRE}
+		
+		\paragraph{Sistema ritardo di tempo} Considerando il \textbf{sistema ritardo di tempo} la cui funzione d'uscita $y(t)=u(t-\tau)$ può essere rappresentato nel dominio della variabile complessa secondo la funzione di trasferimento
+		\[ \G(s) = e^{-\tau s} \]		
+		Questa è una funzione di trasferimento non razionale (non è un rapporto di polinomi) trascendente ed è un sistema dinamico che può dare alcuni problemi.
+		
+		
+\section{Studio del legame ingresso-uscita}
+	Per poter studiare nel dettaglio il legame tra gli ingressi e l'uscita è necessario comprendere il significato dei parametri (poli, zeri, smorzamenti...) della funzione di trasferimento. In particolare per studiare la relazione è necessario studiare un sistema dinamico sollecitato:
+	\begin{itemize}
+		\item ingresso a scalino $u(t) = \scal (t)$;
+		\item ingresso sinusoidale $u(t)  = \sin(\omega t)$.
+	\end{itemize}
+
+	\subsection{Risposta allo scalino}
+		La risposta allo scalino è \textit{interessante} da studiare in quanto permette di capire come il sistema reagisce ad una variazione istantanea dell'ingresso e come il sistema evolve nel tempo. Se il sistema è inoltre lineare, allora è necessario studiare solamente lo scalino unitario in quanto ogni altro scalino è determinato utilizzando il principio di sovrapposizione degli effetti.
+		
+		\textbf{RIPRENDERE IL GRAFICO}
+		
+		Le \textit{caratteristiche salienti} della risposta al segnale sono:
+		\begin{itemize}
+			\item le caratteristiche iniziali della risposta quali il valore $y_0=y(0)$ (ed eventualmente le sue derivate $\dot y_0,\ddot y_0,\dots$);
+			\item il valore asintotico $y_\infty$ dell'uscita, ossia l'uscita $y$ per $t\rightarrow \infty$;
+			\item le caratteristiche del transitorio quali il tempo di assestamento $t_a$ (dopo quanto tempo la risposta si assesta al valore finale), il periodo $T$ (o frequenza) di eventuali oscillazioni, il valore di picco $y_{max}$ della risposta, la sovraelongazione (\textit{overshoot}) definita come $s_\% = |y_{max} - y_\infty|/y_\infty \cdot 100$.
+		\end{itemize}
+		L'obiettivo è dunque quello di mettere in relazione i parametri della funzione di trasferimento con i parametri della risposta allo scalino.
+		
+		
+		\paragraph{Sistemi del primo ordine} Considerando sistemi di ordine unitario aventi dunque un solo polo (e considerando che esso non abbia zeri). Se la funzione di trasferimento è del tipo $\G(s) = \mu / s$ (dove $\mu$ è il guadagno e $g=1$ è il tipo del sistemi) allora il polo è nell'origine, mentre se esso non è centrato nell'origine può essere espresso come
+		\[ \G(s) = \mu \frac 1 {Ts + 1} \]
+		dove $\mu$ è il guadagno e $T$ è la costante di tempo del polo $T$.
+		
+		Considerando il primo caso in cui $\G(s) = \mu/s$, la risposta allo scalino è determinata considerando la trasformata di Laplace dell'ingresso:
+		\[ Y(s) =  \G(s)\, U(s) = \frac \mu s \frac 1 s = \frac \mu {s^2}\]
+		Per calcolare il valore iniziale dell'uscita è possibile usare il \textbf{teorema del valore iniziale} (\textbf{COLLEGAMENTO}) per il quale 
+		\[ y_0 = \lim_{s\rightarrow\infty}s\, Y(s) = \lim_{s\rightarrow \infty} s \frac \mu {s^2} = 0 \]
+		Per calcolare la velocità $\dot y_0$ al tempo iniziale è sufficiente ri-applicare il teorema del valore iniziale alla derivata dell'uscita che nel caso in questione vale
+		\[ \dot y_0 = \lim_{s\rightarrow \infty} s\, H(s) \xrightarrow{H(s) = \L [\dot y(t)]} = \lim_{s\rightarrow \infty} s\big[s\, Y(s) -\cancel{y_0}\big] = \lim_{s\rightarrow \infty} s^2 \, Y(s) = \mu \]
+		
+		Per calcolare invece il valore asintotico dell'uscita è possibile utilizzare il \textbf{teorema del valore finale}; verificato che l'uscita $Y(s)$ è razionale con poli a parte reale negativa e pulsazione nulla allora
+		\[y_\infty = \lim_{s\rightarrow 0} s \, Y(s) = \lim_{s\rightarrow \infty} \frac \mu s = \pm \infty \]
+		Per calcolare le proprietà transitorie è necessario determinare l'espressione completa di $y(t)$ antitrasformando la funzione di trasferimento con Heaviside; in questo caso l'operazione è facile e vale
+		\[  y(t) = \L^{-1} \big[Y(s)\big] = \L^{-1}\left(\frac \mu {s^2}\right) = \mu\,  \ramp(t) = \mu\, t \scal (t) \]
+		\begin{nota}
+			Essendo il sistema non asintoticamente stabile ($\G(s)$ ha un polo in $s=0$), allora non è BIBO stabile; infatti per un ingresso \textit{limitato} rappresentato dallo scalino $u(t) = \scal(t)$ non corrisponde un'uscita limitata.
+		\end{nota}
+		A questo punto è possibile osservare che $\mu$ influenza l'\textit{ampiezza} (pendenza) della rampa; se il tipo è positivo non nullo ($g>0$) allora la risposta non si assesta a nessun valore di regime (il tipo $g$ si dimostra influenzare $y_\infty$).
+		
+		\vspace{3mm}
+		Considerando sistemi di ordine unitario con poli a parte reale e dunque con funzione di trasferimento del tipo
+		\[ \G(s)= \mu \frac 1 {Ts + 1} \]
+		Anche in questo caso l'uscita del sistema, nel dominio della variabile complessa, vale
+		\[ Y(s) = \G(s) \, U(s) = \mu \frac 1 {Ts + 1} \frac 1 s = \mu \frac 1 {s(Ts + 1)}\]
+		Anche in questo caso applicando il teorema del valore iniziale si osserva valere che $y_0 = 0$ e $\dot y_0 = \mu / T$, mentre per il teorema del valore finale è possibile calcolare $y_\infty=\mu$ (solamente se $T>0$, altrimenti il polo sarebbe a parte reale positiva e il teorema non varrebbe). Le caratteristiche transitorie possono essere determinate antitrasformando l'uscita con il teorema di Heaviside; in particolare il risultato dell'operazione è
+		\[ y(t) = \mu \left(1-e^{-t/T}\right)\]
+		\textbf{GRAFICO}
+		
+		In questo caso, analizzando il grafico dell'uscita per $T>0$, è possibile osservare che non sono presenti oscillazioni $T=0$ e anche l'elongazione percentuale è nulla in quanto $y_{max} = y_{0}$. Matematicamente il tempo di assestamento coincide con valore infinito in quanto $y(t) = y_\infty$ solamente a tale valore, anche se nella pratica si definisce il tempo di assestamento il valore di $t_A$ tale che
+		\[ \big|y(t_A) - y_\infty\big|  \leq \epsilon y_\infty\]
+		dove $\epsilon$ è un parametro arbitrario minore di 1. Fissato il valore di $\epsilon=0.01$, allora il tempo di assestamento $t_a$ è pari al valore $4.6T\approx 5T$; tale valore è ottenuto per inversione dell'equazione.
+		
+		\begin{nota}
+			Si può osservare che maggiore è la distanza del polo dall'asse immaginario, minore è il tempo di assestamento. Con questa definizione è dunque possibile pensare che un sistema con polo nell'origine sia un sistema infinitamente lento. Il tempo di assestamento non dipende dal guadagno $\mu$, ma solamente dal valore $T$.
+		\end{nota}
+		
+		
+		\paragraph{Sistemi del secondo ordine} Considerando un sistema del secondo ordine con 2 poli non nulli  coincidenti può essere espresso dalla funzione di trasferimento del tipo
+		\[ \G(s) = \frac{\mu}{(Ts+1)^2} \]
+		Applicando la struttura della risposta all'ingresso scalino $u(t)=\scal(t)$ vista per i sistemi del primo ordine è possibile osservare che l'ingresso iniziale $y_0=0$ è sempre nullo; anche la derivata prima $\dot y_0=0$ è nulla ed è solamente la derivata seconda $\ddot y_0 = \mu/T^2$ il valore che risulta essere legata al guadagno.
+		
+		\begin{nota}
+			A livello induttivo è possibile pensare che il numero di poli è legato all'ordine della prima derivata non nulla al tempo iniziale.
+		\end{nota}
+		Tramite il teorema del valore finale (considerando un sistema asintoticamente stabile) è possibile determinare l'uscita asintotica $y_\infty=\mu$ (questa considerazione vale per ogni tipo di sistema anche di ordine superiore). Per quanto riguarda le caratteristiche transitorie è necessario calcolare $y(t)$ antitrasformando la scomposizione di Heaviside. Effettuando gli opportuni calcoli l'uscita risulta valere
+		\[ y(t) = DA VEDERE DA SLIDE \]
+		\textbf{DIAGRAMMA}
+		
+		Anche in questo caso la sovra-elongazione percentuale è nulla e il periodo di oscillazione è nullo (non si ha di fatto alcuna oscillazione). Il tempo di assestamento ad $\epsilon = 1\%$ vale
+		\[t_a \approx 6.64 T\]
+		A questo punto è possibile osservare che sistemi di ordine superiore a poli coincidenti sono più \textit{lenti} di sistemi a ordine inferiore.
+		
+		\vspace{3mm}
+		Se la funzione di trasferimento presenta i 2 poli reali non coincidenti, allora la funzione di trasferimento può essere espressa nella forma di Bode come
+		\[\G(s) = \frac{\mu}{(T_1s + 1)(T_2s+1)} \qquad T_1 > T_2\]
+		Analizzando questa tipo di funzione di trasferimento si può dimostrare che $y_0 = \dot y_0 = 0$, mentre $\ddot y_0 = \frac \mu {T_1T_2}$; per quanto riguarda il valore finale non si hanno ulteriori modifiche rispetto ai poli  coincidenti, e dunque se il sistema è asintoticamente stabile $y_\infty=\mu$. \\
+		Per quanto riguarda le caratteristiche transitorie è necessario calcolare $y(t)$ del tipo
+		\[ Y(s) = \frac{\mu}{s(T_1s + 1)(T_2s+1)} = \frac As + \frac B{sT_1 + 1} + \frac C{sT_2 + 1}  \]
+		\[\Rightarrow\quad y(t) = A\scal(t) + Be^{-t/T_1} + C e^{-t/T_2} = \mu \left(1 - \frac {T_1}{T_1-T_2}e^{-t/T_1} + \frac {T_2}{T_1-T_2} e^{-t/T_2}\right)\]
+		Anche in questo caso, essendo la risposta esponenziale, il periodo di oscillazione non è definito e la sovra-elongazione percentuale è nulla. Il tempo di assestamento non può essere calcolata direttamente (facilmente) in quanto dipendente simultaneamente sia da $T_1$ che $T_2$; è tuttavia possibile asserire le seguenti affermazioni:
+		\begin{itemize}
+			\item se $T_1\simeq T_2$ sono dei poli di grandezza simile, allora il comportamento del sistema è paragonabile a quello dei sistemi del secondo ordine a poli coincidenti e dunque $t_a =6.64T$;
+			\item se $T_2\ll T_1$ allora il sistema si comporta come un sistema di polo $T_1$ e dunque $t_a = 5T$.
+			\item in tutti gli altri casi il transitorio è un valore compreso tra $5T$ e $6.64T$.
+		\end{itemize}
+	
+		\vspace{3mm}
+		Considerando un sistema 2 poli complessi coniugati nella forma
+		\[\G(s) = \frac{\mu}{\dfrac{s^2}{\omega_n^2} + 2 \dfrac{\xi}{\omega_n} s +  1}\]
+		dove $\mu$ è il guadagno, $\xi$ è lo smorzamento e $\omega_n$ è la pulsazione naturale; effettuando i calcoli con il teorema del valore iniziale e finale si determina $y_0 = \dot y_0 = 0$, $\ddot y_0 = \mu \omega_n^2$, $y_\infty = \mu$ (questo vale solamente per sistemi asintoticamente stabili e dunque $\xi > 0$). L'espressione transitoria di questo tipo di funzione assume la forma del tipo
+		\[ y(t) = \mu  \left[ 1 - \frac{1}{\sqrt{1-\xi^2}} e^{-\xi\omega_n t} \sin\left(\omega_n \sqrt{1-\xi^2} t + \phi\right)  \right] \]
+		dove $\phi$ è una fase dipendente dai parametri $\xi$ e $\omega_n$. In questa espressione è possibile osservare che la risposta converge a $\mu$ (come ci si aspettava) e nel transitorio presenta delle oscillazioni di periodo
+		\[ T = \frac{2\pi}{\omega_n \sqrt{1-\xi^2}} = \frac {2\pi}{\textrm{Im}} \]
+		ossia è dovuto alla sola parte immaginaria dei poli; aumentando il valore della parte immaginaria è dunque possibile diminuire il periodo di oscillazione (infatti per sistemi a poli reali $\textrm{Im} = 0$ e dunque il periodo è infinito e si può osservare l'effetto sinusoidale). La sovra-elongazione percentuale può essere invece calcolata come
+		\[ S_\% = 100 e^{-\xi \pi / \sqrt{1-\xi^2}} = 100 e^{-\textrm{Re}/\textrm{Im}}\]		
+		Il tempo di assestamento dipende dall'evoluzione dell'esponenziale $e^{-\xi \omega_n t}$ che modula il valore asintotico; si dimostra dunque che il tempo di assestamento può essere determinato come
+		\[ t_a = \frac{5}{\xi \omega_n} = \frac{5}{|\textrm{Re}|}\]
+		
+		\textbf{AGGIUNGERE LE FIGURE E LE CONSIDERAZIONI}
+		
+		
+	\subsection{Effetti degli zeri sulla risposta allo scalino}
+		Rispetto all'analisi dei poli, l'effetto degli zeri è meno generalizzabile e dunque in questo caso si analizzeranno solamente dei casi particolari.
+		
+		\paragraph{Zeri reali} Considerando una funzione di trasferimento con zero reale nell'origine (in $s=0$), allora essa presenta tipo $g\leq -1$ (si osserva che è impossibile avere sia poli che zeri nulli contemporaneamente). Considerando per esempio un sistema del primo ordine con funzione del tipo
+		\[ \G(s) = \frac{\mu s}{Ts + 1}\]
+		Si ipotizza anche che il sistema sia asintoticamente stabile (in quanto altrimenti la soluzione divergerebbe a $\infty$).
+		
+		\begin{nota}
+			L'ordine di un sistema dinamico è lo stesso sia nel dominio del tempo (dove rappresenta la dimensione della matrice di stato) che nel dominio della variabile complessa (dove rappresenta il numero di poli della funzione di trasferimento).
+		\end{nota}
+		Applicando il teorema del valore iniziale è possibile calcolare l'uscita iniziale che risulta valere $y_0 = \mu / T$. Per il teorema del valore finale è possibile determinare $y_\infty = 0$; questo avviene per il fatto che $s$ rappresenta la derivata di una costante che pertanto è sempre nulla. In generale l'effetto dello zero nell'origine è quello di \textit{derivare} (nel tempo) la risposta del sistema senza lo zero che convergeva ad un valore costante.
+		
+		L'effetto di uno zero in $s=0$ è dunque quello di annullare la risposta asintotica del sistema.
+		
+		Per determinare gli effetti transitori è necessario antitrasformare l'uscita nel dominio del tempo; per fare questo è necessario scomporre con Heaviside del tipo
+		\[ \frac{s\mu}{(Ts+1)s} = \frac A s + \frac B {Ts+1} \qquad \rightarrow \quad y(t) = A \scal(t) + B e^{-t/T}\]
+		La risposta del sistema senza considerare dunque lo zero nullo è diversa, tuttavia essendo la struttura medesima il transitorio è governato dall'esponenziale la cui costante di tempo dipende solamente dalla posizione del polo: $t_A \approx 5T$. \\
+		In generale gli zeri modificano l'andamento della risposta ma non la sua durata.
+		
+		\paragraph{Zeri reali non più nell'origine} In questo caso la funzione di trasferimento può essere espressa come
+		\[ \G(s) = \mu \frac{\tau s + 1}{Ts+1} \qquad T > 0 \ , \ \tau \in\mathds R\]
+		Il valore iniziale della risposta, applicando il teorema del valore iniziale, risulta valere $y_0 = \mu \frac \tau T \neq 0$, mentre il valore finale del sistema vale $y_\infty = \mu$. A questo punto è possibile osservare come il valore di $\tau$ influenza l'andamento della risposta allo scalino
+		
+		\paragraph{Sistemi di ordine 2 a poli reali} Considerando una funzione di trasferimento del tipo
+		\[ \G(s) = \mu \frac{\tau s + 1}{(T_1 s + 1)(T_2 s + 1)} \qquad T_1,T_2 > 0\, \ \tau\in \mathds R  \]
+		
+		Applicando il teorema del valore iniziale riuslta valere $y_0 = 0$ e $\dot y_0 = \mu \frac \tau {T_1T_2}$. Più in generale l'ordine della prima derivata di $y(t)$ non nulla in $t=0$ coincide con il grado relativo della funzione di trasferimento $\G(s)$, ossia è la differenza tra il numero di poli e il numero di zeri. Il valore asintotico della funzione vale $y_\infty = \mu$.
+		
+		\paragraph{Riassunto degli effetti degli zeri sulla risposta allo scalino}
+		\begin{itemize}
+			\item lo zero nell'origine annulla la risposta asintotica $y_\infty$;
+			\item gli zeri destri (per cui $\tau< 0 $) sono associati al comportamento della risposta inversa;
+			\item gli zeri sinistri ($\tau > 0$) vicini all'asse immaginario (più dei poli) portano ad una sovraelongazione;
+			\item se i poli sono vicini agli zeri, essi si annullano; in particolare lo zero può mascherare la presenza di un polo;
+			\item il numero degli zeri può influenzare il comportamento iniziale (tendono a \textit{velocizzare} la risposta iniziale che dipende dal grado relativo della funzione di trasferimento);
+			\item gli zeri hanno un effetto sulla risposta allo scalino non \textit{notevole}
+		\end{itemize}
+		
+		\paragraph{Risposta allo scalino per sistemi arbitrariamente complessi}
+		Considerando un sistema arbitrariamente complesso la cui funzione di trasferimento espressa nella forma di Bode del tipo
+		\[  \G(s) = \frac \mu {s^g} \frac{\prod_i \big( \tau_i s + 1 \big) \prod_i \left(\frac{s^2}{\alpha_i^2}  + 2\frac {\eta_i}{\alpha_i} s + 1 	\right) }{ \prod_i \big( T_i s + 1 \big) \prod_i \left(\frac{s^2}{\omega_i^2}  + 2\frac {\xi_i}{\omega_i} s + 1 \right) } \]
+		
+		Per quanto riguarda le caratteristiche iniziali della risposta è sufficiente porre le derivate fino a quella di ordine $r$ (dove $r$ è il grado relativo -1) nulle
+		\[ y_0=\dot y_0=\dots =  y_0^{(r)} = 0\qquad r=\textrm{grado relativo} -1\]
+		Per quanto riguarda invece le caratteristiche asintotiche è possibile affermare che
+		\[ y_\infty = \begin{cases}
+			\pm \infty \qquad & \textrm{se asintoticamente instabile} \\
+			\mu & \textrm{se asinstoticamente stabile} \\
+			0 & \textrm{se asinstoticamente stabile con zeri in } s=0 \ (g\leq -1)
+		\end{cases}\]
+		Per quanto riguarda le caratteristiche transitorie è possibile affermare che l'uscita $y(t)$ è una composizione di tutte le singolarità presenti; in particolare si può approssimare il comportamento del transitorio considerando solamente le caratteristiche delle singolarità più lente, dette \de{dominanti}. Questo permette di affemare che
+		\[ t_a = \frac 5 {|\textrm{Re}_\textrm{poli dominanti}|} \qquad T = \frac{2\pi}{\textrm{Im}_\textrm{poli dominanti}}\]
+		Per quanto riguarda la sovra-elongazione $S_\%$ essa dipende dai poli complessi coniugati dominanti e dagli reali vicini all'asse immaginario (in questo caso l'entità della sovra-elongazione si valuta con una simulazione).
+		Fra i comportamenti notevoli si menziona la risposta inversa dovuta a zeri destri \textit{dominanti}.
+		
+		\paragraph{Singolarità dominanti}Le singolarità dominanti sono quelle più vicine all'asse immaginario. Se un polo e uno zero sono molto vicini tra loro possono essere trascurati in quanto il loro effetto tenderà ad essere mutuamente compensato.
+		
+		\begin{nota}
+			Non sempre la regola della vicinanza all'asse immaginario è facile da applicare.
+		\end{nota}
+	
+	\subsection{Risposta ad un segnale sinusoidale}
+		Si analizza ora la risposta di un sistema lineare tempo invariante con un segnale sinusoidale. A questo proposito è impossibile applicare il teorema del valore finale per calcolare $y_\infty$; questo perché per le ipotesi di funzionamento $Y(s)$ deve essere razionale e deve avere poli con parte reale negativa oppure appartenere all'origine degli assi.
+		
+		Nel caso di risposta ad un segnale sinusoidale l'uscita vale
+		\[Y(s) = \G(s) U(s) = G(s) \frac{\omega}{s^2+\omega^2}\]
+		e dunque esistono due poli complessi coniugati con parte reale nulla (e dunque non verificano l'ipotesi).
+		
+		\paragraph{Teorema della risposta in frequenza} Il teorema della risposta in frequenza si bassa sull'ipotesi che la funzione di trasferimento $\G(s)$ deve essere asintoticamente stabile (ragionamento sulla BIBO stabilità) e l'ingresso deve valere $u(t) = \overline A \sin(\overline \omega t + \overline \phi)$ dove $\overline A$ è l'ampiezza, $\overline \omega$ è la pulsazione del segnale e $\overline \phi$ è la fase del segnale.
+		
+		Il teorema afferma che il valore asintotico $y_\infty$ del sistema dinamico è dato dall'espressione
+		\begin{equation}
+			y_\infty = \overline A \big|\G(j\overline \omega)\big| \sin \left(\overline \omega t + \overline \phi + \angle \G(j\overline \omega)\right)
+		\end{equation}
+		dove $\angle$ è la fase della funzione di trasferimento.
+		
+		
+		A questo punto è possibile osservare che l'uscita del sistema è ancora una sinusoide la cui pulsazione è uguale a quella del segnale in ingresso (queste considerazioni valgono solamente per sistemi lineari tempo invarianti, non valgono in generale per altri sistemi). Il sistema dinamico di fatto modifica l'ingresso:
+		\begin{itemize}
+			\item l'ampiezza della sinusoide viene modificata dal fattore moltiplicativo $|\G(j\overline \omega)|$;
+			\item si introduce uno sfasamento determinato da $\angle \G(j\overline \omega)$.
+		\end{itemize}
+		L'entità dei termini $\G(j\overline \omega)$ non sono costanti ma dipendono di fatto dalla pulsazione $\overline \omega$.
+		
+		Questo teorema permette inoltre di ricavare il tempo di assestamento associato al transitorio prima che raggiunga un valore costante e che vale
+		\[t_a = \frac 5 {|\textrm{Re}_\textrm{poli dominanti}|}\]
+		In generale infatti la dinamica dei transitori del sistema dipende solamente dalle proprietà del sistema (in questo caso la parte reale dei poli dominanti) e non dall'ingresso del sistema.
+		
+		\vspace{3mm}
+		
+		E' importante studiare la risposta alla sinusoide di un sistema dinamico per via della teoria associata alla serie/trasformata di Fourier. Per la teoria della serie di Fourier dato un segnale in ingresso $u(t)$ periodico di periodo $T$, allora il segnale può essere scomposto in una serie di tante sinusoidi di ampiezza $H$ e sfasamento $\phi$ (dipendenti dalle varie pulsazioni $\omega$) come segue:
+		\begin{equation}
+			u(t) = \sum_{\omega = 0}^\infty H(\omega) \sin \big(\omega t + \phi(t)\big)
+		\end{equation}
+		dove $\omega = N \frac {2\pi} T$ con $N=0,1,\dots, \infty$. Fourier dunque riuscì a calcolare le relazioni per determinare $H(\omega)$ e $\phi(\omega)$.
+		
+		Nel caso di segnali non periodici si estende la teoria di Fourier apportando le seguenti modifiche: la sommatoria diventa un integrale, $H(\omega)$ e $\phi(\omega)$ non sono più funzioni discrete ma continue.
+		
+		Condensando la teoria di Fourier con il teorema della risposta in frequenza ci permette di calcolare $y_\infty$ per qualunque ingresso $u(t)$ applicando il principio di sovrapposizione degli effetti di tutti i contributi sinusoidali ottenuti dalla serie:
+		\begin{equation}
+			y_\infty = \sum_{\omega = 0}^\infty \Big[ H(\omega) \, \big|\G(j\omega)\big| \, \sin\Big(  \omega t + \phi(\omega) + \angle \G(j\omega) \Big)  \Big]
+		\end{equation}
+		
+		Da un punto di vista applicativo è impossibile sommare infiniti termini e dunque nella pratica la sommatoria è troncata dopo un determinato numero finito di termini $\omega$.
+		
+		\paragraph{Risposta in frequenza} Come appena visto, la teoria di Fourier permette di interpretare i segnali non più nel dominio del tempo, ma nel \de{dominio della frequenza} tramite la definizione dello \textbf{spettro del segnale} composto dalle funzioni $H(\omega)$ e $\phi(\omega)$. Tuttavia l'ingresso $u(t)$ nel tempo può essere descritto nel dominio della variabile complessa tramite la trasformata di Laplace che permette di determinare $U(s)$.
+		
+		Analizzando lo spettro del segnale nel dominio della frequenza si osserva che il termine $H(\omega)$ è definito positivo in quanto rappresenta il modulo (ampiezza) dei segnali (co)sinusoidali, mentre la fase $\phi(\omega)$ può essere sia positiva che negativa. In generale l'informazione più \textit{interessante} è quella associata al modulo $H(\omega)$ dell'ingresso $u(t)$ nel dominio della frequenza in quanto tale valore permette di capire il comportamento qualitativo del segnale nel tempo. \\
+		Considerando uno spettro con valori di modulo $H(\omega)$ alto per frequenze elevate, allora il segnale in ingresso $u(t)$ associato presenta prevalentemente oscillazioni ad alta frequenza che rendono \textit{instabile} il segnale; se invece dopo una certa frequenza $\omega$ il modulo si attenua, il segnale ricostruito avrà solamente componenti notevoli a bassa frequenza.
+		
+		\vspace{3mm} L'applicazione del teorema della risposta in frequenza suggerisce un'interpretazione ulteriore dei sistemi dinamici, analoga a quella vista dei segnali nel dominio del tempo (tramite le equazioni di stato $\dot x = \A x + \B u$ e $y = Cx + Du$) e nel dominio della variabile complessa (dove la descrizione è effettuata mediante la funzione di trasferimento $\G(s)$). Nel dominio della frequenza è possibile descrivere il sistema (in analogia al dominio di Laplace) in funzione delle componenti $|\G(j\omega)|$ e $\angle \G(j\omega)$ della \de{risposta in frequenza} $\G(j\omega)$ del sistema dinamico.
+		
+		\begin{nota}
+			Si osserva che la risposta in frequenza $\G(j\omega)$ è un numero complesso e si può ricavare dalla funzione di trasferimento $\G(s)$ imponendo per l'appunto $s=j\omega$ (con $j=\sqrt{-1}$ costante immaginaria); considerando per esempio un sistema del primo ordine è possibile esprimere la funzione di trasferimento nel dominio della frequenza come
+			\begin{align*}
+				\G(s) & = \frac 1 {s+2} \\
+				\G(j\omega) & = \frac 1 {j\omega + 2} = \frac{ 2 - j\omega}{(j\omega + 2) ( 2 - j\omega)} = \underbrace{\frac 2 {4+\omega^2}}_{\textrm{Re}(\G)} - j \underbrace{\frac \omega {4+\omega^2}}_{\textrm{Im}(\G)}
+			\end{align*}
+		\end{nota}
+		
+		La risposta in frequenza, osservando anche la nota precedente, è dunque strettamente dipendente dalla pulsazione $\omega$ del segnale in ingresso; questa funzione è \textit{ben definita} per sistemi lineari tempo invarianti, mentre per altri tipi di sistemi (anche asintoticamente instabili) l'analisi può essere estesa utilizzando altri operatori matematici (per sistemi non asintoticamente stabili tuttavia non è possibile applicare il teorema della risposta in frequenza).
+		
+		Essendo $G(j\omega)$ un numero complesso, allora essa può essere espressa tramite due metodologie duali equivalenti:
+		\begin{itemize}
+			\item tramite il modulo $|G(j\omega)|$ e la fase $\angle \G(j\omega)$ 
+			\item tramite la descrizione della parte reale $\textrm{Re}(\omega)$ e immaginaria $\textrm{Im}(\omega)$ della funzione.
+		\end{itemize}
+	
+		\subsubsection{Rappresentazioni grafiche della risposta in frequenza}
+			Le metodologia principali per la rappresentazione della risposta in frequenza $\G(j\omega)$ di un segnale è possibile utilizzare sia i \de{diagrammi di Bode} dove si rappresentano in due diagrammi distinti il modulo e la fase in funzione della frequenza, sia il \de{diagramma polare} (figura \ref{diagpolare})
+			
+			\figura{6}{1}{diagpolare}{diagramma polare di una funzione di trasferimento.}{diagpolare}		
+			
+			\paragraph{Rappresentazione dei diagrammi di Bode} Il modulo di una risposta in frequenza viene rappresentato nel diagramma di Bode espresso in decibel, ossia tramite un \textit{riscalamento} logaritrmico dell'ordinata:
+			\[ \big| \G(j\omega) \big|_{dB} = 20 \log_{10}\big| \G(j\omega) \big| \qquad \leftrightarrow \qquad \big| \G(j\omega) \big| = 10^{\left| \G(j\omega) \right|_{dB} / 20 }\]
+			In questo caso, nonostante $\big| \G(j\omega) \big|$ sia definito positivo, è possibile avere un modulo espresso in decibel che può essere negativo. I diagrammi di Bode sono inoltre rappresentati in una scala semilogaritmica, ossia l'ascissa non è lineare ma contiene il logaritmo di $\omega$. In questa scala l'ascissa nulla non coincide con il valore $\omega= 0$, in quanto $\log(0) = 1$. Ad ogni unità nell'asse logaritmico corrisponde un incremento di una \textbf{decade} di $\omega$, ossia di un fattore moltiplicativo pari a $10$.
+			
+			In generale si utilizzando i \de{diagrammi di Bode asintotici} che sono costituiti solamente da rette e spezzate; tali diagrammi sono detti asintotici in quanto si trascurano le variazioni nell'intorno dei poli.
+			
+			E' possibile affermare che per poli e zeri complessi coniugati, il fattore di smorzamento non impatta sul tracciamento dei diagrammi, e dunque per la rappresentazione è possibile considerare 2 poli (zeri) complessi coniugati come 2 poli reali coincidenti. La diffrerenza tra poli e zeri è che essi presentano diagrammi di Bode del modulo \textit{opposti} (ossia i poli hanno una pendenza positiva, gli zeri hanno pendenza negativa).
+			
+			A questo punto per effettuare la rappresentazione sul diagramma è possibile effettuare i seguenti passaggi:
+			\begin{enumerate}
+				\item nota la funzione di trasferimento $\G(s)$, essa deve essere convertita nella forma di Bode per ricavare i parametri
+				\[ \mu, g, T, \tau, \omega_n, \alpha \]
+				
+				\item partendo da pulsazioni tendenti a zero ($\omega \rightarrow 0$), e dunque da sinistra del diagramma, si traccia il contributo dovuto sia al guadagno $\mu$ che al tipo $g$ della funzione. In particolare la retta associata a questo contributo ha pendenza pari a  $-20 g \frac{dB}{dec}$ e ha intercetta con l'asse $x$ in corrispondenza della pulsazione 
+				\[\overline \omega  = |\mu|^{1/g}_{dB}\]
+				
+				\item a questo punto è necessario posizionare sull'ascissa i poli e gli zeri (siano essi reali o complessi coniugati):
+				\[ \omega_{p,r} = \frac 1{|T|} \quad \omega_{p,cc} = \omega_n \qquad \ \qquad \omega_{z,r} = \frac 1 {|\tau|} \quad \omega_{z,cc} = \alpha \]
+				
+				\item in corrispondenza delle pulsazioni trovate, andando da sinistra verso destra, si modifica la retta iniziale nel seguente modo: per un polo reale la pendenza deve diminuire di un valore $-20dB/dec$ (che diventa $-40dB/dec$ per 2 poli complessi coniugati), mentre per uno zero reale la pendenza aumenta di un valore $20dB/dec$ (che diventa $40dB/dec$ se ci sono 2 zeri complessi coniugati).
+				
+			\end{enumerate}
+		
+			\paragraph{Diagramma di fase} Gli step da seguire per rappresentare i diagrammi asintotici della fase nel diagramma di Bode sono i seguenti:
+			\begin{enumerate}
+				\item come nel diagramma del modulo è necessario determinare i parametri della funzione di trasferimento $\G(s)$: $\mu, g, T, \tau, \omega_n, \alpha$. Anche in questo caso il diagramma è semi-logaritmico (l'ascissa contiene il logaritmo di $\omega$); l'asse delle ordinate contenente la fase viene misurato generalmente in gradi;
+				
+				\item partendo dall'estrema sinistra del diagramma ($\omega\rightarrow 0$), è necessario tracciare il contributo del guadagno $\omega$ e del tipo $g$ della funzione che è sempre associato ad un contributo costante (e dunque una retta orizzontale). In particolare il valore della fase della funzione di trasferimento si misura come
+				\[ \angle \G(\omega) = \angle \mu - g \, 90^\circ \]
+				dove $\angle \mu = 0^\circ$ per $\mu > 0 $ e $\angle \mu = -180^\circ$ per $\mu < 0$;
+				
+				\item analogamente al passaggio 3 della rappresentazione del modulo nel diagramma di Bode, è necessario determinare posizionare sulle ascisse i poli $\omega_p$ e gli zeri $\omega_z$ (se complessi coniugati, si può considerare che essi siano una sovrapposizione di due poli reali con lo stesso valore);
+				
+				\item a questo punto partendo da sinistra nel diagramma, ogni volta che si incontra una singolarità si cambia il valore della retta orizzontale della fase di un valore
+				\[  \Delta \phi = \pm m \, 90^\circ \]
+				dove $m$ è il numero di singolarità coincidenti nella posizione che si sta considerando; per quanto riguarda la scelta  del segno $\pm$ si deve considerare il segno della parte reale della singolarità che si sta considerando secondo i valori:
+				\[ + \quad \textrm{se } \begin{cases}
+					\textrm{zeri} \quad & \textrm{Re} \leq 0 \\
+					\textrm{poli} \quad & \textrm{Re} > 0 \\
+				\end{cases} \qquad - \quad \textrm{se } \begin{cases}
+					\textrm{zeri} \quad & \textrm{Re} > 0 \\
+					\textrm{poli} \quad & \textrm{Re} \leq 0 \\
+				\end{cases} \]
+			\end{enumerate}
+		
+		
+		
+		
+		
+		
+		

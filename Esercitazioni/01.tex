@@ -1,0 +1,156 @@
+\section{Prima esercitazione: classificazione di sistemi dinamici, scrittura di sistemi dinamici in spazio di stato}
+	
+	In questa prima esercitazioni si faranno esercizi sulla classificazione di sistemi dinamici, di scrittura di sistemi dinamici in spaizo di stato e rappresentazione di sistemi equivalenti
+
+\subsection*{Primo esercizio}
+	\subsubsection{Testo}
+		Si considerino due ambienti di capacità termiche $C_1,C_2$ separati da una parete di resistenza termica $R$ che permette la trasmissione di una quantità di calore $Q$ tra le due; i due ambienti sono posti inizialmente alle temperature pari a $T_1$ e $T_2$. Nel primo ambiente è anche presente un elemento riscaldante che elargisce una quantità di calore $q$. 
+		\begin{center}
+			\tikzfig{Immagini/es01-01}
+		\end{center}
+		
+	\subsubsection{Soluzione}
+		Dalle equazioni della termodinamica è possibile determinare il calore $Q$ che fluisce tra i due ambienti come
+		\[Q = \frac 1 R \big(T_1-T_2\big) \]
+		A questo punto è possibile scrivere il modello del problema in spazio di stato conoscendo le relazioni:
+		\[ \begin{cases}
+			c_1\dot T_1 = q- Q \qquad & \textrm{ambiente 1} \\ c_2 \dot T_2 = Q & \textrm{ambiente 2}
+		\end{cases} \quad \Rightarrow \begin{cases}
+			\dot T_1 = \frac 1 {c_1} \big(q-Q\big) =  \frac 1{Rc_1}\big(T_1-T_2\big) + \frac q {c_1} \\
+			\dot T_2 = \frac 1 {c_2R} \big(T_1-T_2\big)
+		\end{cases}\]
+		In questo caso consideriamo come ingresso la quantità di calore in ingresso al sistema $u=q$, mentre come variabili di stato si considerano $x_1 = T_1$ e $x_2 = T_2$. Come uscita consideriamo invece proprio la temperatura sul secondo ambiente $y=T_2$. A questo punto è possibile riscrivere il sistema in forma di stato come
+		\[ \begin{cases}
+			\dot x_1 = - \frac 1 {Rc_1} x_1 + \frac 1 {Rc_1}x_2 + \frac 1{ c_1} u \\
+			\dot x_2 = \frac 1 {Rc_2} x_1 - \frac 1 {Rc_2}x_2 \\ 
+			y=x_2
+		\end{cases}\]
+		
+		A questo punto è possibile classificare il sistema come dinamico, lineare e tempo invariante di tipo SISO (ingresso $u=q$ e uscita $y =T_2$); il sistema è inoltre a tempo continuo e strettamente proprio (nell'uscita $y$ non compare esplicitamente l'ingresso $u$ ma solamente le grandezze di stato). L'ordine del sistema è pari a 2 in quanto 2 sono le variabili di stato.
+		
+		Il sistema essendo lineare può essere espresso in forma matriciale con le equazioni:
+		\[ \begin{pmatrix}
+			\dot x_1 \\ \dot x_2
+		\end{pmatrix} = \underbrace{\begin{bmatrix}
+			-\frac 1 {Rc_1} & \frac 1 {Rc_1} \\
+			\frac 1 {Rc_2} & -\frac 1 {Rc_2} \\
+		\end{bmatrix}}_\A \begin{pmatrix}
+			x_1 \\ x_2
+		\end{pmatrix} + \underbrace{\begin{bmatrix}
+			\frac 1 {c_1}
+		\end{bmatrix} }_\B u  \qquad y = \underbrace{\begin{bmatrix}
+			0 & 1 
+		\end{bmatrix}}_\C \begin{pmatrix}
+			x_1 \\ x_2
+		\end{pmatrix} + \underbrace{\big[\ 0 \ ]}_\D u\]
+		
+		
+\subsection*{Secondo esercizio}
+	\subsubsection{Testo}
+		Si consideri il caso di due cisterne collegate da una tubazione alla cui metà è posta una valvola che modella una resistenza $R$ al flusso di acqua. Alla prima cisterna è immessa con continuità una portata $q [kg/s]$  di fluido, mentre attraverso la valvola è presente una portata $Q [kg/s]$. La prima vasca ha superficie $A_1$ e pressione sul fondo pari a $p_1$ e il suo livello è pari ad $h_1$ rispetto alla tubazione. Per analogia la seconda cisterna ha area $A_2$, pressione sul fondo $p_2$ e altezza della superficie libera pari a $h_2$.
+		\begin{center}
+			\tikzfig{Immagini/es01-02}
+		\end{center}
+		
+		
+	\subsubsection{Soluzione}
+		Dal corso di meccanica dei fluidi è possibile modellare la portata $Q$ che fluisce tra i due serbatoi dipende dalla pressione ai due lati:
+		\[ Q = \frac 1 R \big(p_1 - p_2\big) \qquad \leftarrow \quad p_i =\rho g h_i \]
+		A questo punto è possibile scrivere le equazioni fisiche che governano il sistema come
+		\[ \begin{cases}
+			\rho A_1 \dot h_1 = q- Q \qquad & \textrm{serbatoio 1}  \\
+			\rho A_2 \dot h_2 = Q & \textrm{serbatoio 2}
+		\end{cases} \qquad \Rightarrow \begin{cases}
+			\dot h_1 = -\frac 1 {\cancel{\rho} A_1R} \big(\cancel\rho g h_1 - \cancel\rho g h_2 \big) + \frac{1}{\rho A_1} q \\
+			\dot h_2 = \frac 1 {\cancel{\rho} A_1R} \big(\cancel\rho g h_1 - \cancel\rho g h_2 \big)
+	\end{cases} \]
+		Supponendo di voler analizzare come uscita l'altezza $y=h_2$ della seconda cisterna nota la portata entrante $u=q$, scelte come grandezze di stato le altezze stesse $x_1=h_1$ e $x_2 = h_2$ allora il sistema è scritto in forma di stato come
+		\[ \begin{cases}
+			\dot x_1 = - \frac g {A_1R} x_1 + \frac g {A_1R} x_2 + \frac 1 {\rho A_1} u \\
+			\dot x_2 = \frac g {A_2R} x_1 - \frac g {A_2R} x_2 \\ y = x_2
+		\end{cases} \]
+		Osservando queste formulazioni è possibile classificare il sistema come: dinamico strettamente proprio, lineare, tempo continuo e invariante, SISO (ingresso $u=q$ e uscita $y = h_2$). Essendo il sistema lineare esso può essere espresso in forma vettoriale come:
+		\[ \begin{pmatrix}
+			\dot x_1 \\ \dot x_2
+		\end{pmatrix} = \underbrace{\begin{bmatrix}
+				-\frac g {A_1R} & \frac g {A_1R} \\
+				\frac g {A_2R} & -\frac g {A_2R} \\
+		\end{bmatrix}}_\A \begin{pmatrix}
+			x_1 \\ x_2
+		\end{pmatrix} + \underbrace{\begin{bmatrix}
+				\frac 1 {\rho A_1}
+		\end{bmatrix} }_\B u  \qquad y = \underbrace{\begin{bmatrix}
+				0 & 1 
+		\end{bmatrix}}_\C \begin{pmatrix}
+			x_1 \\ x_2
+		\end{pmatrix} + \underbrace{\big[\ 0 \ ]}_\D u\]
+		E' possibile osservare che questo tipo di soluzione è strettamente analoga a quella dell'esercizio precedente.
+		
+		
+\subsection*{Terzo esercizio}
+	\subsubsection{Testo}
+		Si consideri un veicolo di massa $m$ che si sta muovendo in salita lungo una strada inclinata di un angolo $\theta$.
+		\begin{center}
+			\tikzfig{Immagini/es01-03}
+		\end{center}
+		
+	\subsubsection{Soluzione}
+		Il veicolo sarà sottoposto, dal punto di vista dinamico, ad una forza peso pari a $mg$ rivolta verso il basso, è soggetto ad una forza aerodinamica con equazione del tipo $\frac 1 2 \rho_{aria} A_xc_x\mu v^2$ ed è movimentata dalla forza $F$ di trazione del motore.
+		
+		E' possibile dunque scrivere il modello in forma di stato bilanciando le forze che agiscono per determinare l'accelerazione del veicolo lungo la parallela alla superficie:
+		\[ \begin{cases}
+			m a = F - \frac 1 2 \rho_\textrm{aria} A_xc_x v^2 - mg \sin\theta \\
+			a = \dot v
+		\end{cases} \qquad \Rightarrow \quad \dot v = \frac F m - \frac 1 {2m} \rho A_xc_x v^2 - g \sin\theta\]
+		Come ingresso del sistema è possibile considerare la forza di trazione $u=F$, mentre lo stato (che coincide con l'uscita) è la velocità del sistema $x = y = v$; a questo punto il sistema in forma di stato assume la forma
+		\[ \begin{cases}
+			\dot x =  - \frac 1 {2m} \rho A_xc_x x^2 - g \sin\theta + \frac 1 m y  \\ y = x
+		\end{cases} \]
+		A questo punto è possibile classificare il sistema come: dinamico strettamente proprio, tempo continuo, tempo invariante, SISO, non lineare.
+
+\subsection*{Quarto esercizio}
+	\subsubsection{Testo}
+		Si consideri ora l'algoritmo per il calcolo della radice quadrata dell'ingresso $u$ tramite il \textit{metodo babilonese} per il quale dato $u$ tale che $x=\sqrt u$, allora $x$ è il lato del quadrato di area pari ad $u$. L'algoritmo iterativo è basato sui passi:
+		\begin{enumerate}
+			\item scelgo arbitrariamente un valore $x$;
+			\item sapendo che l'area deve essere pari a $u$, determino il lato \textit{complementare} a $x$ e dunque esso deve valere $u/x$ affinché $x \frac u x = u$; a questo punto possono succedere 3 cose: 
+			\begin{enumerate}[a)]
+				\item ho trovato la radice quadrata corretta in quanto $u/x=x$;
+				\item ho \textit{sparato} un valore di $x$ troppo alto e dunque $u/x < x$;
+				\item ho \textit{sparato} un valore di $x$ troppo basso e dunque $u/x > 0$.
+			\end{enumerate}
+			
+			\item in base al risultato del passaggio precedente devo modificare il valore di $x$ in modo da avvicinarmi all'iterazione successiva il valore della radice quadrata e dunque si ritorna al secondo punto dell'algoritmo finché non si trova la radice quadrata corretta. In particolare per determinare il tentativo successivo si considerano i valori medi di due valori di tentativo secondo la legge:
+			\[ x_{k+1} = \frac 1 2 \left(x_{k} + \frac u {x_k} \right)\]
+		\end{enumerate}
+	
+	\subsubsection{Soluzione}	
+		La scrittura in forma di stato dell'algoritmo è descritta dal sistema
+		\[\begin{cases}
+			x(k+1) = \dfrac 1 2 \left(x(k) + \dfrac 1 {x(k)} u\right) \\ y(k) = x(k)
+		\end{cases}\]
+		Questo sistema può dunque essere classificato come: dinamico strettamente proprio, a tempo discreto e tempo invariante, SISO, non lineare e di ordine $n=1$.
+
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

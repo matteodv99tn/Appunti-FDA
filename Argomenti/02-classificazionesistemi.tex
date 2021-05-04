@@ -1,0 +1,516 @@
+\chapter{Sistemi e loro classificazione}
+	Il sistema, assimilato ad una black box, sono caratterizzati in generale dagli ingressi $u$, mentre $y$ sono le uscite.
+	
+	I \de{parametri} di un sistema sono le quantità che descrivono la struttura e le proprietà del sistema (per esempio la massa di un corpo e la sua geometria); tendenzialmente sono dei valori invarianti nel tempo.	 \\ 
+	Le \de{variabili} invece sono delle grandezze che descrivono l'evoluzione nel tempo del sistema, quali per esempio la posizione di un corpo e la sua velocità.
+	
+	
+	\subsection*{Classificazione dei sistemi} 
+	I sistemi possono essere classificati tramite i cosiddetti \de{assi di classificazione} (ogni sistema deve avere una classificazione rispetto ad ogni asse):
+	\begin{itemize}
+		\item sistemi lineari o non lineari;
+		\item sistemi MIMO o SISO;
+		\item sistemi tempo varianti o tempo invarianti;
+		\item sistemi a tempo continuo o a tempo discreto;
+		\item sistemi statici o dinamici.
+ 	\end{itemize}
+ 	
+ 	\paragraph{Sistema statico} Un \de{sistema} è detto \de{statico} se la relazione ingresso-uscita  è descritta dall'equazione algebrica del tipo
+ 	\[ y = f(u)  \]
+ 	Intuitivamente ciò significa che per determinare l'uscita $y$ al tempo $t^*$ è sufficiente conoscere il valore degli ingressi $u$ in quell'istante (la \textit{storia} degli ingressi è ininfluente alla determinazione dell'uscita). Sono anche detti sistemi \textit{memory-less}.
+ 	
+ 	\paragraph{Sistemi tempo varianti e invarianti} Sono \de{tempo varianti} i sistemi la cui relazione di ingresso/uscita dipende esplicitamente dal tempo; algebricamente allora vuol dire che
+ 	\[ y = f(u,t) \qquad \textrm{: sistema tempo variante} \]
+ 	
+ 	Se, al contrario, la funzione $f$ non dipende esplicitamente dal tempo $t$ allora il sistema è detto \de{tempo invariante}:
+ 	\[ y = f(u) \qquad \textrm{: sistema tempo invariante} \]
+ 	
+ 	\paragraph{Sistemi MIMO e SISO} Un sistemo \de{MIMO} (\textit{Multi Input Multi Output}) è un sistema che presenta più ingressi e più uscite, mentre analogamente un sistema \de{SISO} (\textit{Single Input Single Output}) presenta un solo ingresso e una sola uscita.
+ 	
+ 	Per esempio un sistema fisico MIMO statico tempo invariante allora la relazione $f$ può essere determinata come
+ 	\begin{align*}
+ 	y_1 & = f_1 (u_1,\dots, u_n) \\ & \vdots \\ 
+ 	y_p & = f_p (u_1,\dots, u_n) 
+ 	\end{align*}
+ 	
+ 	
+ 	\paragraph{Sistemi lineari e non} Un sistema è lineare se l'equazione algebrica $f$ soddisfa le condizioni di linearità rispetto agli ingressi $u$, ossia è \textit{stabile} rispetto alla somma e al prodotto:
+ 	\[ u = \alpha_1 u_1 + \alpha_2 u_2 \qquad \Rightarrow \quad f(u) = \alpha_1 f(u_1) + \alpha_2 f(u_2) \]
+ 	
+ 	\textbf{MANCA LA PARTE DELLE MATRICI}
+ 	
+ 	\paragraph{Sistemi a tempo continuo e discreto} Nei sistemi a \de{tempo continuo} le variabili evolvono nel tempo $t$ che è continuo. I sistemi a \de{tempo discreto} presentano variabili che evolvono in un tempo $k \in \mathds N$ che assume valori discreti interi.
+ 	
+ 	I sistemi a tempo discreto derivano:
+ 	\begin{itemize}
+ 		\item dall'approssimazione di sistemi a tempo continuo;
+ 		\item sistemi dinamici descritti nativamente come una successione di eventi ad intervalli (come l'algoritmo di calcolo degli zeri di una funzione con il metodo di Newton o di bisezione).
+ 	\end{itemize}
+ 	
+ 	\paragraph{Sistemi dinamici} Sono \de{sistemi dinamici} quei sistemi rispetto ai quali per determinare il valore dell'uscita $y$ al tempo $t^*$ non è sufficiente conoscere l'ingresso $u$ allo stesso tempo, ma è necessario conoscerne il suo trascorso temporale e dunque $u(t)$.
+ 	
+ 	Per determinare l'uscita $y$ al tempo $t^*$ è dunque necessario conoscere sia la condizione iniziale del sistema al tempo $t_0$ (ossia il valore di una variabile) e tutta la storia temporale dell'ingresso $u(t)$ tra il tempo $t_0$ e $t^*$. \\ In particolare la condizione iniziale, che può essere indicata con $u(t_0)$, tiene memoria di tutto il passato trascorso del sistema.
+ 	
+ 	
+ 	Sono dette \de{variabili di stato} (generalmente indicate con $x$) quelle variabili che occorre conoscere all'istante $t_0$ per calcolare $y(t^*)$ (ipotizzando di conoscere $u(t)$ per $t\in [t_0,t^*]$). Rispetto ai sistemi fisici le variabili di stato sono generalmente associate a fenomeni di accumulo di energia e/o massa (per esempio tensioni di condensatori, correnti negli induttori, posizione e dunque la sua energia potenziale, temperatura).
+ 	
+ 	Per descrivere matematicamente i sistemi dinamici è dunque necessario utilizzare delle \de{equazioni differenziali} (ordinarie).
+ 	
+ 	\begin{esempio}{: bottiglia che si riempie} \label{es:01:bottiglia}
+ 		
+ 		Si consideri il caso di una bottiglia nella quale si versa una portata di acqua $q=u$ (variabile di controllo) e del quale si vuole determinare il livello $h=y$ (variabile controllata) dell'acqua nella bottiglia.
+ 		
+ 		E' dunque osservare i seguenti diagrammi per le variabili.
+ 		
+ 		
+ 		\begin{center}
+ 			\tikzfig{Immagini/bottiglia}
+ 		\end{center}
+ 		
+ 		Ipotizzando il sistema come statico allora dovrebbe valere che ai tempi $t_1\neq t_2$ segnati (dove $q(t_1)=q(t_2)$), il livello dell'acqua dovrebbe essere uguale, ma ciò non è verificato:
+ 		\[ q(t_1 ) = q(t_2) \qquad \rightarrow \quad h(t_1) \neq h(t_2) \qquad \textrm{: sistema dinamico} \]
+ 		
+ 		Si verifica dunque che il sistema di controllo non è statico ma è dinamico. E' possibile dunque definire l'equazione differenziale che governa il problema: approssimando la bottiglia ad un cilindro, la quantità di acqua $Q$ presente nella bottiglia è pari a 
+ 		\[ Q = \rho  A h \]
+ 		dove $\rho$ è la densità dell'acqua, $A$ è l'area della base e $h$ è l'altezza del livello di liquido. La portata $q(t)$ immessa nella bottiglia varia la quantità complessiva di acqua, e dunque
+ 		\[ \frac{d}{dt} Q = q \qquad \rightarrow \quad \rho A \dot h = q\qquad \Rightarrow \dot h = \frac{1}{\rho A} q \]
+ 		Integrando questa equazione differenziale è possibile determinare il livello $h$ in funzione del tempo e della portata $q$ (anch'essa dipendente dal tempo).		
+ 		
+ 	\end{esempio} 
+ 	
+ 	\begin{esempio}{: massa-molla-smorzatore} \label{es:01:massamollasmorz}
+ 		\begin{center}
+ 			\tikzfig{Immagini/smorzatore}
+ 		\end{center}
+ 		Si consideri lo schema meccanico in figura dove lo smorzatore $c$ crea una resistenza proporzionale alla velocità. Definita la variabile $s$ come lo spostamento della massa $m$, allora si verifica che l'equazione che governa il sistema è pari a 
+ 		\[ m\ddot s + c\dot s+ k s = F  \]
+ 		
+ 		In questa equazione $m\ddot s$ rappresenta il termine di inerzia, il termine $c\dot s$ è dovuto allo smorzatore, $ks$ dalla molla e $F$ è la forza esterna.
+ 	\end{esempio}
+ 	
+
+\section{Rappresentazione di stato del sistema (spazio di stato)}
+	Il modo \textit{universale} di scrivere le equazioni differenziali che caratterizzano i problemi dinamici determina la \de{rappresentazione di stato del sistema}.
+	
+	\vspace{3mm}
+	Il primo modo per descrivere queste equazioni è determinato dall'insieme
+	\[ \dot x = f(x,u,t) \]
+	Queste sono dette \de{equazioni di stato del sistema} e in queste equazioni $x$ compare la derivata al primo ordine (e non superiore) delle variabili di stato. 
+	
+	Un altro insieme è quello determinato da
+	\[y = g(x,u,t)\]
+	e prendono il nome di \de{trasformazioni di uscita} in quanto legano le uscite $y$ dalle variabili di stato $x$, dagli ingressi $u$ e dal tempo $t$.
+	
+	\paragraph{Equazioni di stato} Le equazioni sono $n$ equazioni differenziali del primo ordine; $n$ rappresenta l'\textbf{ordine del sistema} ed è il numero di variabili di stato che compongono il sistema stesso.
+	
+	\paragraph{Trasformazioni di uscita} Le trasformazioni di uscita sono pari al numero $p$ di equazioni algebriche (ognuna per ogni uscita del sistema).
+	
+	\begin{esempio}{}
+		Si consideri il caso di un sistema dinamico MIMO, non lineare, tempo variante. La rappresentazione di stato presenta $n$ equazioni di stato come:
+		\begin{align*}
+			\dot x_1 & = f_1 (x_1,\dots,x_n, u_1,\dots, u_m, t) \\ & \ \vdots \\
+			\dot x_n & = f_n (x_1,\dots,x_n, u_1,\dots, u_m, t) 
+		\end{align*}
+		
+		Le trasformazioni di uscita saranno determinate invece come
+		\begin{align*}
+		y_1 & = g_1 (x_1,\dots,x_n, u_1,\dots, u_m, t) \\ & \ \vdots \\
+		y_p & = g_p (x_1,\dots,x_n, u_1,\dots, u_m, t) 
+		\end{align*}
+		
+		
+		\vspace{3mm} \noindent
+		Considerando invece un caso di un sistema dinamico MIMO, lineare e tempo invariante allora le equazioni di stato possono essere espresse come
+		\begin{align*}
+			\dot x_1 & = a_{11} x_1+\dots +a_{1n}x_n + b_{11}u_1 + \dots b_{1m}u_m \\ & \ \vdots \\
+			\dot x_n & = a_{n1} x_1+\dots +a_{nn}x_n + b_{n1}u_1 + \dots b_{nm}u_m 
+		\end{align*}
+		Analogamente le trasformazioni di uscita sono determinate come:
+		\begin{align*}
+		y_1 & = c_{11} x_1+\dots +c_{1n}x_n + d_{11}u_1 + \dots +d_{1m}u_m \\ & \ \vdots \\
+		y_p & = c_{p1} x_1+\dots +c_{pn}x_n + d_{p1}u_1 + \dots + d_{pm}u_m 
+		\end{align*}
+		
+		E' possibile scrivere in maniera compatta queste relazioni utilizzando le matrici in quanto il sistema è lineare, ottenendo
+		\[ \dov x = \mathcal A \ov x + \mathcal{B} \ov u \qquad \ov  y = \mathcal C\ov x + \mathcal D \ov u \]
+		In questo caso deve valere che $\mathcal A\in \mathds R^{n\times n}$, $\mathcal B \in \mathds R^{n\times m}$, $\mathcal C = \mathds R^{p\times n}$, $\mathcal D\in\mathds R^{p\times m}$.
+	\end{esempio}
+	 
+	 In generale la matrice $\mathcal A$ è chiamata \de{matrice di stato} del sistema.
+ 	
+ 	
+ 	\paragraph{Sotto-classificazione dei sistemi dinamici} I sistemi dinamici possono essere a loro volta classificati come
+ 	\begin{itemize}
+ 		\item \textbf{strettamente propri} quando è assente il meccanico di azione diretta tra ingresso e uscita. $y$ dipende solamente dalle variabili di stato che sono influenzate:
+ 		\item non strettamente \textbf{proprio} quando è presente il meccanismo di azione diretta tra ingresso e uscita.
+ 	\end{itemize}
+ 	I sistemi statici possono essere considerati come una sotto-classe dei sistemi dinamici dove la trasformazione di uscita non contiene le variabili di stato $x$. In figura \ref{fig:classificazionesistemi} è possibile osservare gli schemi associati ai vari tipi di sistemi dinamici in funzione del passaggio degli ingresso (o meno) attraverso le variabili di stato $x$.
+ 	
+ 	\begin{figure}[bht]
+ 		\centering
+ 		\begin{subfigure}{0.3\linewidth}
+ 			\centering
+ 			\tikzfig{Immagini/strettamente} \caption{}
+ 		\end{subfigure}
+	 	\begin{subfigure}{0.3\linewidth}
+		 	\centering
+		 	\tikzfig{Immagini/nonstrettamente} \caption{}
+		 \end{subfigure}
+		 \begin{subfigure}{0.3\linewidth}
+			 \centering
+			 \tikzfig{Immagini/statico} \caption{}
+		 \end{subfigure}
+	 	\caption{black box di un sistema strettamente proprio $(a)$, non strettamente proprio $(b)$ e statico $(c)$.} 
+	 	\label{fig:classificazionesistemi}
+ 	\end{figure}
+ 	
+ 	\begin{esempio}{: scrittura di un sistema in forma di stato}
+ 		Considerando il caso della bottiglia come nell'esempio \ref{es:01:bottiglia} (pag. \pageref{es:01:bottiglia}), è possibile osservare che l'equazione differenziale che governa il problema è pari a 
+ 		\[ \dot h = \frac{1}{\rho A} q \]
+ 		In questa relazione $x=h$, $u=q$, e $y=h$. Il sistema dinamico è dato dunque dall'equazione di stato
+ 		\[ \dot h = \dot x = \frac{1}{\rho A} \dot u \]
+ 		e la trasformazione di uscita è determinata da $h = y = x$. Questo sistema di controllo è dunque dinamico, lineare, SISO, di ordine $n=1$ e strettamente proprio.
+ 		\[ \begin{cases}
+ 			\dot h = \frac{1}{\rho A} u \qquad & \textrm{: equazione di stato} \\
+ 			h = y = x \qquad & \textrm{: trasformazione di uscita}
+ 		\end{cases}\]
+ 		
+ 		\vspace{3mm}
+ 		Nel caso del sistema massa-molla-smorzatore (esempio \ref{es:01:massamollasmorz}) l'equazione costitutiva era determinata essere $m\ddot s +c\dot s + ks = F$. Per determinare l'equazione di stato è dunque possibile seguire un \textit{algoritmo} per la risoluzione generale del problema come segue.
+ 		
+ 	\end{esempio}
+ 
+ 	
+ 	\subsection{Risoluzione generale} 
+ 		
+ 		Per scrivere le \de{equazioni di stato} di un sistema è dunque possibile determinare un \de{sistema di risoluzione generale} seguendo i seguenti passaggi:
+ 		
+ 		\begin{enumerate}
+ 			\item in primo luogo è possibile porre la derivata $n-$esima dell'uscita $y$ come funzione generica $\varphi$ delle derivate di ordine inferiore e degli ingressi $u$:
+ 			\[ \frac{d^n y}{dt^n} = \varphi \left( \frac{d^{n-1} y}{dt^{n-1}}, \dots \frac{d y}{dt} , y , u  \right)  \]
+ 			
+ 			\item a questo punto è necessario determinare le variabili di stato $x$; in particolare è possibile porre che la prima variabile di stato $x_1$ coincida con $y$, e continuando si determina
+ 			\[ x_1 = y \qquad \rightarrow x_2 = \dot y = \frac{dy}{dt} \qquad \rightarrow \dots \quad \rightarrow x_n = \frac{d^ {n-1} y}{dn^{n-1}}  \]
+ 			
+ 			\item ora si procede derivando dunque le variabili di stato rispetto al tempo, e dunque quello che si osserva è che
+ 			\[ \dot x_1 = \frac{dy}{dt} = x_2 \qquad \rightarrow \dot x_2 = \frac{d}{dt}  \frac{dy}{dt} = \frac{d^2t}{dt^2} = x_3 \qquad  \rightarrow\dots \quad \rightarrow \dot x_n = \frac{d^n y}{dt^n} = \varphi \big(x_n, \dots, x_1, u\big)\]
+ 			E' dunque possibile osservare che la derivata $\dot x_i$ della $i-$esima variabile di stato coincide con la $i+1-$esima variabile di stato. Questo è valido fino a $x_n$ la cui derivata risulta coincidere con la funzione $\varphi$ descritta nel punto 1; si osserva inoltre che essa ora è anche espressa in funzione delle variabili di stato $x_i$;
+ 			
+ 			\item  sfruttando la derivata delle variabili di stato vista nel punto precedente è dunque possibile determinare un sistema di $n$ equazioni differenziali del primo ordine del tipo $\dot x_n = x_{n+1}$ che possono essere \textit{semplicemente} risolte;
+ 			
+ 			\item per determinare ora la trasformazione di uscita basta semplicemente considerare che l'uscita $y$ coincide con la variabile di stato $x_1$ e dunque
+ 			\[\textrm{trasformazione di uscita:} \qquad y = x_1 \]
+ 			
+ 			
+ 			
+ 		\end{enumerate}
+ 	
+ 	\begin{esempio}{: applicazione del metodo generale al sistema massa-molla-smorzatore}
+ 		Facendo riferimento al sistema massa-molla-smorzatore (esempio \ref{es:01:massamollasmorz}, pag. \pageref{es:01:massamollasmorz}), la relazione differenziale che governa il sistema è pari a $m\ddot s + c\dot s + k s = F$. A questo punto è possibile applicare il sistema di risoluzione generale appena mostrato:
+ 		\begin{itemize}
+ 			\item in primo luogo si deve calcolare la funzione $\varphi$ che permette di esprimere esplicitamente la derivata di ordine massimo che in questo caso è $\ddot s$:
+ 			\[ \ddot s = \frac 1 m \Big(-c \dot s - ks + u\Big)  \]
+ 			In questa relazione la forza $F$ è sostituita con un generico ingresso $u$;
+ 			
+ 			\item a questo punto è possibile definire le variabili di stato del problema che in questo caso risultano essere
+ 			\[ x_1 = s \qquad x_2 = \dot s \]
+ 			
+ 			\item derivando rispetto al tempo la prima variabile di stato si osserva, come visto nel caso generale, $\dot x_1 = \dot s = x_2$. Per quanto riguarda la seconda variabile di stato è invece necessario considerare che la sua derivata coincide con la funzione $\varphi$, arrivando al risultato 
+ 			\begin{align*}
+ 				\dot x_2 = \ddot s & = \frac 1 m \Big(-c\dot s -ks + F\Big) \\ 
+ 				& = -\frac c m x_2 - \frac k m x_1 + \frac u m
+ 			\end{align*}
+ 			
+ 			Il \textbf{sistema delle equazioni di stato} del problema risulta dunque essere lineare ed è pari a 
+ 			\[ \begin{cases}
+ 				\dot x_1 = x_2 \\ 
+ 				\dot x_2 = - \frac c m x_2 - \frac k m x_1 + \frac u m
+ 			\end{cases}  \]
+ 			
+ 			\item per completare il problema è necessario individuare la trasformazione di uscita, che nel caso desiderato deve coincidere con la posizione $s$ della massa e dunque
+ 			\[ y = s = x_1 \]
+ 			In realtà la trasformazione di uscita dipende in generale dalla caratteristica del sistema che si vuole monitorare. In alcuni casi sarebbe necessario per esempio conoscere la velocità $y = \dot s = x_2$ della massa, o in alcuni contesti conoscere entrambe le informazioni, ossia $y_1 = s = x_1$ e $y_2 = \dot s = x_2$.
+ 			
+ 		\end{itemize}
+ 		
+ 		\vspace{3mm}
+ 		Questo è un sistema dinamico di tipo lineare e dunque è possibile esprimere le matrice di stato $\mathcal A$ e le altre matrici associate al problema (nel caso di voler conoscere come unica uscita la posizione $s$ della massa) come
+ 		\[ \mathcal A = \begin{bmatrix}
+ 			0 & 1 \\ 
+ 			-k/m & -c/m \\
+ 		\end{bmatrix}\qquad \mathcal B = \begin{bmatrix}
+ 			0 \\ -1/m
+ 		\end{bmatrix} \qquad \mathcal C = \begin{bmatrix}
+ 			1 & 0
+ 		\end{bmatrix} \qquad \mathcal D = \begin{bmatrix} 0
+ 		\end{bmatrix}\]
+ 		Questo vale in quanto, considerando i vettori $\ov x = (x_1, x_2)$ delle variabili di stato, $\ov u = (u=F)$ dell'ingresso e $\ov y = (y_1=s)$ del sistema, allora il sistema delle equazioni di stato e la trasformazione di uscita è espresso come
+ 		\begin{align*}
+ 			\textrm{equazione di stato:} \qquad & \dov x = \mathcal A \ov x + \mathcal B \\
+ 			\textrm{trasformazione di uscita:} \qquad & \dot y = \mathcal C \ov x + \mathcal D \ov u
+ 		\end{align*}
+ 		
+ 	\end{esempio}
+ 	
+ 	\subsection{Sistemi a tempo discreto}
+ 		Analizzare un sistema dinamico a tempo discreto richiede una procedura diversa dal caso precedente di sistema a tempo continuo in quanto non esiste il concetto di derivata per tali tipi di sistemi.
+ 		
+ 		Per rappresentare questo tipo di sistemi non è possibile utilizzare le equazioni differenziali ma è necessario usare le \textbf{equazioni alle differenze finite}, ossia scrivendo le equazioni di stato come
+ 		\[ \ov x (k+1) = f\Big( \ov x(k), \ov u (k) , k \Big) \qquad\textrm{ : equazione di stato} \]
+ 		dove $k$ è il generico istante del tempo discreto.  		Analogamente ai sistemi a tempo continuo la trasformazione di uscita è una equazione
+ 		\[ \ov y(k) = g \Big(\ov x(k),\ov u(k), k\Big) \qquad \textrm{: trasformazione di uscita} \]
+ 		
+ 		Nel caso di sistemi lineari tempo invarianti allora le relazioni si semplificano ulteriormente assumendo la forma
+ 		\[\ov x(k+1) = \mathcal A \,\ov x(k) + \mathcal B \,\ov u \qquad\ov y(k) = \mathcal C \,\ov x(k) + \mathcal D\,\ov u(k)  \]
+ 		
+ 	
+\section{Sistemi dinamici nel dominio del tempo}
+	In generale fino ad ora sono state esplicitate le variabili di stato sono state espresse come funzione del tempo, e per questo sono definite in tale dominio. Infatti fino ad ora le variabili di stato sono espresse come derivate del tempo nella forma:
+	\[  \dot x = f\Big(x(t), u(t), t\Big) \]
+	
+	\figuratikz{6}{1}{duecarrelli}{schema esemplificativo di due carrelli collegati tramite molle.}{duecarrelli}
+	\paragraph{Scelta delle variabili di stato} In generale la rappresentazione di stato di un sistema non è mai unica, ma è arbitraria. Considerando due carrellini mutuamente collegati da delle molle come in figura \ref{duecarrelli}, dall'analisi dinamica è possibile ricavare il seguente sistema di equazioni differenziali
+	\[ \begin{cases}
+		m_1 \ddot s_1 + k_1 s_1 + k_2\big(s_2-s_1\big)  = 0 \\
+		m_2\ddot s_2 + k_2\big(s_2-s_1\big) = F
+	\end{cases} \]
+ 	
+ 	Utilizzando il sistema di risoluzione mostrato in precedenza è possibile riscrivere tali equazioni nella forma di stato. Definendo infatti $x_1=s,x_2 =\dot s$, $x_3 = s_2, x_4 = \dot s_2$ si arriva al sistema
+ 	\[ \begin{cases}
+ 		\dot x_1 = x_2 \\ 
+ 		\dot x_2 = \frac 1 {m_1}\left(-k_1x_1 - k_2x_3 +k_2x_1\right) \\
+ 		\dot x_3 = x_4 \\
+ 		\dot x_4 = \frac 1 {m_2}\left(-k_2x_3+k_2x_4 + u\right)
+ 	\end{cases} \]
+ 	Considerando di voler conoscere la posizione della seconda massa allora $y = x_3$.
+ 	
+ 	Questa è una delle rappresentazioni del sistema in forma di stato, ma non è univoca. Infatti è possibile analizzare il problema considerando la distanza $\Delta$ tra i due carrelli. In questo caso si verifica che $s_2 = s_1+\Delta$, $\dot s_2 = \dot s_1 + \dot \Delta$, $\ddot s_2 = \ddot s_1 +\ddot \Delta$ 	e dunque il sistema di equazioni differenziali può essere riscritto nella forma differenziale come
+ 	\[ \begin{cases}
+ 		x_1 = s_1 \\ x_2 = \dot s_1 \\  x_3 = \Delta \\ x_4 =\dot \Delta
+ 	\end{cases} \qquad \Rightarrow \quad \begin{cases}
+ 		\dot x_1 = x_2 \\ \dot x_2 = \frac 1 {m_1} \left(-k_1x_1+k_2x_3\right) \\
+ 		\dot x_3 = x_4 \\ \dot x_4 = \frac{1}{m_2}\left[ \frac{m_2}{m_1}k_1x_1 + \left(-\frac{m_2}{m_1}k_2-k_2\right) x_3 + u \right]
+ 	\end{cases}\]
+ 	
+ 	Ipotizzando di voler conoscere la posizione del secondo carrello allora si evince che la trasformazione di uscita è $y = x_1+x_3$.
+ 	
+ 	\vspace{3mm}
+ 	In base alla scelta delle variabili di stato che si decidono di utilizzare si osserva che le equazioni che caratterizzano che il sistema di stato possono assumere forme diverse (più o meno complesse) ma saranno sempre equivalenti tra loro. Nonostante le equazioni siano differenti, esse condividono alcune proprietà che sono dette \textbf{strutturali} e che non cambiano a seconda della rappresentazione fatta.
+ 	
+ 	\paragraph{Ordine di un sistema} Il numero di variabili necessarie per descrivere un sistema dinamico non è fisso in quanto dipende dal grado di complessità scelto per descrivere il sistema.
+ 	
+ 	Considerando il caso del sistema dei due carrelli visto in precedenza (fig. \ref{duecarrelli}), nel sistema di stato descritto erano state ricavate 4 variabili di stato. Considerando un caso in cui la seconda molla sia infinitamente più rigida (matematicamente $k_2 \gg k_1$), allora il sistema si riduce ad un caso come in figura \ref{fig:class:carrelliapprossimati}.
+ 	
+ 	\begin{figure}[bht]
+ 		\centering
+ 		\begin{subfigure}{0.48\linewidth}
+ 			\centering
+ 			\tikzfig{Immagini/duecarrelli-b} \caption{}
+ 		\end{subfigure}
+	 	\begin{subfigure}{0.48\linewidth}
+		 	\centering
+		 	\tikzfig{Immagini/duecarrelli-c} \caption{}
+		 \end{subfigure}
+	 	\caption{livelli di approssimazione nel caso in cui $k_2\gg k_1$ del sistema in figura \ref{duecarrelli}.}
+	 	\label{fig:class:carrelliapprossimati}
+ 	\end{figure}
+ 	
+ 	In questa nuova configurazione si può osservare che il numero di variabili di stato scendono a 2  (associate a posizione e velocità della massa congiunta); in generale il numero di variabili di stato dipende dalla complessità e della precisione che si richiede nella movimentazione del sistema stesso.
+ 	
+ 	In generale fissata la complessità del problema, il numero di variabili di stato rimane sempre costante.
+ 	
+ 	\vspace{3mm} 
+ 	Esistono dei sistemi dinamici \textit{speciali} che presentano un numero infinito di variabili di stato; in particolare essi sono
+ 	\begin{itemize}
+ 		\item sistemi descritti da equazioni differenziali alle derivate parziali;
+ 		\item il ritardo di tempo è un esempio importante dei controlli digitali; in particolare in questi casi l'equazione di uscita è espressa come
+ 		\[y(t) = u(t-\tau)\]
+ 	\end{itemize}
+ 	
+ 	
+ 	
+ 	
+\section{Movimento di equilibrio}
+ 	
+ 	
+ 	In generale dato un sistema si indica con \de{movimento d'uscita} la grandezza $y(t)$, mentre $x(t)$ è il \de{movimento di stato}. $x(t)$ rappresenta la soluzione dell'equazione differenziale generica
+ 	\[ \dot x = f(x,u) \quad \rightarrow \quad x(t) \]
+ 	Tramite essa è possibile ricavare semplicemente l'uscita $y$ del sistema.
+ 	
+ 	\begin{nota}
+ 		Per i sistemi tempo invarianti, allora sia $x(t)$ che $y(t)$ non dipendono dalla scelta dell'istante iniziale del tempo $t_0$.
+ 	\end{nota}
+ 	
+ 	Per semplificare il problema è possibile ricorrere al calcolo del \textbf{movimento di equilibrio} di un sistema dinamico. Supponendo che $u=u^*$ sia un ingresso costante e anche $x(t)=x_0$ è un valore stazionario, allora allora $x(t)$ rimane sempre pari a $x_0$ nel tempo, allora esso  è detto \de{stato di equilibrio} del sistema.
+ 	
+ 	\begin{nota}
+ 		L'equilibrio di un sistema non è $x(t)$ quando $u(t)=k$ costante.
+ 	\end{nota}
+ 	Per determinare il movimento di equilibrio di un sistema dinamico, partendo dall'equazione di riferimento $\dot x=f(x,u)$, se esiste allora esso è determinato partendo da $\dot x=0$ e dunque
+ 	\[ 0 = f(x,u) \qquad \rightarrow x^*,u^*  \]
+ 	Questo è in generale un sistema di equazioni algebriche non lineari che permette di determinare l'uscita di equilibrio $y^* = g(x^*, u^*)$.
+ 	
+ 	\paragraph{Sistemi lineari} Per semplificare l'analisi è possibile cercare di determinare il movimento di equilibrio di un sistema dinamico lineare tempo invariante. In questa situazione è possibile determinare il problema determinando
+ 	\[ \ov 0 = \mathcal A \ov x + \mathcal B \ov u \qquad ,\qquad y = \mathcal C \ov x + \mathcal D \ov u  \]
+ 	Risolvendo in forma chiusa è possibile determinare il possibile movimento di equilibrio come
+ 	\[\ov x^* = -\mathcal A ^{-1} \mathcal B \ov u  \qquad \Rightarrow \quad \ov y = \Big(-\mathcal C \mathcal A^{-1} \mathcal B+ \mathcal D\Big) \ov u \]
+ 	 	
+ 	Da questa formulazione si osserva dunque che l'equilibrio esiste se e solo se esiste la matrice $A^{-1}$, ossia se $\det A^{-1} \neq 0$. In questa situazione allora il punto di equilibrio esiste ed è unico.  \\
+ 	Se $\det A = 0$ allora è possibile che
+ 	\begin{itemize}
+ 		\item non ci siano soluzioni, e dunque non esiste l'equilibrio;
+ 		\item esistono infinite soluzioni di equilibrio.
+ 	\end{itemize}
+ 	In questo caso la possibilità fra le due dipende solamente dalla grandezza $\ov u ^*$.
+ 	
+ 	
+ 	\begin{esempio}{}
+ 		Si consideri il caso di una massa \textit{tirata} da una forza $F$. Il sistema dinamico è descritto dal modello $m\ddot s = F$ che deve essere descritto in forma di stato. Definito dunque $x_1 = s$ e $x_2 = \dot s$ si ricava che
+ 		\[\dot x_1 = x_2 \qquad \dot x_2 = \frac 1 m F \xrightarrow{F=u} \frac 1 m u\]
+ 		Si osserva dunque che è un sistema dinamico lineare SISO tempo invariante e continuo. 
+ 		
+ 		Essendo il sistema lineare, esso allora può essere scritto utilizzando la matrici
+ 		\[\mathcal A = \begin{bmatrix}
+ 			0 & 1 \\ 0 & 0
+ 		\end{bmatrix} \qquad \mathcal B = \begin{bmatrix}
+ 			0 \\ 1/m
+ 		\end{bmatrix} \qquad \mathcal C = \begin{bmatrix}
+ 			1 & 0 
+ 		\end{bmatrix} \qquad \mathcal D = \begin{bmatrix}
+ 			0
+ 		\end{bmatrix}\]
+ 		
+ 		Per determinare l'equilibrio è necessario calcolare il determinante $\det \mathcal A$, osservando che esso è nullo. Questo ci porta ad affermare che non c'è un solo equilibrio: ce ne sono infiniti o nessuno. Per capire in quale situazione è necessario scrivere le equazioni del sistema all'equilibrio:
+ 		\[\begin{cases}
+ 		 	0 = x_2^* \\ 0 = \frac 1 m u^*
+ 		\end{cases} \qquad \Rightarrow \quad x_2^*=  \dot s = 0, u^* = F = 0\]
+ 		Questo rappresenta il caso di una massa posizionata in un punto e successivamente abbandonata (forza nulla: $u=F=0$). Per questo ci sono infinite posizioni di equilibrio.
+ 		
+ 		Se al contrario si fosse considerato $u^*\neq 0$ il sistema non ammette soluzioni e dunque non c'è alcun equilibrio.
+ 		
+ 	\end{esempio}
+ 
+ 	\begin{nota}
+ 		Per i sistemi lineari esiste una formula per l'equilibrio e l'esistenza (o meno) dello stesso è argomentabile; per sistemi non lineari questo non è sempre vero in generale.
+ 		
+ 		Per i sistemi lineari i punti di equilibrio sono zero, uno o infiniti. Nel caso di sistemi lineari, oltre a queste 3 casistiche, esistono anche un numero finito (maggiore di 1) di punti di equilibrio. 
+ 	\end{nota}
+ 	
+ 	Per calcolare il movimento di equilibrio in sistemi non lineari non esistono strumenti analitici generali, mentre per i sistemi lineari la soluzione al problema esiste ed è determinata dalla \de{formula di Lagrange}.
+ 	
+ 	\subsection{Formula di Lagrange}
+ 		
+ 		Utilizzando la \de{formula di Lagrange} è possibile esprimere il movimento di stato $x(t)$ (e la relativa uscita $y$) nel tempo (per qualsiasi ingresso e stato iniziale $x_0$) di un sistema lineare è determinato dall'equazione
+ 		\begin{equation}
+ 		\begin{split}
+ 			x(t) & = e^{\A t} \, x_0 + \int_0^t e^{\A(t-\tau)} \B\, u(\tau)\, d\tau \\
+ 			y(t) & = \C \, x(t) + \D \,u(t) = \C e^{\A t} \, x_0 + \C \int_0^t e^{\A(t-\tau)} \B\, u(\tau)\, d\tau + \D \,u(t)
+ 		\end{split}
+ 		\end{equation}
+ 		
+ 		Si osserva che $\A$ è una matrice, e dunque è necessario capire come effettuare l'esponenziale $e^{\A t}$: tale prodotto è detto \de{matrice esponenziale} (o \textbf{di transizione}) ed è calcolato tramite l'espressione
+ 		\[ e^{\A t} = \sum_{k=0}^\infty \frac{\big(\A t\big)^k}{k!} = I + \A t  + \frac{\A^2 t^2}{2!} + \frac{\A^3 t^3}{3!} + \dots \]
+ 		
+ 		\vspace{3mm}
+	 	
+	 	
+	 	Si osserva dunque che il movimento delle grandezze $x(t)$ e $y(t)$ dipendono sia dalle condizioni iniziali $x_0$, sia tutta la 	storia degli ingressi $u$ dall'istante $t=t_0 = 0$ fino al tempo $t^*$ che si sta descrivendo.
+	 	
+	 	E' altresì possibile osserva che il movimento $x(t),y(t)$ dipende da due contributi mutuamente indipendenti: $x_L$, detto \de{movimento libero} del sistema, dipendente solamente dalle condizioni iniziali e quello \textit{integrale} $x_F$ dipendente solamente dal tempo pregresso ed è detto \de{movimento forzato}.
+ 		\[ x_L(t) = e^{\mathcal A t} x_0 \qquad x_F(t) = \int_0^t e^{\mathcal A (t-\tau)} \mathcal B \, u(\tau)\, d\tau \]
+ 	
+ 		Un'ultima proprietà dei sistemi dinamici lineari tempo invarianti è che vige il \de{principio di sovrapposizione degli effetti}:
+ 		\begin{itemize}
+ 			\item il movimento libero dipende linearmente dalle condizioni iniziali, ossia considerando una situazione $x_0$ data dalla somma $\alpha x_0'+ \beta x_0''$ (dove $\alpha,\beta\in \mathds R$), allora è possibile osservare che
+ 			\[ x_0 = \alpha x_0'+ \beta x_0'' \qquad \Rightarrow \quad x_L = \alpha x_L' + \beta x_L''\]
+ 			
+ 			\item per analogia anche il movimento forzato dipende linearmente dall'ingresso $u(t)$, ossia dati due ingressi $u'(t)$ e $u''(t)$ (e due coefficienti $\alpha, \beta \in \mathds R$) vale che
+ 			\[ u(t) = \alpha u'(t) + \beta u''(t) \qquad \Rightarrow \quad x_F(t) = \alpha x_F'(t) + \beta x_F''(t)\]
+ 			
+ 		\end{itemize}
+ 		Condensato questi risultati, considerando delle condizioni iniziali $x_0'$ e $u'(t)$ che generano $x'(t)$ e $y'(t)$ (e $x_0'', t''(t)$ generano $x''(t), y''(t)$) allora è possibile stabilire che per
+ 		\[ \begin{cases}
+ 			x_0 = \alpha x_0' + \beta x_0'' \\ u(t) = \alpha u'(t) + \beta u''(t) 
+ 		\end{cases} \qquad \Rightarrow \quad \begin{cases}
+ 			x(t)= \alpha x'(t) + \beta x''(t) \\
+ 			y(t) = \alpha y'(t) + \beta y''(t)
+ 		\end{cases} \]
+ 	
+ 		\paragraph{Utilità del principio di sovrapposizione} La prima utilità di questo principio è che quando $u(t)$ è scomponibile come combinazione lineare di ingresso più \textit{semplici}, allora è possibile studiare la combinazione lineare delle uscite che esse generano.
+ 		
+ 		Un altro vantaggio di questo principio è che esso permette di studiare facilmente sistemi multi ingresso, in quanto è possibile combinare linearmente le singole uscite.
+ 		
+ \section{Descrizione di sistemi non lineari}
+ 	I sistemi non lineari possono essere descritti tramite sistemi lineari tempi invarianti. Si consideri per esempio un sistema statico descritto dall'uscita $y=f(u)$ dipendente dall'ingresso $u$. Scelto un punto $u^*$ rispetto al quale vale l'uscita $y^* = f(u^*)$ è possibile approssimare l'intorno di $u^*$ ad un sistema lineare (nonostante in generale questo non è possibile) utilizzando la serie di Taylor troncandola al primo ordine.
+ 	
+ 	Scegliendo dunque l'ingresso $u=u^*+\delta u$ (dove $\delta u$ è un valore \textit{piccolo}), è lecito chiedersi come varia l'uscita $y = y^* + \delta y$. Per ricavare la relazione (idealmente lineare) tra $\delta u$ e $\delta y$ è sufficiente sostituire le uguaglianze di $u$ e $y$ nel sistema originario, ottenendo che
+ 	\[ y^* + \delta y = f\big(u^*+\delta u\big) \]
+ 	Espandendo tale relazione utilizzando la serie di Taylor fino al primo ordine si verifica che
+ 	\[  f\big(u^* + \delta u\big) \approx \underbrace{f\big(u^*\big)}_{=y^*} + \left. \frac{\partial f}{\partial u} \right|_{u^*} \,\delta u \qquad \Rightarrow \quad \delta y = \left.\frac{\partial f}{\partial y}\right|_{u^*}\, \delta u\]
+ 	Quest'ultima relazione è l'espressione del coefficiente angolare della retta tangente a $y(u)$ nel punto $u^*$.  	
+ 	Si osserva dunque che più ci allontana da $u^*$ (ossia aumentando $\delta u$), maggiore è l'errore che si commette nell'utilizzare il modello lineare approssimato.
+ 	
+ 	\paragraph{Estensione al sistema dinamico} Considerando un sistema dinamico è necessario considerare il modello del sistema che determina lo stato $\dot x = f(x,u)$ e l'uscita $y=g(x,t)$. Scelte le condizioni iniziali $x_0^*$, $u^*$ e il conseguente movimento $x^*, y^*$ tali che $\dot x^* = f(x^*,u^*)$ e $y^*=g(x^*, u^*)$. Definito l'ingresso $u=u^*+\delta u$ perturbato rispetto al punto di approssimazione, è lecito chiedersi come variano $x=x^*+\delta x$ e $y=y^*+\delta y$ e dunque stabilire la relazione tra $\delta u$ e $\delta x, \delta y$.
+ 	
+ 	Come nel caso statico è dunque possibile sostituire al modello le \textit{ nuove} grandezze e poi si approssima utilizzando la serie di Taylor troncandola al primo ordine:
+ 	\[\begin{cases}
+ 		\dot x^* + \delta \dot x = f\big(x^*+\delta x, u^*+\delta u\big) \approx f(x^*,u^*) + \left. \frac{\partial f}{\partial x} \right|_{x^*,u^*} \delta x + + \left. \frac{\partial f}{\partial x} \right|_{x^*,u^*} \delta u \\ 
+ 		y^* + \delta y = g\big(x^* + \delta x, u^* + \delta u\big) \approx g(x^*,u^*) + \left. \frac{\partial g}{\partial x} \right|_{x^*,u^*} \delta x + + \left. \frac{\partial g}{\partial x} \right|_{x^*,u^*} \delta u
+ 	\end{cases} \]
+ 	
+ 	A questo punto è possibile osservare le relazioni esplicite tra $\delta u$ e $\delta x, \delta y$
+ 	\[ \delta \dot x = \delta x \,\left. \frac{\partial f}{\partial x} \right|_{x^*,u^*}\, + \delta u \,\left. \frac{\partial f}{\partial u} \right|_{x^*,u^*} \qquad , \qquad 
+ 	\delta y = \delta x\,\left. \frac{\partial g}{\partial x} \right|_{x^*,u^*} + \delta u\,\left. \frac{\partial g}{\partial u} \right|_{x^*,u^*} \]
+ 	Questo rappresenta comunque un modello dinamico che tuttavia è lineare (nell'intorno di $x^*, u^*$). In particolare si osserva che il termine $\partial f  /\partial x$ calcolata nel punto permette di stabilire la matrice di stato $\A$; più in generale dunque
+ 	\[ \A= \left. \frac{\partial f}{\partial x} \right|_{x^*,u^*} \qquad \B =\left. \frac{\partial f}{\partial u} \right|_{x^*,u^*} \qquad \C = \left. \frac{\partial g}{\partial x} \right|_{x^*,u^*} \qquad \D= \left. \frac{\partial g}{\partial u} \right|_{x^*,u^*}\]
+ 	
+ 	Il modello risultante è tempo invariante fintanto che $x^*$ e $u^*$ sono dei termini costanti, ossia sono un movimento di equilibrio del sistema. Se il movimento non è di equilibrio allora il sistema rimane comunque lineare ma tempo variante: le matrici $\A,\B, \C, \D$ dipendono dunque dal tempo $t$.
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	

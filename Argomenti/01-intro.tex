@@ -1,0 +1,149 @@
+\chapter{Introduzione}
+	
+	L'\de{automatica} studia il \de{controllo di un sistema} in maniera autonoma/automatica, ossia senza l'intervento di un operatore.
+	
+	\begin{concetto}
+		\textit{L'\de{automatica} è la disciplina che studia come agire su un sistema in modo che il suo comportamento assomigli a quello desiderato, senza necessità di intervento manuale.}
+	\end{concetto}
+	
+	Il \de{sistema} è un insieme di elementi fisici e/o concettuali il cui comportamento cambia nel tempo (e/o nello spazio) che interagiscono con il mondo circostante.
+	
+	Gli \de{ingressi} sul sistema sono gli elementi esterni che possono indurre un cambiamento nel sistema oggetto di studio. Le \de{uscite} sono le informazioni in uscita dal sistema che si sta monitorando.
+	
+	Il comportamento per essere simile a quello desiderato è strettamente correlato ad uno stato di \de{riferimento} predeterminato.
+	
+	Per gestire il sistema è necessario determinare un \de{controllo}, ossia un algoritmo/oggetto che, tramite il riferimento, elabora gli input per generare le uscite prefissate.
+	
+	\vspace{3mm} 
+	L'automatica si occupa di risolvere un problema di controllo e/o decisione, senza alcun intervento umano esplicito. L'automatica è dunque una \textit{tecnologia nascosta} (permette di gestire implicitamente le movimentazioni dei sistemi) e multidisciplinare.
+	
+	L'automatica per essere così generale necessita di un certo livello di astrazione che è strettamente correlata una \de{descrizione matematica} del problema.
+	
+\section{Concetti base}
+
+	\paragraph{Sistema} Un \de{sistema}, schematicamente rappresentato tramite una \textit{black box} come in figura \ref{sistema}, rappresenta il \textit{confine} con l'ambiente esterno di una collezione di elementi (fisici e/o concettuali).
+	
+	\figuratikz{4}{1}{sistema}{schema di un sistema.}{sistema}
+	
+	Le interazioni con l'ambiente esterno sono rappresentati da rami (frecce) collegate in ingresso alla scatola; in particolare gli \de{ingressi} che modificano le proprietà del sistema possono essere:
+	\begin{itemize}
+		\item di \de{controllo} $u$ (spesso definiti semplicemente \textit{ingressi}): valore che può essere impostato a piacimento dal controllore;
+		\item di \de{disturbo} $d$: valori la cui evoluzione non può essere influenzata (e talvolta non è conosciuta).
+	\end{itemize}
+	Le \de{uscite} $y$ descrivono l'evoluzione del sistema (o di alcune sue parti) e possono influenzare l'ambiente con cui interagiscono
+	
+	\vspace{3mm}
+	In molti casi la scelta di catalogare una variabile come ingresso o uscita è puramente arbitraria e deve essere contestualizzata al problema da risolvere. Considerando l'esempio di un automobile, la coppia motrice $T$ può essere un'uscita del motore verso il telaio dell'auto (che è il sistema) che è regolata da ingressi esterni (quantità di carburante, temperatura dell'aria...); 
+	
+	\paragraph{Controllo} Il \de{controllo automatico} è il termine che denota un azione che è applicata al sistema per farlo evolvere come desiderato. Il \de{controllore} (figura \ref{controllore}) è il sistema concettuale che presenta come ingressi le \de{specifiche del problema} $y^0$, ossia l'\textit{obiettivo} che il sistema deve perseguire. L'uscita di questo dispositivo è di fatto l'azione di controllo $u$ sugli ingressi del sistema fisico $S$ da controllare. \\ In generale possono essere presenti anche degli altri ingressi $i$.
+	
+	\figuratikz{4}{1}{controllo}{schema di un controllore.}{controllore}
+	
+	\paragraph{Specifiche di controllo} Il \de{riferimento} determina le \de{specifiche di controllo}, ossia è il valore della variabile $y^0$ (che generalmente può cambiare nel tempo) che dovrebbe raggiungere il sistema a regime.
+	
+	Idealmente la variabile controllata $y$ sia pari al segnale di riferimento $y^0$ in ogni condizione (indipendentemente dal rumore), anche se in un caso più realistico si vuole che la variabile controllata $y$ minimizzi l'errore:
+	\[ \underbrace{\textrm{errore}}_e = \underbrace{\textrm{valore di riferimento}}_{y^0} - \underbrace{\textrm{variabile controllata}}_0 \]
+	
+	Spesso i limiti delle specifiche di controllo sono limitate dalla grandezza della variabile di controllo stessa (per esempio una Panda non può accelerare come una Ferrari per via del motore implementato sulla stessa).
+	
+	\paragraph{Sistema di controllo} Un \de{sistema di controllo}, come in figura \ref{sistcontr}, è l'unione del controllore $C$ con il sistema $S$\ da controllare. 
+	
+	In riferimento allo schema $u$ sono dunque le variabili di controllo, $y^0$ i segnali di riferimento, $i$ eventuali altri ingressi al controllore, $d$ i disturbi e infine $y$ le variabili del sistema da controllare.
+	\begin{concetto}
+		Il \de{problema di controllo} è quello di determinare le variabili di controllo $u$ affinché le variabili da controllare $y$ siano simili al segnale di riferimento $y^0$:
+		\[ y\simeq y^0 \]
+		Questo deve valere per ogni possibile \textit{traiettoria} del riferimento $y^0$ e dei disturbi $d$, ossia l'errore $e=y^0-y$ deve essere il più piccolo possibile.
+	\end{concetto}
+	
+	\figuratikz{7}{0.5}{sistema-controllo}{schema di un sistema automatizzato da un controllore.}{sistcontr}
+	
+	\begin{esempio}{: controllo di un sistema massa molla}
+		
+		\textbf{FIGURA}
+		
+		In figura è possibile osservare il sistema da controllare composto da una massa $m$ posta ad una distanza $s$ dall'equilibrio e da una molla di coefficiente elastico $k_n$. Come ingressi del sistema si considera la forza applicata alla massa $F_m$ (questa può dunque essere gestita dal controllore), mentre l'uscita è la posizione $s$. La specifica di controllo del meccanismo è che esso raggiunga la posizione $s^0$. \\ Si ipotizza inoltre l'assenza, attualmente, di disturbi esterni.
+		
+		\begin{center}
+			\tikzfig{Immagini/molla-sist}
+		\end{center}
+		
+		Analizzando il sistema $S$ (dove è rappresentato l'ingresso $u=F_m$ e l'uscita $y = s$) è possibile descrivere l'equazione matematica che la governa, in funzione della forza esercitata dalla molla $F_s$. Dovendo essa, in modulo, essere pari alla forza $F_m$ applicata è dunque possibile esplicitare il valore della posizione $s$ in funzione dell'ingresso:
+		\[ F_s = k_n s \qquad \Rightarrow \quad s =\frac{1}{k_n} F_m	 \]
+				
+		\paragraph{Prima strategia di controllo} Un primo modo per controllare il sistema sarebbe quello di utilizzare il modello inverso.
+		
+		\begin{center}
+			\tikzfig{Immagini/molla-contr}
+		\end{center}
+		
+		Analizzando lo schema del controllore, per determinare la forza $F_m$ da applicare per raggiungere la posizione $s^0$ è sufficiente considerare che
+		\[ F_m = k_n s^0\]
+		
+		Inserendo questa equazione in quella ricavata dal sistema è possibile verificare che l'errore del sistema è nullo in quanto $s=s^0$:
+		
+		\[ s = \frac 1 {k_n}F_m \xrightarrow{F_m = k_n s^0} s = s^0 \qquad \Rightarrow \quad e = s^0 - s = 0\]
+		
+		Questo sistema tuttavia per funzionare efficacemente prevede di conoscere precisamente il valore della costante $k_n$; considerando un caso generale dove il coefficiente elastico è formulato come $k = k_n+\Delta k$ (ossia può presentare delle variazioni rispetto al caso \textit{standard} con $k = k_n$), allora questa logica di controllo va in deficit. 
+		
+		Mantenendo inalterata la logica di controllo ma applicando la variazione alla legge del sistema è dunque possibile determinare l'errore $e$ di questo sistema di controllo:
+		\[  s = \frac{1}{k_n+\Delta k} F_m \qquad \xrightarrow{F_m = k_ns^0} \quad e =s^0-s = \frac{\Delta k}{k_n} s^0\]
+		Si osserva che l'errore $e$ è tanto più grande quanto è grande lo scostamento $\Delta k$.
+		
+		\paragraph{Seconda strategia di controllo} Una seconda metodologia per controllare il sistema è quella di realizzare una retroazione creando un \textit{sistema ad anello chiuso} (definito in seguito), portando l'uscita $s$ del sistema come ingresso per il controllore come segue:
+		
+		\begin{center}
+			\tikzfig{Immagini/molla-completo}
+		\end{center}
+		
+		Un modo sensato per ridurre l'errore è quello di determinare la forza $F_m$ in modo proporzionale all'errore:
+		\[ F_m = \alpha e = \alpha\big(s^0-s\big) \]
+		Il controllore seguendo questa legge permette di determinare un errore dipendente dal parametro $\alpha$ arbitrariamente scelto:
+		\[ e = s^0 - s = \frac{s^0}{1+\alpha/k}  \]
+		Aumentando dunque il valore $\alpha$ è possibile diminuire l'errore del meccanismo.
+		
+		
+		
+		\textbf{MANCA IL GRAFICO FINALE E LA SUA DISCUSSIONE}
+		
+	\end{esempio}
+	
+	\begin{concetto}
+		Si parla di sistema di controllo ad \de{anello aperto} quando le uscite del sistema non sono poste in retroazione al controllore; per funzionare adeguatamente questo sistema deve conoscere adeguatamente il funzionamento del sistema e i parametri dello stesso.
+		
+		Si parla di \de{anello chiuso} quando è presente una retroazione; questo permette in generale di diminuire l'errore (soprattutto determinato dai disturbi); questo sistema richiede un aumento di complessità del controllore per via dei sensori che devono essere implementati sullo stesso per rilevare la retroazione.
+	\end{concetto}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

@@ -1,0 +1,54 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (0) at (-5.5, -1) {};
+		\node [style=none] (1) at (-5.5, 3) {};
+		\node [style=none] (2) at (-6.5, 0) {};
+		\node [style=none] (3) at (2.5, 0) {};
+		\node [style=none] (4) at (-5.5, 3.5) {$t$};
+		\node [style=none] (5) at (2.5, -0.5) {$q(t)$};
+		\node [style=punto] (6) at (-4.5, 0) {};
+		\node [style=punto] (7) at (-3, 0) {};
+		\node [style=punto] (8) at (-1, 0) {};
+		\node [style=punto] (9) at (1, 0) {};
+		\node [style=none] (10) at (-4.5, -0.5) {$t_1$};
+		\node [style=none] (11) at (-3, -0.5) {$t_a$};
+		\node [style=none] (12) at (-1, -0.5) {$t_b$};
+		\node [style=none] (13) at (1, -0.5) {$t_2$};
+		\node [style=none] (14) at (4.75, -1) {};
+		\node [style=none] (15) at (4.75, 3) {};
+		\node [style=none] (16) at (3.75, 0) {};
+		\node [style=none] (17) at (12.75, 0) {};
+		\node [style=none] (18) at (4.75, 3.5) {$t$};
+		\node [style=none] (19) at (12.75, -0.5) {$h(t)$};
+		\node [style=punto] (20) at (5.75, 0) {};
+		\node [style=punto] (21) at (7.25, 0) {};
+		\node [style=punto] (22) at (9.25, 0) {};
+		\node [style=punto] (23) at (11.25, 0) {};
+		\node [style=none] (24) at (5.75, -0.5) {$t_1$};
+		\node [style=none] (25) at (7.25, -0.5) {$t_a$};
+		\node [style=none] (26) at (9.25, -0.5) {$t_b$};
+		\node [style=none] (27) at (11.25, -0.5) {$t_2$};
+		\node [style=none] (28) at (-3, 2) {};
+		\node [style=none] (29) at (-1, 2) {};
+		\node [style=none] (30) at (-5.5, 0) {};
+		\node [style=none] (31) at (2, 0) {};
+		\node [style=none] (32) at (4.75, 0.5) {};
+		\node [style=none] (33) at (7.25, 0.5) {};
+		\node [style=none] (34) at (9.25, 2) {};
+		\node [style=none] (35) at (12, 2) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=freccia] (2.center) to (3.center);
+		\draw [style=freccia] (0.center) to (1.center);
+		\draw [style=freccia] (16.center) to (17.center);
+		\draw [style=freccia] (14.center) to (15.center);
+		\draw [style=viola] (30.center) to (7);
+		\draw [style=viola] (7) to (28.center);
+		\draw [style=viola] (28.center) to (29.center);
+		\draw [style=viola] (29.center) to (8);
+		\draw [style=viola] (8) to (31.center);
+		\draw [style=viola] (32.center) to (33.center);
+		\draw [style=viola] (33.center) to (34.center);
+		\draw [style=viola] (34.center) to (35.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

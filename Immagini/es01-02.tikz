@@ -1,0 +1,65 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (0) at (-5, 1) {};
+		\node [style=none] (1) at (-2, 1) {};
+		\node [style=none] (4) at (2, 1) {};
+		\node [style=none] (5) at (5.5, 1) {};
+		\node [style=none] (6) at (5.5, -2) {};
+		\node [style=none] (7) at (-5, -2) {};
+		\node [style=none] (8) at (-1, -2.25) {};
+		\node [style=none] (9) at (-1, -1.25) {};
+		\node [style=none] (10) at (1, -1.25) {};
+		\node [style=none] (11) at (1, -2.25) {};
+		\node [style=none] (12) at (-1, -2) {};
+		\node [style=none] (13) at (-1, -1.5) {};
+		\node [style=none] (14) at (1, -1.5) {};
+		\node [style=none] (15) at (1, -2) {};
+		\node [style=none] (16) at (-2, -1.5) {};
+		\node [style=none] (17) at (2, -1.5) {};
+		\node [style=none] (18) at (-5, 0.5) {};
+		\node [style=none] (19) at (-2, 0.5) {};
+		\node [style=none] (20) at (2, 0) {};
+		\node [style=none] (21) at (5.5, 0) {};
+		\node [style=none] (22) at (-3.5, 1) {$A_1$};
+		\node [style=none] (23) at (3.75, 0.5) {$A_2$};
+		\node [style=none] (24) at (-4.5, -1.75) {$p_1$};
+		\node [style=none] (25) at (5, -1.75) {$p_2$};
+		\node [style=none] (26) at (-2.75, -1.75) {};
+		\node [style=none] (27) at (-0.75, -1.75) {};
+		\node [style=none] (28) at (0, -0.75) {$Q$};
+		\node [style=none] (29) at (-4.25, 0.25) {};
+		\node [style=none] (30) at (-5.75, 1.75) {};
+		\node [style=none] (31) at (-4.5, 1.5) {$q$};
+		\node [style=none] (32) at (-5.5, 0.5) {};
+		\node [style=none] (33) at (-5.5, -2) {};
+		\node [style=none] (34) at (6, -2) {};
+		\node [style=none] (35) at (6, 0) {};
+		\node [style=none] (36) at (-6, -0.75) {$h_1$};
+		\node [style=none] (37) at (6.5, -1) {$h_2$};
+		\node [style=none] (38) at (0.75, -1.75) {};
+		\node [style=none] (39) at (2.75, -1.75) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=spessa] (0.center) to (7.center);
+		\draw [style=spessa] (7.center) to (12.center);
+		\draw [style=spessa] (9.center) to (8.center);
+		\draw [style=spessa] (8.center) to (11.center);
+		\draw [style=spessa] (9.center) to (10.center);
+		\draw [style=spessa] (11.center) to (10.center);
+		\draw [style=spessa] (16.center) to (13.center);
+		\draw [style=spessa] (14.center) to (17.center);
+		\draw [style=spessa] (16.center) to (1.center);
+		\draw [style=spessa] (17.center) to (4.center);
+		\draw [style=spessa] (15.center) to (6.center);
+		\draw [style=spessa] (6.center) to (5.center);
+		\draw [style=nero] (9.center) to (11.center);
+		\draw [style=nero] (8.center) to (10.center);
+		\draw [style=nero] (18.center) to (19.center);
+		\draw [style=nero] (20.center) to (21.center);
+		\draw [style=freccia] (26.center) to (27.center);
+		\draw [style=freccia, in=105, out=0] (30.center) to (29.center);
+		\draw [style=freccia] (34.center) to (35.center);
+		\draw [style=freccia] (33.center) to (32.center);
+		\draw [style=freccia] (38.center) to (39.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

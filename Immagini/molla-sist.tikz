@@ -1,0 +1,23 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (0) at (0.25, 0) {$S$};
+		\node [style=none] (1) at (-2.5, 0) {$F_m$};
+		\node [style=none] (2) at (2.75, 0) {$s$};
+		\node [style=none] (3) at (1.5, 0.5) {};
+		\node [style=none] (4) at (-1, 0.5) {};
+		\node [style=none] (5) at (1.5, -0.5) {};
+		\node [style=none] (6) at (-1, -0.5) {};
+		\node [style=none] (7) at (-1, 0) {};
+		\node [style=none] (8) at (-2, 0) {};
+		\node [style=none] (9) at (1.5, 0) {};
+		\node [style=none] (10) at (2.5, 0) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=nero] (6.center) to (4.center);
+		\draw [style=nero] (4.center) to (3.center);
+		\draw [style=nero] (3.center) to (5.center);
+		\draw [style=nero] (5.center) to (6.center);
+		\draw [style=freccia] (8.center) to (7.center);
+		\draw [style=freccia] (9.center) to (10.center);
+	\end{pgfonlayer}
+\end{tikzpicture}
