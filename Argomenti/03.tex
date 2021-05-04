@@ -934,6 +934,55 @@
 					\textrm{poli} \quad & \textrm{Re} \leq 0 \\
 				\end{cases} \]
 			\end{enumerate}
+			
+		\subsubsection{Confronto tra diagrammi asintotici e reali}
+			I diagrammi fino ad ora rappresentati sono delle spezzate che rappresentano il comportamento asintotico della funzione di trasferimento nel dominio della frequenza.
+			
+			Confrontando i diagrammi del modulo \textbf{SCARICARE LE FIGURE} del diagramma di Bode ad un polo reale, è possibile osservare che per pulsazioni lontane dalla pulsazione $\omega_0$ del polo i diagrammi sono coincidenti, mentre nell'intorno di una decade dal punto si ha uno scostamento rispetto al caso ideale con valore massimo in corrispondenza della pulsazione $\omega = \omega_0$ con un'attenuazione di $-3dB$.
+			
+			\textbf{FIGURA}
+			
+			Nel caso di poli complessi coniugati, se la componente $\xi$ tende al valore unitario, il diagramma converge a quello di due poli reali coincidenti, mentre più diverge il valore di $\xi$ da 1, più il diagramma diverge da quello asintotico nell'intorno della pulsazione $\omega_0$. In particolare per $\xi \rightarrow 0$ il modulo tende a valore infinito. Questo è dovuto al fenomeno della \textbf{risonanza}.
+			
+			\textbf{FIGURA}
+			
+			Quantitativamente se si verifica che lo smorzamento assume valore $\xi = \sqrt 2 / 2$, allora esiste un massimo del modulo nel diagramma reale in corrispondenza della pulsazione $\omega_r = \omega_n \sqrt{1-\xi^2}$, ossia coincidente con la parte immaginaria dei poli. Per determinare il valore del massimo del picco si calcola come
+			\[ \big|\G(j\omega_r)\big| = \frac 1 {2|\xi| \sqrt{1-\xi^2}} \qquad  \big|\G(j\omega_n)\big| = \frac 1 {2|\xi|}\]
+			
+			
+			\vspace{3mm}
+			Nel caso di zeri complessi coniugati (caratterizzati dal parametro $\eta$ associato alla parte immaginaria) si ha l'effetto contrario rispetto a quello degli zeri, ossia di \textbf{antirisonanza} dove il modulo tende ad un valore infinito negativo ($|\G|_{dB} \rightarrow -\infty$, allora $\G \rightarrow 0$). Questo è dovuto alla \textit{proprietà bloccante} degli zeri: con uno zero nell'origine, la risposta allo scalino di un sistema coincide con il valore 0, mentre se lo zero complesso coniugato è una sinusoide ad una pulsazione particolare l'uscita tende comunque a 0.
+			
+			
+			\paragraph{Diagramma di fase} Per quanto riguarda il diagramma di fase di un sistema ad un solo polo reale \textbf{FIGURA}, è possibile osservare che alla pulsazione caratteristica $\omega_0$ la pendenza  della curva reale è posta a $45^\circ/dec$ e dunque si può ipotizzare che il cambio di fase avviene in un intervallo di 2 decadi centrato in $\omega_0$. In generale i diagrammi asintotici della fase sono molto diversi da quelli reali.
+			
+			Al contrario se lo smorzamento $\xi$ tende a $0$, il diagramma di fase reale si avvicina a quello asintotico. In generale i diagrammi asintotici della fase vengono utilizzati solo in maniera qualitativa, non quantitativa, e se necessario si calcola la fase manualmente.
+			
+	\subsection{Classificazione di sistemi dinamici attraverso i diagrammi di Bode}
+		E' possibile dunque pensare di analizzare i sistemi dinamici in funzione del tipo di filtraggio che il sistema effettua sugli ingressi cui esso è sottoposto. Un sistema dinamico può infatti essere considerato come un filtro passa alto/basso/banda.
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 		
 		
 		
