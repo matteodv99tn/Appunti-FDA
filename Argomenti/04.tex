@@ -1,0 +1,42 @@
+\chapter{Sistemi dinamici interconnessi}
+\section{Schemi a blocchi}
+	\marginnote{10 maggio}
+	La discussione sui \textbf{sistemi dinamici interconnessi} è la base per capire come funzionano i sistemi in retroazione e si basa sullo studio del comportamento derivante dal collegamento di 2 o più sistemi dinamici.
+	
+	Per capire come i sistemi sono interconnessi si ricorre al formalismo grafico degli \textbf{schemi a blocchi}; questo tipo di rappresentazione permette di analizzare anche connessioni molto complesse in maniera sistematica e relativamente \textit{semplice}.
+	
+	Gli elementi costitutivi della rappresentazione sono:
+	\begin{itemize}
+		\item il \textbf{blocco} che rappresenta il sistema dinamico; esso è caratterizzato dai suoi ingressi (a sinistra), dalle uscite (a destra) e presenta all'interno la sua funzione di trasferimento $\G$ che permette di scrivere l'\textbf{\textit{equazione costitutiva}} $Y = \G U$ del sistema;
+		\item il \textbf{nodo sommatore}, rappresentato da un pallino, nel quale entrano le \textit{frecce} (con eventuale segno negativo se i valori devono essere invertiti) che devono essere sommate rispetto all'unica frecca uscente dal nodo;
+		\item la \textbf{diramazione}, ossia una \textit{linea} la cui estremità è una pallino dal quale partono altre linee di valore uguale alla diramazione in ingresso.
+	\end{itemize}
+	
+	\subsection{Connessioni elementari}
+		Tra tutte le connessioni che si possono realizzare, è possibile individuarne 3 di fondamentali:
+		\begin{itemize}
+			\item esiste la \textbf{connessione in serie}, dove \textit{due scatole vengono poste una in fila all'altra}, ossia l'uscita della prima coincide con l'ingresso della seconda (e il processo si può iterare). La loro connessione risulta in un'altro sistema lineare la cui funzione di trasferimento vale
+			\[ \G_\textrm{serie} = \prod_i \G_i  \]
+			Tale espressione, riferita ad un sistema di due blocchi, può essere dimostrata esplicitando le equazioni costitutive dei 2 blocchi e l'equazione della diramazione:
+			\[ \begin{cases}
+				Y_2 = \G_2 U_2 \\ Y_1 = \G_1 U_1 \\ U_2 = Y_1 
+			\end{cases} \qquad Y = Y_2 = \G_\textrm{serie} U = \G_2\G_1 U_1\]
+			
+			\item la seconda connessione fondamentale è il \textbf{parallelo} dove uno stesso ingresso viene imposto a due (o più) blocchi le cui uscite si sommano; si dimostra che la funzione di trasferimento equivalente $\G_\textrm{parallelo}$ realizzata dai blocchi in parallelo vale
+			\[ \G_\textrm{parallelo} = \sum_i \G_i \]
+			Considerando il caso di 2 blocchi in parallelo, allora è possibile scrivere l'equazione del nodo sommatore $Y = Y_1 + Y_2$, mentre note le due equazioni costitutive $Y_i = \G_i U_i$ e noto che $U_1 = U_2 = U$, allora
+			\[ Y = \big(\G_1 + \G_2\big)U \]
+			
+			\item la connessione in \textbf{retroazione}, come in \textbf{figura}, può essere analizzata a partire dalle equazioni caratteristiche del problema:
+			\[ \begin{cases}
+				Y_1 = Y \\ U_2 = Y \\ Y_1 = \G_1 W \\ W = U \pm Y_2 \\ Y_2 = \G_2 U_2
+			\end{cases} \qquad \Rightarrow \quad Y = \underbrace{\frac{\G_1}{1 \mp \G_1\G_2}}_{\G_\textrm{feedback}} U \]
+			In generale la funzione di trasferimento di un qualsiasi sistema di trasferimento è dato dal rapporto della funzione di trasferimento della \textit{linea di mandata} e la somma tra 1 e la \textit{funzione d'anello}:
+			\[ \G_\textrm{feedback} = \frac{\textrm{f.d.t. linea di andata}}{1 \mp \textrm{funzione d'anello}}\]
+			
+		\end{itemize}
+	
+	\subsection{Rappresentazione dei sistemi dinamici}
+		In generale i sistemi dinamici rappresentano come ingressi sia l'ingresso \textit{proprio} $u$, ma anche un disturbo $d$: il sistema dinamico dunque può essere modellato come un parallelo di un blocco contenente la funzione di trasferimento modellante l'ingresso $\G_u$ e quello dovuto al disturbo $\G_d$ (questo vale per sistemi lineari tempo invarianti, non in generale per altri sistemi).
+		
+		Nei sistemi dinamici in retroazione è possibile anche inserire gli effetti, sul ramo in retroazione, di rumore come un blocco con funzione di trasferimento $\G_n = \G_\textrm{noise}$. In generale nello studio dei sistemi di controllo si trascurano in prima battuta gli effetti dovuti ai disturbi e ai rumori.

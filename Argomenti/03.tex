@@ -962,8 +962,24 @@
 		E' possibile dunque pensare di analizzare i sistemi dinamici in funzione del tipo di filtraggio che il sistema effettua sugli ingressi cui esso è sottoposto. Un sistema dinamico può infatti essere considerato come un filtro passa alto/basso/banda.
 			
 			
-			
-			
+	
+\section{Sistema a ritardo di tempo}
+	Un \textbf{sistema a ritardo di tempo} del tipo $y(t) = u(t-\tau)$ è particolare in quanto ha ordine infinito e non ha associato alcuna equazione differenziale. Considerando la proprietà di traslazione nel tempo della trasformata di Laplace, è possibile affermare che la \textbf{funzione di trasferimento} del sistema a ritardo di tempo vale
+	\[ \G(s) = e^{-\tau s}  \]
+	Si può dunque osservare che questo è un sistema la cui funzione di trasferimento è trascendente (ossia non ha la struttura tipica di una funzione lineare tempo invariante che è un rapporto di polinomi). Per questo fatto un sistema dinamico contenente un ritardo di tempo non può essere analizzato tramite il teorema del valore iniziale/finale in quanto decade la condizione di razionalità della funzione $\G$.
+	
+	Considerando un sistema la gui funzione di trasferimento $\G(s)$ vale $\frac 1  {s+10} $ traslata nel tempo, allora la sua risposta allo scalino si può modellare come
+	\[  Y(s) = \underbrace{\frac 1 {s+1}}_\G \underbrace{\frac 1 s}_U  e^{-\tau s} \]
+	Per poter tuttavia utilizzare i teoremi del valore iniziale/finale si può aggirare il problema pensando di applicare il teorema alla funzione $\tilde Y(s) = \G (s)\, U(s)$ e successivamente si \textit{trasla} opportunamente il risultato nel tempo. Il tempo di traslazione $\tau$ deve essere sommato anche al tempo di assestamento $t_a$ che si determinerebbe dall'analisi della funzione di trasferimento razionale.
+	
+	\paragraph{Risposta in frequenza} La risposta in frequenza di un sistema a ritardo di tempo è sufficiente calcolare sostituire con $j\omega$ la coordinata $s$ nella funzione di trasferimento che diventa $\G(j\omega) = e^{-\tau j\omega}$. Rappresentando la funzione nei diagrammi di Bode (\textbf{ref FIGURA}) si osserva che il modulo, in decibel, è sempre nullo mentre la fase dei segnali è sempre pari a $-\tau \omega$.
+	
+	\textbf{FIGURE DIAG DI BODE}
+	
+	
+	
+	
+	
 			
 			
 			
