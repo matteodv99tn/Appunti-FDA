@@ -40,3 +40,82 @@
 		In generale i sistemi dinamici rappresentano come ingressi sia l'ingresso \textit{proprio} $u$, ma anche un disturbo $d$: il sistema dinamico dunque può essere modellato come un parallelo di un blocco contenente la funzione di trasferimento modellante l'ingresso $\G_u$ e quello dovuto al disturbo $\G_d$ (questo vale per sistemi lineari tempo invarianti, non in generale per altri sistemi).
 		
 		Nei sistemi dinamici in retroazione è possibile anche inserire gli effetti, sul ramo in retroazione, di rumore come un blocco con funzione di trasferimento $\G_n = \G_\textrm{noise}$. In generale nello studio dei sistemi di controllo si trascurano in prima battuta gli effetti dovuti ai disturbi e ai rumori.
+		
+		
+\section{Criteri di stabilità}
+	
+	\textbf{DA RIVEDERE}
+	
+	\subsection{Criterio di Nyquist}
+	
+	
+	\begin{esempio}{: studio della stabilità tramite il criterio di Nyquist}
+		Si consideri un sistema in retroazione negativa la cui funzione d'anello vale  $L(s) = \frac{10}{s+1}$. In questo caso essendo il sistema semplice, basterebbe studiare la stabilità calcolando le radici del polinomio $1 + L(s) = 0$ (che porta al risultato $s=-11$ la cui conclusione è che il sistema è asintoticamente stabile). La soluzione $s=-11$ rappresenta il polo della funzione d'anello; aumentando tale valore è possibile migliorare la velocità della risposta del sistema.
+		
+		Volendo tuttavia applicare il criterio di Nyquist è necessario rappresentare il diagramma polare; per fare questo è possibile sfruttare delle \textit{regole} qui descritte:
+		\begin{enumerate}
+			\item verificare che $\G(s)$ non abbia poli sull'asse immaginario (ossia con parte reale nulla): se ciò si verificasse non è possibile rappresentare i diagrammi di Nyquist;
+			\item si tracciano i diagrammi di Bode della funzione $G(j\omega)$ che si vuole analizzare;
+			\item il diagramma polare viene dunque creato \textit{per punti} scegliendo delle particolari pulsazioni $\omega$, soprattutto per $\omega\rightarrow 0$ e $\omega\rightarrow \infty$. In particolare per $\omega\rightarrow 0$ si osserva che $|\G(j0)| = 20dB = 10$ e la fase vale $\angle G(j0) = 0^\circ$; per $\omega \rightarrow \infty$ si calcola $|\G(j\infty)| = -\infty dB = 0$ e $\angle \G(j\infty) = -90^\circ$. Intuitivamente il diagramma di Nyquist è una linea che unisce i due punti e deve vivere nel 4 semipiano in quanto sia modulo che fase sono sempre decrescenti.
+			\item chiudo il diagramma di Nyquist specchiando il diagramma appena tracciato. Il verso di percorrenza è quello delle pulsazioni crescenti sul piano del diagramma polare; sul ramo specchiato il verso della freccia è tale da \textit{non creare scontri}.
+		\end{enumerate}
+		
+		A questo punto è necessario verificare le ipotesi del teorema di Nyquist: essendo $L(s)$ nota, non sono state effettuate \textit{cancellazioni critiche}; inoltre si considera il sistema come in retroazione negativa. A questo punto è necessario calcolare il numero di poli a parte positiva dell'anello che risulta valere $P=0$; questo valore coincide con il numero di giri $N=0$ del diagramma di Nyquist percorsi in senso antiorario rispetto al punto -1 e dunque il \textbf{sistema} è \textbf{asintoticamente stabile}.
+	
+		\end{esempio}
+		
+		\paragraph{Estensione del criterio di Nyquist} Supponendo di voler studiare la stabilità di un sistema a retroazione negativa la cui funzione d'anello è moltiplicata per una costante reale del tipo $k\,L(s)$, con $k\in\mathds R$; supponendo di conoscere il diagramma di Nyquist di $L(s)$, per studiare la stabilità è sufficiente considerare che $k$ tende ad espandere/contrarre il diagramma di $L(s)$ già noto.
+		
+		Tuttavia questa operazione può risultare complessa, quindi alternativamente è possibile pensare di spostare il punto $-1$ in modo da ottenere un risultato relativamente equivalente; in particolare il punto spostato assume valore $-1/k$.
+		\begin{nota}
+			Tale espressione si ricava partendo dal fatto che il guadagno d'anello da studiare vale $1 + k\,L(s) = 0$; in particolare le due soluzioni equivalenti
+			\[ k\, L(s) = -1 \qquad \leftrightarrow \qquad L(s) = - \frac 1 k\]
+			Nel primo caso è necessario riscalare il diagramma di $L(s)$, mentre nel secondo è sufficiente spostare il punto $-1$; ai fini del calcolo della stabilità le due operazioni sono equivalenti.
+		\end{nota} 
+	
+		Con questa estensione è possibile rimuovere l'ipotesi di retroazione negativa nel teorema di Nyquist; in particolare per studiare la stabilità di un sistema in retroazione positiva è sufficiente considerare che il denominatore della funzione di trasferimento vale $1 - L(s)$ che è equivalente ad una retroazione negativa con guadagno d'anello pari a $-L(s)$ (ossia equivale allo studio di un anello in retroazione negativa con $k=-1$ e dunque \textit{contando i giri} intorno al punto 1).
+		
+		\begin{nota}
+			Tracciare i diagrammi di Nyquist per funzioni $L$ con poli puramente immaginari è difficile in quanto sostituendo $s\rightarrow \pm j\omega$ nella funzione, si osserva che il modulo di $L$, per una certa pulsazione, tende a valore infinito.
+		\end{nota}
+		\begin{esempio}{: diag. con polo immaginario}
+			Considerando la funzione d'anello $L(s) = \frac 1 s$, è possibile osservare che il grafico è una retta che esplode a valore infinito.
+		\end{esempio}
+	
+	\subsection{Criterio di Bode}
+		A questo punto è possibile introdurre questo terzo metodo per lo studio della stabilità della funzione di anello per ovviare alle situazione in cui il disegno della rappresentazione dei diagrammi di Nyquist sia laboriosa; inoltre nonostante non vi siano impedimenti nell'approccio di Nyquist alla funzione $L(s)$ in presenza di ritardi di tempo, nella pratica l'applicazione del teorema risulta impossibile.
+	
+		Inoltre serve un criterio che possa essere applicato ad una funzione $L(s)$ con poli a parte reale nulla.
+		
+		\paragraph{Enunciato} Il \de{criterio di Bode} si basa sul tracciamento dei diagrammi Bode e si applica su sistemi in cui si ha il ritardo di tempo e/o in cui ci sono poli di $L(s)$ puramente immaginari. Le ipotesi del teorema sono:
+		\begin{itemize}
+			\item non devono essere presenti delle parti nascoste di $L(s)$ \textit{critiche};
+			\item che il numero di poli a parte positiva $P$ sia sempre nullo (il sistema di partenza deve dunque essere asintoticamente stabili; non può essere applicato a sistemi instabili ad anello aperto);
+			\item il diagramma di Bode del modulo di $L(s)$ attraversa l'asse a $0dB$ una volta sola \textit{dall'alto verso il basso} (per frequenze crescenti);
+			\item il sistema deve essere a retroazione negativa.
+		\end{itemize}
+		A questo punto è possibile definire la \textbf{pulsazione critica} $\omega_c$ la pulsazione per la quale il modulo, in decibel, si annulla (oppure $|L(j\omega_c)| = 1$ non in decibel); per calcolare tale valore è possibile:
+		\begin{enumerate}[a)]
+			\item usare la definizione; 
+			\item osservare la pulsazione $\omega_c$ dal diagramma asintotico di Bode del modulo.
+		\end{enumerate}
+		A questo punto si determina la \textbf{fase critica} $\phi_c = \angle L(j\omega_c)$ da definizione (in quanto i diagrammi asintotici sono troppo approssimati). Dati $\phi_m$ il \textbf{margine di fase} pari a $180^\circ - |\phi_c|$ e il \textbf{guadagno della funzione d'anello} $\mu_L$, allora condizione necessaria e sufficiente di asintotica stabilità del sistema retroazionato è che sia margine di fase che guadagno d'anello siano entrambi positivi:
+		\[ \textrm{asintotica stabilità} \qquad \Leftrightarrow \qquad \phi_m > 0 \qquad \mu_L> 0\]
+		
+		\paragraph{Interpretazione del criterio di Bode} Questo criterio deriva, di fatto, da quello di Nyquist. I parametri $\mu_L$ e $\phi_m$ di fatto permettono di capire se il valore di $N$ è nullo o meno; noto infatti che $P=0$ applicando il teorema di Nyquist è possibile dedurre direttamente se il sistema è asintoticamente stabile (per $N=0$, mentre se $N\neq 0$ il sistema è instabile).
+		
+		Considerando il segno del margine di fase $\phi_m$ positivo, allora ad esso corrisponde $N =0$, mentre se esso è negativo $N\neq 0$. \\ Considerando invece il modulo $\mu_L$, se esso è positivo (considerando $\phi_m>0$) si dimostra che $N=0$ riconducendo l'analisi della fase di un guadagno di anello premoltiplicato per un valore negativo contando dunque i giri intorno al punto 1.
+		
+		Questo criterio è semplice in quanto basta verificare preliminarmente che $\mu_L$ sia positivo: se risultasse negativo si conclude subito che il sistema non è asintoticamente stabile.
+		
+		\paragraph{Risposta del criterio a sistemi con ritardo di tempo} Considerando un sistema a ritardo di tempo, la prima ipotesi sulle \textit{cancellazioni critiche} è verificata (in quanto non si può semplificare con un polinomio); anche l'ipotesi sul numero di poli a parte reale positiva è verificata (in quanto il ritardo, di per se, non modifica la stabilità del sistema in anello aperto; il calcolo di $P$ dipende solamente dalla parte razionale di $L(s)$); la terza ipotesi rimane verificata in quanto il ritardo di tempo non inficia sul modulo, in decibel, della funzione $L(s)$; anche l'ipotesi sulla retroazione negativa non può essere smentita in quanto dipende dallo schema di controllo (e non dalla presenza del ritardo).
+		
+		La presenza del ritardo non influenza il calcolo della pulsazione $\omega_c$; il ritardo introduce uno sfasamento che cambia la fase critica $\phi_c$ che tuttavia può essere valutata, partendo dalla pulsazione $\tilde \phi_c$ critica del sistema non ritardato, tramite l'equazione
+		\[ \phi_c = \tilde \phi_c - \tau\, \omega_c  \] 
+		
+		\begin{esempio}{: stabilità con il criterio di Bode}
+			Considerando la funzione di guadagno ad anello $L(s) = \frac{10}{s+1}$, la stabilità può essere determinata con il criterio di Bode. Considerando infatti che tutte le  ipotesi sono verificate, dal diagramma del modulo si ricava la pulsazione critica $\omega_c = 10 rad/s$. A questo punto è necessario calcolare la fase critica calcolando $L(j\omega_c)$:
+			\[L(j\omega_c) = \frac{10}{j10 + 1} \qquad \Rightarrow\quad \angle L(j\omega_c) = \angle 10 - \angle \big(j\omega_c + 1\big)=0 - \arctan\left( \frac{10}{1} \right) = -84.3^\circ  \]
+			\[  \phi_m = 180^\circ - \big|-84.3^\circ \big| = 95.7^\circ \]
+			Osservato che il margine di fase $\phi_m$ è positivo  e il guadagno di anello $\mu_L= 10$ è anch'esso positivo, allora è possibile concludere che il sistema retro-azionato è asintoticamente stabile.
+		\end{esempio}
