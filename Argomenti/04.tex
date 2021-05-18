@@ -42,26 +42,63 @@
 		Nei sistemi dinamici in retroazione è possibile anche inserire gli effetti, sul ramo in retroazione, di rumore come un blocco con funzione di trasferimento $\G_n = \G_\textrm{noise}$. In generale nello studio dei sistemi di controllo si trascurano in prima battuta gli effetti dovuti ai disturbi e ai rumori.
 		
 		
-\section{Criteri di stabilità}
+\section{Stabilità di sistemi interconnessi}
 	
-	\textbf{DA RIVEDERE}
+	\paragraph{Connessione in serie e in parallelo} Considerando che la funzione di trasferimento di un generico sistema lineare tempo invariante può essere espresso come un rapporto di polinomi $\G_i = N_i/D_i$, allora è possibile osservare che la \textbf{funzione di trasferimento} complessiva della \textbf{serie}  è una funzione polinomiale che ha come zeri l'unione degli zeri delle due funzioni iniziali, e come poli l'unione dei due poli iniziali:
+	\[ \G_\textrm{serie} = \G_1 \G_2 = \frac{N_1}{D_1} \frac{N_2}{D_2} = \frac N D \]
+	
+	Considerando invece la \textbf{connessione in parallelo} non è possibile calcolare gli zeri come diretta conseguenza degli zeri dei blocchi di partenza, tuttavia i poli è possibile osservare che coincidono con l'unione dei poli iniziali:
+	\[ \G_\textrm{parallelo} = \G_1 + \G_2 = \frac{N_1}{D_1} + \frac{N_2}{D_2} = \frac{N_1D_2+N_2D_1}{D_1D_2} = \frac N D  \]
+	
+	In realtà essendo importanti per la stabilità soprattutto la posizione dei poli, è possibile concludere che connessioni in serie/parallelo di due sistemi asintoticamente stabili risulta in un sistema che è anch'esso asintoticamente stabile. Ne consegue che se anche uno dei due sistemi è instabile, anche allora il sistema complessivo lo sarà: la connessione in serie/parallelo dunque non permette di stabilizzare un sistema dinamico inizialmente instabile, in ogni caso!
+	
+	\paragraph{Sistemi retro-azionati} Si dimostra dunque che l'unico collegamento \textit{utile} a stabilizzare un sistema instabile è il collegamento in retroazione; esplicitando infatti le funzioni di trasferimento $\G_1$ del ramo di mandata e $\G_2$ nel ramo in retroazione è possibile calcolare la funzione di trasferimento complessiva come
+	\[ \G_\textrm{feedback} = \frac{\G_1}{1\mp \G_1\G_2} = \frac{N_1/D_1}{1 \mp \dfrac{N_1}{D_1}\dfrac{N_2}{D_2}} = \frac{N_1D_2}{D_1D_2 \mp N_1N_2} = \frac N D \]
+	Osservando il denominatore $D$ della funzione di trasferimento risultante è possibile notare che i nuovi poli ottenuti non coincidono, in maniera generale, con le radici del polinomio di partenza; dunque non è detto che il collegamento di due sistemi asintoticamente stabili non è detto che sia anch'esso asintoticamente stabile, tuttavia un sistema instabile può essere stabilizzato tramite un'opportuna retroazione con un altro sistema dinamico.
+	
+	\subsection*{Criteri di stabilità per sistemi retro-azionati}
+		La stabilità di un sistema retro-azionato, come appena osservato, dipende sostanzialmente studiando le proprietà della funzione di guadagno d'anello $L(s) = \G_1(s)\G_2(s)$, e non dal tipo di connessione/ordine tra i due blocchi nello schema.
+	
+	\subsection{Analisi delle radici del denominatore}
+		Un primo modo per studiare la stabilità del sistema retro-azionato è quello di studiare le radici della funzione di trasferimento risultante, definita dalla funzione $1\mp L(s) = D_L(s) + N_L(s) = D_f(s)$, dove $D_f$ rappresenta il denominatore di $G_\textrm{feedback}$ e $N_L,D_L$ rappresentano numeratore e denominatore della funzione di guadagno di anello $L(s)$.
+		
+		Considerazioni sulla stabilità possono essere dunque effettuate con i metodi giù descritti in precedenza per l'analisi di sistemi dinamici, tuttavia per sistemi di ordine elevato il calcolo delle radici della funzione $ 1 + L(s) = 0$ diventa complesso (in quanto anch'esso di grado elevato) ed è dunque utilizzare dei metodi alternativi basati sui coefficienti.\\
+		Si osserva inoltre che i criteri fino ad ora utilizzati non possono essere applicati se nell'anello sono presenti dei sistemi a ritardo di tempo del tipo $1 + L e^{-\tau s}$ (in quanto il denominatore di $\G_f$ non è più un polinomio).
 	
 	\subsection{Criterio di Nyquist}
-	
-	
-	\begin{esempio}{: studio della stabilità tramite il criterio di Nyquist}
-		Si consideri un sistema in retroazione negativa la cui funzione d'anello vale  $L(s) = \frac{10}{s+1}$. In questo caso essendo il sistema semplice, basterebbe studiare la stabilità calcolando le radici del polinomio $1 + L(s) = 0$ (che porta al risultato $s=-11$ la cui conclusione è che il sistema è asintoticamente stabile). La soluzione $s=-11$ rappresenta il polo della funzione d'anello; aumentando tale valore è possibile migliorare la velocità della risposta del sistema.
 		
-		Volendo tuttavia applicare il criterio di Nyquist è necessario rappresentare il diagramma polare; per fare questo è possibile sfruttare delle \textit{regole} qui descritte:
-		\begin{enumerate}
-			\item verificare che $\G(s)$ non abbia poli sull'asse immaginario (ossia con parte reale nulla): se ciò si verificasse non è possibile rappresentare i diagrammi di Nyquist;
-			\item si tracciano i diagrammi di Bode della funzione $G(j\omega)$ che si vuole analizzare;
-			\item il diagramma polare viene dunque creato \textit{per punti} scegliendo delle particolari pulsazioni $\omega$, soprattutto per $\omega\rightarrow 0$ e $\omega\rightarrow \infty$. In particolare per $\omega\rightarrow 0$ si osserva che $|\G(j0)| = 20dB = 10$ e la fase vale $\angle G(j0) = 0^\circ$; per $\omega \rightarrow \infty$ si calcola $|\G(j\infty)| = -\infty dB = 0$ e $\angle \G(j\infty) = -90^\circ$. Intuitivamente il diagramma di Nyquist è una linea che unisce i due punti e deve vivere nel 4 semipiano in quanto sia modulo che fase sono sempre decrescenti.
-			\item chiudo il diagramma di Nyquist specchiando il diagramma appena tracciato. Il verso di percorrenza è quello delle pulsazioni crescenti sul piano del diagramma polare; sul ramo specchiato il verso della freccia è tale da \textit{non creare scontri}.
-		\end{enumerate}
+		Il \de{criterio di Nyquist} è un metodo grafico che permette, sotto forti ipotesi, di determinare la stabilità (o meno) del sistema dinamico osservando il diagramma polare della funzione di trasferimento (dipendente dalla pulsazione $\omega$).
 		
-		A questo punto è necessario verificare le ipotesi del teorema di Nyquist: essendo $L(s)$ nota, non sono state effettuate \textit{cancellazioni critiche}; inoltre si considera il sistema come in retroazione negativa. A questo punto è necessario calcolare il numero di poli a parte positiva dell'anello che risulta valere $P=0$; questo valore coincide con il numero di giri $N=0$ del diagramma di Nyquist percorsi in senso antiorario rispetto al punto -1 e dunque il \textbf{sistema} è \textbf{asintoticamente stabile}.
+		In particolare le ipotesi da verificare per utilizzare il criterio sono:
+		\begin{itemize}
+			\item non devono essere presenti \textit{parti nascoste} instabili nel calcolo del guadagno di anello $L(s)$;
+			\item il sistema deve retro-azionato negativamente.
+		\end{itemize}
+		
+		Il \de{diagramma di Nyquist} di una funzione di trasferimento è l'unione del diagramma polare della funzione $\G(j\omega)$ con il suo specchio rispetto all'asse reale.
+		
+		Per determinare la stabilità del sistema è necessario calcolare il numero $P$ di poli del guadagno d'anello $L(s)$ con parte reale positiva, il numero $N$ di \textit{giri} del diagramma di Nyquist attorno al punto $-1$ contati positivamente se fatti in senso antiorario. A questo punto \textbf{condizione necessaria} e \textbf{sufficiente} di asintotica stabilità del sistema retro-azionato è che:
+		\begin{itemize}
+			\item $N$ sia ben definito;
+			\item che $N = P$.
+		\end{itemize}
+		
+		Intuitivamente si \textit{gira} attorno al punto $-1$ per via del fatto che $1 + L(s) = 0 \rightarrow L(s) = -1$.
 	
+		 
+		\begin{esempio}{: studio della stabilità tramite il criterio di Nyquist}
+			Si consideri un sistema in retroazione negativa la cui funzione d'anello vale  $L(s) = \frac{10}{s+1}$. In questo caso essendo il sistema semplice, basterebbe studiare la stabilità calcolando le radici del polinomio $1 + L(s) = 0$ (che porta al risultato $s=-11$ la cui conclusione è che il sistema è asintoticamente stabile). La soluzione $s=-11$ rappresenta il polo della funzione d'anello; aumentando tale valore è possibile migliorare la velocità della risposta del sistema.
+			
+			Volendo tuttavia applicare il criterio di Nyquist è necessario rappresentare il diagramma polare; per fare questo è possibile sfruttare delle \textit{regole} qui descritte:
+			\begin{enumerate}
+				\item verificare che $\G(s)$ non abbia poli sull'asse immaginario (ossia con parte reale nulla): se ciò si verificasse non è possibile rappresentare i diagrammi di Nyquist;
+				\item si tracciano i diagrammi di Bode della funzione $G(j\omega)$ che si vuole analizzare;
+				\item il diagramma polare viene dunque creato \textit{per punti} scegliendo delle particolari pulsazioni $\omega$, soprattutto per $\omega\rightarrow 0$ e $\omega\rightarrow \infty$. In particolare per $\omega\rightarrow 0$ si osserva che $|\G(j0)| = 20dB = 10$ e la fase vale $\angle G(j0) = 0^\circ$; per $\omega \rightarrow \infty$ si calcola $|\G(j\infty)| = -\infty dB = 0$ e $\angle \G(j\infty) = -90^\circ$. Intuitivamente il diagramma di Nyquist è una linea che unisce i due punti e deve vivere nel 4 semipiano in quanto sia modulo che fase sono sempre decrescenti.
+				\item chiudo il diagramma di Nyquist specchiando il diagramma appena tracciato. Il verso di percorrenza è quello delle pulsazioni crescenti sul piano del diagramma polare; sul ramo specchiato il verso della freccia è tale da \textit{non creare scontri}.
+			\end{enumerate}
+			
+			A questo punto è necessario verificare le ipotesi del teorema di Nyquist: essendo $L(s)$ nota, non sono state effettuate \textit{cancellazioni critiche}; inoltre si considera il sistema come in retroazione negativa. A questo punto è necessario calcolare il numero di poli a parte positiva dell'anello che risulta valere $P=0$; questo valore coincide con il numero di giri $N=0$ del diagramma di Nyquist percorsi in senso antiorario rispetto al punto -1 e dunque il \textbf{sistema} è \textbf{asintoticamente stabile}.
+		
 		\end{esempio}
 		
 		\paragraph{Estensione del criterio di Nyquist} Supponendo di voler studiare la stabilità di un sistema a retroazione negativa la cui funzione d'anello è moltiplicata per una costante reale del tipo $k\,L(s)$, con $k\in\mathds R$; supponendo di conoscere il diagramma di Nyquist di $L(s)$, per studiare la stabilità è sufficiente considerare che $k$ tende ad espandere/contrarre il diagramma di $L(s)$ già noto.
@@ -99,7 +136,7 @@
 			\item usare la definizione; 
 			\item osservare la pulsazione $\omega_c$ dal diagramma asintotico di Bode del modulo.
 		\end{enumerate}
-		A questo punto si determina la \textbf{fase critica} $\phi_c = \angle L(j\omega_c)$ da definizione (in quanto i diagrammi asintotici sono troppo approssimati). Dati $\phi_m$ il \textbf{margine di fase} pari a $180^\circ - |\phi_c|$ e il \textbf{guadagno della funzione d'anello} $\mu_L$, allora condizione necessaria e sufficiente di asintotica stabilità del sistema retroazionato è che sia margine di fase che guadagno d'anello siano entrambi positivi:
+		A questo punto si determina la \textbf{fase critica} $\phi_c = \angle L(j\omega_c)$ da definizione (in quanto i diagrammi asintotici sono troppo approssimati). Dati $\phi_m$ il \textbf{margine di fase} pari a $180^\circ - |\phi_c|$ e il \textbf{guadagno della funzione d'anello} $\mu_L$, allora condizione necessaria e sufficiente di asintotica stabilità del sistema retro-azionato è che sia margine di fase che guadagno d'anello siano entrambi positivi:
 		\[ \textrm{asintotica stabilità} \qquad \Leftrightarrow \qquad \phi_m > 0 \qquad \mu_L> 0\]
 		
 		\paragraph{Interpretazione del criterio di Bode} Questo criterio deriva, di fatto, da quello di Nyquist. I parametri $\mu_L$ e $\phi_m$ di fatto permettono di capire se il valore di $N$ è nullo o meno; noto infatti che $P=0$ applicando il teorema di Nyquist è possibile dedurre direttamente se il sistema è asintoticamente stabile (per $N=0$, mentre se $N\neq 0$ il sistema è instabile).
