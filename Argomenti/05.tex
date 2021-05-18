@@ -1,0 +1,42 @@
+\chapter{Prestazioni dei sistemi di controllo}
+	
+	In generale la funzione di trasferimento $\G_f$ di un sistema retro-azionato dipende sia dalla funzione di trasferimento $R(s)$ del \textbf{regolatore}, sia dalla funzione di trasferimento $G(s)$ del sistema controllato.
+	
+	In generale un sistema presenta l'ingresso di riferimento $\overline y$, i disturbi $d$ e \textbf{boh} $n$ che, tramite una notazione matriciale della funzione di trasferimento $\G_f(s)$ permette di calcolare l'uscita $y$, l'errore $e$ e l'uscita $u$ (in ingresso al sistema).
+	
+	Osservando lo schema del sistema da analizzare è possibile calcolare le singole funzioni di trasferimento che legano i vari ingressi con le varie uscite, osservando che
+	\[ \overline y \rightarrow y \quad: \quad  F(s) = \frac L {1+L} \qquad \overline y \rightarrow u \quad: \quad Q(s) = \frac R {1+L} \qquad S(s) = \frac 1 {1+L} \]
+	
+	\textbf{RIVEDERE}
+	
+	\[ \begin{pmatrix}
+		 y\\ e \\ u
+	\end{pmatrix} = \begin{bmatrix}
+	 	F(s)  & S(s) & -F(s) \\ S(s) & - S(s) & F(s) \\ Q(s) & - Q(s) & - Q(s) 
+	\end{bmatrix}  \begin{pmatrix}
+		\overline y \\ d \\ n
+	\end{pmatrix}\]
+	
+	La funzione $S(s)$ viene denominata \de{funzione di sensitività} (\textbf{PERCHE?!}), $F(s)$ è la \de{funzione di sensitività complementare} (complementare in quanto $S + F = 1$) e $Q(s)$ è la \de{funzione di sensibilità del controllo} (in quanto compare solamente per calcolare la variabile di controllo $u$).
+	
+	Si osserva che in ogni funzione di trasferimento $F,S,Q$ il denominatore è comune e pari a $1 + L$, con $L$ funzione d'anello (che giustamente è indipendente dall'ingresso/uscita considerato per il sistema). Inoltre le funzioni $F(s)$ e $S(s)$ dipendono esplicitamente solo da $L(s)$. Questo significa che l'analisi delle prestazioni è diversa rispetto a quanto descritto nel capitolo precedente; in particolare scelto il regolare $R$ è possibile calcolare le caratteristiche di $L$ e dunque delle funzioni $F$ ed $S$. 
+	
+	\paragraph{Compromesso sulla scelta del regolatore} RISCRIVERE
+	
+\section{Analisi delle prestazioni}
+
+	\subsection{Funzione di sensitività complementare}
+		In generale la funzione di sensitività complementare $F(s)$ permette di relazionare il valore desiderato $\overline y$ con l'uscita $y$ del sistema, e per migliorare le prestazioni si vuol far si che $F(s)$ si comportasse come un filtro passa basso di guadagno unitario.
+		
+		A questo punto per collegare le caratteristiche di $F(s)$ con il guadagno d'anello è necessario esplicitare l'espressione di quest'ultimo:
+		\[ F(s) = \frac L {1+L} = \frac{N_L/D_L}{1+ N_L/D_L} = \frac{N_L}{D_L + N_L} \]
+		Da questa espressione è possibile verificare come gli zeri di $F(s)$ coincidano con quelli di $L(s)$; volendo esprimere in genere $F(s)$ con un'espressione del tipo
+		\[ F(s) \backsim \frac {\mu_f} {s^g} \frac{\textrm{zeri dominanti}}{\textrm{poli dominanti}}\]
+		
+		Per ricavare il valore $\mu_f / s^g$ è necessario studiare il limite per $s$ che tende a zero della funzione $F(s)$:
+		\[ \lim_{s\rightarrow 0} \frac{\mu_L / s^{g_L}} \]
+		
+		\textbf{1 ORA E 20}
+		
+
+\section{Sintesi di sistemi di controllo}

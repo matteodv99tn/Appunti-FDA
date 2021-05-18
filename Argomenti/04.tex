@@ -156,3 +156,16 @@
 			\[  \phi_m = 180^\circ - \big|-84.3^\circ \big| = 95.7^\circ \]
 			Osservato che il margine di fase $\phi_m$ è positivo  e il guadagno di anello $\mu_L= 10$ è anch'esso positivo, allora è possibile concludere che il sistema retro-azionato è asintoticamente stabile.
 		\end{esempio}
+		
+		\paragraph{Interpretazione del margine di fase}
+		\marginnote{18 maggio} Il valore del \textbf{margine di fase} $\phi_m$, definito in precedenza, è legato al massimo ritardo di tempo ammissibile nel sistema retro-azionato.
+		
+		Immaginando un sistema di controllo retro-azionato con guadagno d'anello $\tilde L(s)$ e ritardo di ingresso pari a $\tau$ (guadagno $e^{-\tau s}$). L'origine di questo ritardo può derivare dalla realizzazione digitale dei sistemi elettronici (per via dei ritardi di comunicazione e tempi di elaborazione). Il margine di fase dunque permette di stabilire qual'è il massimo valore di ritardo $\tau$ oltre il quale il sistema retro-azionato è instabile (nell'ipotesi in cui il sistema non \textit{in ritardo} sia asintoticamente stabile).
+		
+		Disegnando il diagramma di Nyquist della funzione di trasferimento e calcolati la pulsazione critica $\omega_c$ e il margine di fase $\phi_m$, l'aggiunta del  margine di fase comporta una rotazione del grafico di un valore proporzionale a $\tau$. In particolare lo sfasamento dovuto al ritardo di fase vale $\Delta \phi = -\tau_{max} \omega_c$ e uguagliandolo al margine di fase $\phi_m$ si ottiene che
+		\[ \tau_{max} = \frac{\phi_m}{\omega_c} \]
+		
+		\paragraph{Margine di guadagno} Si consideri il caso di un circuito in retroazione di cui è noto il guadagno d'anello $\tilde L$ che tuttavia è pre-moltiplicato per un guadagno $k$ costante di valore sconosciuto. L'idea è dunque capire quanto vale il valore $k_{max}$ che rende il sistema retro-azionato instabile (nel caso in cui $\tilde L$ sia in origine asintoticamente stabile), e tale valore prende il nome di \de{margine di guadagno}.
+		
+		Per essere il sistema stabile, allora il numero di giri del diagramma di Nyquist rispetto al punto -1 deve essere nullo; incrementando $k$ di fatto si ha l'espansione del diagramma di Nyquist rispetto all'origine del piano. A questo punto  nota la distanza $a$  del diagramma di Nyquist dall'origine che si puà determinare come $a = |L(j\omega_\pi)$ dove l'angolo $\omega_\pi$ vale $ \angle L(j\omega_\pi) = -180^\circ$. A quesot punto il margine di guadagno vale
+		\[ k_m = \frac 1 a \]
