@@ -34,9 +34,24 @@
 		\[ F(s) \backsim \frac {\mu_f} {s^g} \frac{\textrm{zeri dominanti}}{\textrm{poli dominanti}}\]
 		
 		Per ricavare il valore $\mu_f / s^g$ è necessario studiare il limite per $s$ che tende a zero della funzione $F(s)$:
-		\[ \lim_{s\rightarrow 0} \frac{\mu_L / s^{g_L}} \]
+		\[ \frac{\mu_f}{s^g} =  \lim_{s\rightarrow 0} F(s) = \lim_{s\rightarrow 0} \frac{L(s)}{1+L(s)} = \lim_{s\rightarrow 0} \frac{\mu_l / s^{g_l}}{ 1 + \mu_l / s^{g_l}} \]	
+		A questo punto è possibile osservare come le proprietà a bassa frequenza della sensitività complementare $F(s)$ (ossia il rapporto $\mu/s^g$) dipende direttamente dalle proprietà a bassa frequenza del guadagno d'anello $L(s)$; in particolare effettuando delle semplificazioni è possibile calcolare il valore dei parametri della sensitività complementare:
+		\[ \lim_{s\rightarrow 0} \frac{\mu_l / s^{g_l}}{ 1 + \mu_l / s^{g_l}} \quad \rightarrow \quad \begin{cases}
+			\mu_f = \frac{\mu_l}{1 + \mu_l} \qquad & \textrm{se } g_l = 0 \\
+			\mu_f = 1 \qquad & \textrm{se } g_l \geq 1 \\ 
+			\mu_f = \mu_l \textrm{ e } g_f = g_l  \qquad & \textrm{se } g_l < 0 \\ 
+		\end{cases}  \]
+	
+		Si osserva dunque che sono presenti uno o più poli nella funzione d'anello nell'origine ($g_l \leq 1$), allora ad esso è associato un termine di tipo integrativo $1/s$ che risulterà essere utile in quanto nei sistemi di controllo PID garantiranno l'unitarietà del guadagno della funzione d'anello.
 		
-		\textbf{1 ORA E 20}
+		\vspace{3mm}
+		Calcolare esplicitamente i poli della funzione di sensitività complementare $F(s)$ risulta essere piuttosto difficile  e per questo essi vengono dedotti analizzando il diagramma del modulo di Bode: in particolare se la pendenza dello stesso cala allora si ha un polo, mentre se la pendenza sale si ha uno zero.
+		Considerando la relazione esplicita della sensitività, si dimostra che il modulo della stessa dipende direttamente dal guadagno della funzione d'anello.
+		\[ |F(j\omega)| = \frac{|L(j\omega)|}{|1+L(j\omega)|} = f\big(|L(j\omega)|\big) \]
+		Nell'ipotesi in cui il guadagno d'anello $|L|$ è molto maggiore del valore unitario (e dunque in decibel $|L|_{dB} \gg 0 $), allora è possibile considerare che
+		\[ |F| \approx \frac{|L|}{|L|} = 1 \qquad \textrm{se } |L| \gg 1 \leftrightarrow |L|_{dB} \gg 0 \]
+		Al contrario è possibile effettuare la semplificazione inversa nel caso in cui il guadagno sia molto inferiore del valore unitario e dunque
+		\[ |F| \approx \frac{|L|}{1} = |L| \qquad \textrm{se } |L| \ll 1 \leftrightarrow |L|_{dB} \ll 0 \]
 		
-
+		
 \section{Sintesi di sistemi di controllo}
