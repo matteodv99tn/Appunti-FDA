@@ -53,5 +53,84 @@
 		Al contrario è possibile effettuare la semplificazione inversa nel caso in cui il guadagno sia molto inferiore del valore unitario e dunque
 		\[ |F| \approx \frac{|L|}{1} = |L| \qquad \textrm{se } |L| \ll 1 \leftrightarrow |L|_{dB} \ll 0 \]
 		
+		A questo punto per progettare un buon regolatore si richiede che la funzione d'anello sia di tipo positivo ($g>0$), oppure se lo stesso è nullo si vuole avere un guadagno d'anello molto alto.
+		
+		\paragraph{Ricerca dei poli dominanti} Solitamente i poli dominanti sono quelli \textit{lenti}, ossia con pulsazione $\omega$ piccola; tuttavia questa \textit{regola} non è generale. In particolare se lo smorzamento $\xi$ di un polo a pulsazione veloce è particolarmente piccolo, allora è possibile che tale polo sia dominante (in quanto si ha un picco di risonanza particolarmente pronunciato).
+		
+		In generale nel progetto di sistemi di controllo  non si vuole mai avere un picco di risonanza, e in generale si vuole che il sistema si comporti come un filtro passa basso. Questo comporta una semplificazione sui diagrammi di Bode e la pulsazione del filtro passa basso associato alla funzione di sensitività complementare $F$ coincide con la pulsazione critica $\omega_c$ del guadagno d'anello.
+		
+		A questo punto è necessario capire sono i poli sono reali oppure complessi coniugati (e determinarne dunque lo smorzamento). Per rispondere alla domanda si parte calcolando l'eventuale smorzamento dei poli (supponendo che esista) considerando che il picco del modulo in corrispondenza della pulsazione critica vale
+		\[ |F(j\omega_c)| = \frac{1}{2|\xi|} \qquad \Rightarrow \quad \xi = \sin\big(\phi_m/2\big) \approx \frac{\phi_m[^\circ]}{100} \]
+		Per effettuare questa operazione è possibile verificare i seguenti passaggi:
+		\begin{align*}
+			|F(j\omega_c)| & = \frac{|L(j\omega_c)|}{|1+L(j\omega_c)|} \xrightarrow[L(j\omega_c) = e^{j\phi_c}]{|L(j\omega_c)| =1 } \frac{1}{|1 + e^{j\phi_c}|} = \frac 1  {\sqrt{\big(1 + \cos^2\phi_c\big) + \sin^2\phi_c}} \\
+			& = \frac 1 {\sqrt{2\big(1+ \cos\phi_c\big)}} = \frac{1}{\sqrt{2 \big(1-\cos \phi_m\big)}} = \frac 1 {2\sin\big(\phi_m/2\big)}
+		\end{align*}
+		Dal risultato che otteniamo nel calcolo dello smorzamento $\xi$ permette di stabilire dunque se i poli sono reali o complessi coniugati; in particolare se $\xi\leq \frac {\sqrt 2 } 2$ allora i poli possono essere considerati come complessi coniugati, mentre se $\xi > \frac {\sqrt 2} 2$ allora i poli sono considerati come reali; ciò significa che per $\phi_m < 75^\circ$ allora i poli sono complessi coniugati (per $\phi_m > 75^\circ$ i poli sono considerati reali coincidenti). \\
+		A questo punto noto che il tempo di assestamento vale $t_a = 5 / |Re|$, allora per $\phi_m > 75^\circ$ allora si ha un polo reale con tempo di assestamento $t_a = 5 /\omega_c$, mentre se $\phi_m < 75^\circ$ (2 poli complessi coniugati) allora
+		\[ t_a = \frac{5}{\omega_c \xi} = \frac{5}{\omega_c \frac{\phi_m}{100}} \]
+		
+	\subsection{Funzione della sensitività}
+		
+		Si analizza ora la sensitività $S(s)$ che permette di correlare il riferimento $\overline y$ con l'errore $e$ di inseguimento. Tale funzione può essere riscritta come
+		\[ S(s) = \frac 1 {1+L}  = \frac{D_L}{D_L+N_L} \]
+		Si osserva così che gli zeri di $S$ coincidono con i poli della funzione d'anello $L$, mentre i poli di $S$ coincidono con quelli delal sensitività complementare.
+		
+		A questo punto di determina guadagno e tipo analizzando il limite per $s\rightarrow 0$ (come nel caso precedente) arrivando ai risultati
+		\[ \lim_{s\rightarrow 0} \frac{1}{ 1 + \mu_l / s^{g_l}} \quad \rightarrow \quad \mu_s = \begin{cases}
+			\frac{1}{1 + \mu_l} \textrm{ e } g_s = 0 \qquad & \textrm{se } g_l = 0 \\
+			 1/\mu_l \textrm{ e } g_s = - g_l \qquad & \textrm{se } g_l \geq 1 \\ 
+			 1 \textrm{ e } g_s = 0  \qquad & \textrm{se } g_l < 0 \\ 
+		\end{cases}  \]
+		Questi risultati sono compatibili rispetto a quanto visto nell'analisi della sensitività complementare: infatti se $g_l = 0$ l'uscita $y$ tende asintoticamente al valore di riferimento $\overline y$ e conseguentemente l'errore $e$ deve convergere a zero (considerazioni analoghe possono essere svolte per tutte le casistiche).
+		
+		\paragraph{Principio del modello interno} Considerando di calcolare l'errore asintotico $e_\infty$ per un ingresso di riferimento $\overline y(s) = A / s^r$, allora per il teorema del valore finale si osserva che
+		\[ e_\infty = \lim_{s\rightarrow 0} sE(s) = \lim_{s\rightarrow 0} s S(s) \frac A{s^r}  = \lim_{s\rightarrow 0} S(s) \frac A{s^{r-1}} \]
+		Nel caso in cui $g_l \geq 1$ allora il limite si può riscrivere come
+		\[ \lim_{s\rightarrow 0} \frac 1  {\mu_l} s^{g_l} \frac A {s^{r-1}} = \lim_{s\rightarrow 0} \frac A {\mu_l} s^{g_l - r + 1} \]
+		
+		Ponendo $r=1$ (associato ad un riferimento a scalino) allora per avere un errore asintotico nullo è necessario imporre che $g_l \geq 1$; se invece si sceglie $r=2$ (associato ad un riferimento a rampa) per avere errore asintotico nullo si deve avere $g_l \geq 2$. In generale fissato il valore di $r$, allora per avere errore asintotico nullo si deve avere $g_l \geq r$.
+		
+		In generale il \textbf{principio del modello interno} afferma che \textit{per ottenere un errore asintotico nullo, a fronte di un riferimento $y(s)$, occorre che in $L(s)$ sia presente il modello di $y(s)$.}
+		
+		Analizzando i poli e gli zeri di $S(s)$ è possibile analizzare la risposta in frequenza del sistema:
+		
+		
+		
 		
 \section{Sintesi di sistemi di controllo}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
