@@ -91,16 +91,80 @@
 		
 		Ponendo $r=1$ (associato ad un riferimento a scalino) allora per avere un errore asintotico nullo è necessario imporre che $g_l \geq 1$; se invece si sceglie $r=2$ (associato ad un riferimento a rampa) per avere errore asintotico nullo si deve avere $g_l \geq 2$. In generale fissato il valore di $r$, allora per avere errore asintotico nullo si deve avere $g_l \geq r$.
 		
-		In generale il \textbf{principio del modello interno} afferma che \textit{per ottenere un errore asintotico nullo, a fronte di un riferimento $y(s)$, occorre che in $L(s)$ sia presente il modello di $y(s)$.}
+		In generale il \textbf{principio del modello interno} afferma che \textit{per ottenere un errore asintotico nullo, a fronte di un riferimento $\overline y(s)$, occorre che in $L(s)$ sia presente il modello di $\overline y(s)$.}
 		
-		Analizzando i poli e gli zeri di $S(s)$ è possibile analizzare la risposta in frequenza del sistema:
+		Studiando la posizione di poli e zeri della funzione di sensitività $S(s)$ è possibile analizzare la risposta in frequenza del sistema; in particolare studiando il modulo  si osserva che lo stesso è funzione del modulo della funzione d'anello:
+		\begin{align*}
+			|S(j\omega)| & = \frac 1 {|1 + L(j\omega)|} = f\big(|L(j\omega)|\big) \\
+			& \approx \begin{cases}
+				|S| = \frac 1 {|L|} \ \leftrightarrow \ |S|_{dB} = - |L|_{dB} \qquad & \textrm{se } |L|\gg 1, \omega \ll \omega_c \\
+				|S| = 1 \ \leftrightarrow \ |S|_{dB} = 0dB \qquad & \textrm{se } |L|\ll 1, \omega \gg \omega_c \\
+			\end{cases}
+		\end{align*}
 		
+		Si osserva dunque che il comportamento della funzione di sensitività si comporta come un filtro passa alto con frequenza di taglio $\omega_c$ coincidente con quella della funzione di sensitività complementare $F(s)$ (che si comporta tuttavia come un filtro passa basso). Questo significa che i poli della funzione di sensitività $S(s)$ coincidono con quelli della funzione di sensitività complementare $F(s)$. Questo può anche essere intuitivamente dimostrato considerando che il denominatore di $S(s)$ e $F(s)$ sono uguali, e dunque i poli non possono che non essere coincidenti.
 		
+	\subsection{Funzione della sensitività del controllo}
+		La \de{sensitività di controllo} $Q(s)$ permette di correlare il riferimento $\overline y$, disturbi e rumori $d,n$ con l'ingresso al sistema controllato $u$; in particolare si era dimostrato valere che tale funzione è calcolata come $Q = \frac R {1+L} = f(R,L)$, ossia dipende sia dal guadagno d'anello ma anche dalla funzione di trasferimento dovuta al regolatore $R$. Questo fatto rende più \textit{difficoltoso} approcciare il progetto del controllore per come fin'ora introdotto, agendo di fatto solo su $L(s)$.
+		
+		D'altra parte è possibile anche osservare che le caratteristiche di $Q(s)$ (che determina di fatto l'andamento di $u$) sono \textit{secondarie} rispetto ai risultati delle funzioni $F,S$ che determinano l'andamento dell'uscita $y$ e dell'errore $e$. Nella pratica dunque si progetta il regolare in modo da ricavare dei risultati desiderabili su $y,e$, mentre il calcolo di $Q(s)$ si fa \textit{a posteriori} solamente per dimensionare l'\textbf{azione di controllo}, ossia gli attuatori.
+		
+		\paragraph{Nota} E' in realtà possibile riscrivere la formulazione di $G(s)$ in maniera più \textit{agevola}; in particolare si dimostra che
+		\begin{align*}
+			Q(s) & = \frac R {1+L} \frac G G = \frac L {1+L} G^{-1} = F(s) G^{-1}(s) \\
+			\Rightarrow \qquad F(s)& = G(s) Q(s) 
+		\end{align*}
+		Da questa relazione è possibile calcolare $|F|_{dB} = |G|_{dB} + |Q|_{dB}$; per \textit{velocizzare} un sistema dinamico è necessario \textit{spostare} verso $\omega$ più alte il polo della funzione $F(s)$; essendo il guadagno $G(s)$ del sistema da controllare prestabilito, è necessario compensare la differenza con la presenza di una sensitività di controllo $Q(s)$ tale da mantenere le relazioni sul modulo appena viste.
+		
+		In generale quando $|F|\backsim|G|$ l'azione del sistema di controllo $Q$ è piccola, mentre diventa valore diventa importante nei punti in cui le funzioni di trasferimento di $F$ e $G$ diventano diverse: maggiore è la modifica di $G$, maggiore è l'azione di controllo necessario.
+		
+		\begin{concetto}
+			Per cambiare la dinamica di un sistema non basta \textit{progettare bene} un regolatore, ma occorre anche dell'\textit{energia}, ossia l'azione di controllo, tanto maggiore quanto sono le modifiche al sistema originario.
+		\end{concetto}
 		
 		
 \section{Sintesi di sistemi di controllo}
+	La \de{sintesi} è il processo di progettazione del regolatore in modo che il sistema controllato si comporti come richiesto; in particolare nel dominio di Laplace un processo di sintesi di un sistema può essere caratterizzato dai seguenti passaggi:
+	\begin{itemize}
+		\item si scelgono le caratteristiche desiderate del sistema, quali le risposte dell'uscita $y$, dell'errore $e$...
+		\item si traducono le caratteristiche desiderate in proprietà desiderate della funzione d'anello $L(s)$;
+		\item si disegna/progetta/calcola una funzione d'anello $L(s)$ compatibile con le caratteristiche appena determinate;
+		\item nota la funzione di trasferimento $G(s)$ del sistema da controllare, si calcola il regolare tramite inversione del guadagno d'anello:
+		\[ L(s) = R(s) G(s) \qquad \rightarrow \quad R (s) = \frac{L(s)}{G(s)}\]
+	\end{itemize}	
+	Questo processo prende il nome di \de{sintesi di $R(s)$ tramite il \textit{loop shaping}}.
 
-
+	\subsection{Stabilità del sistema di controllo}
+		Il primo passaggio nella sintesi del sistema di controllo è assicurarsi che lo stesso, alla fine del processo, risulti asintoticamente stabile:
+		\begin{itemize}
+			\item se il sistema da controllare era già in origine asintoticamente stabile (per cui il numero di poli a parte reale positiva $P = 0 $ sia nulla) è sufficiente analizzare la stabilità tramite il criterio di Bode. Si deve dunque garantire, per la funzione d'anello, che sia il guadagno $\mu_L"$ che margine di fase $\phi_m$ siano positivi non nulli e che l'attraversamento del diagramma del modulo di Bode attraversi l'intercetta orizzontale una sola volta \textit{dall'alto verso il basso}.
+			
+			\item se il sistema da controllare è invece instabile in partenza il progetto del regolare diventa più complesso e si può effettuare utilizzando delle tecniche di progettazione diverse (che si vede alla magistrale) oppure utilizzando il metodo degli \textit{anelli in cascata} (ossia si crea un anello interno il cui scopo è quello di stabilizzare il sistema, mentre l'anello esterno su cui si innesta il primo viene progettato per ottenere i risultati desiderati).
+			
+		\end{itemize}
+	
+	\subsection{Specifiche del sistema}
+		La scelta delle \textbf{specifiche del sistema} possono essere suddivise in quelle \textbf{asintotiche} (o \textit{statiche}) e \textbf{dinamiche}.
+		
+		\paragraph{Specifiche asintotiche} Le specifiche asintotiche studiano il comportamento del sistema controllato a livello asintotico, ossia per $t\rightarrow \infty$, per ingressi \textit{canonici} (come lo scalino o la rampa, ossia segnali per cui vale il teorema del valore finale) e per ingressi sinusoidali (ossia per ingressi per cui è necessario considerare il teorema della risposta in frequenza).
+		
+		\vspace{3mm}
+		
+		Esempi di specifiche asintotiche per ingressi canonici possono essere che l'errore siano compresi entro degli intervalli specifici ($|e_\infty| <h$, $y_\infty > h$). A questo punto è possibile eseguire i seguenti passaggi:
+		\begin{itemize}
+			\item si calcola la funzione di trasferimento (chiamata, per esempio,$W(s)$) che lega l'ingresso all'uscita, ossia che permette di calcolare le funzioni $F(s), S(s), \dots$
+			\item applico il teorema del valore finale; considerando l'esempio di voler stabilire l'errore asintotico è sufficiente calcolare
+			\[ |e_\infty| = \lim_{s\rightarrow 0} s W(s) \overline y(s) \]
+			\item a questo punto si ottiene un'espressione funzione dei parametri $g_L,\mu_L$ del guadagno d'anello: a questo punti si impone la specifica e si trovano i valori di $g_L$ e $\mu_L$.
+		\end{itemize}
+		
+		\vspace{3mm}
+		
+		Considerando invece segnali in ingressi sinusoidali il processo è analogo, tuttavia non si applica più il teorema del valore finale ma quello della risposta in frequenza.
+		
+		\textbf{MINUTO 26}
+				
+		
 
 
 
