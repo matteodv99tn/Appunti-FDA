@@ -162,15 +162,38 @@
 		
 		Considerando invece segnali in ingressi sinusoidali il processo è analogo, tuttavia non si applica più il teorema del valore finale ma quello della risposta in frequenza.
 		
-		\textbf{MINUTO 26}
+		\paragraph{Specifiche dinamiche} Lo studio delle specifiche dinamiche si basa sul determinare caratteristiche come il tempo di assestamento $t_a$ o l'elongazione percentuale $s_\%$, ossia determinare la posizione dei poli in anello chiuso. Considerando per esempio un tempo di assestamento $t_a$ che deve essere inferiore ad un tempo specifico $h$, è possibile determinare la pulsazione angolare critica $\omega_c$ nel caso in cui i poli siano reali o complessi:
+		\[ t_a = \begin{cases}
+			\dfrac{5}{\omega_c} \quad &\textrm{se } \phi_m \geq 75^\circ \qquad \Rightarrow \quad \omega_c > \dfrac{5}{h} \\
+			\dfrac{5}{\omega_c \frac{\phi_m}{100}} \quad &\textrm{se } \phi_m < 75^\circ \qquad \Rightarrow \quad \omega_c \frac{\phi_m}{100} > \dfrac{5}{h} \\
+		\end{cases} \]
 				
+		Nel caso di specifica sulla sovra-elongazione $s_\% < h$, è necessario effettuare delle considerazioni sullo smorzamento $\xi$ (e dunque sul margine di fase) del sistema considerando che $s_\% = f(\xi) = f(\phi_m/100)$.
 		
+		In generale imporre la pulsazione critica $\omega_c$ non è difficile in quanto basta \textit{disegnare} il diagramma di Bode di $L(s)$ in modo da rispettare tale condizione; più complesso è invece determinare il margine di fase in quanto lo stesso viene calcolato \textit{a posteriori} in maniera analitica. \\
+		Per questo in generale si utilizza un procedimenti iterativo:
+		\begin{enumerate}
+			\item ipotizzo una funzione d'anello $L(s)$ compatibile con le specifiche viste fino ad ora;
+			\item si calcola il margine di fase $\phi_m$ della soluzione ipotizzata;
+			\item si verifica la specifica sul margine di fase; in particolare se essa non risulta essere accettabile si ritorna al punto 1, altrimenti il processo si può concludere in quanto si è trovata una soluzione accettabile.
+		\end{enumerate}
 
+		In generale non ci sono delle \textit{regole} generali per capire come modificare la funzione d'anello per spostare il margine di fase, tuttavia è possibile osservare questi fatti (non sempre sono verificati, però possono dare una buona idea del comportamento del sistema):
+		\begin{itemize}
+			\item più è grande il tipo $g_L > 0$ della funzione d'anello, più piccolo è il margine di fase; questo è dovuto al fatto che nel calcolo di $\phi_m$ si ha una riduzione di fase dovuta ai contribuiti $\phi_c = - g_L 90^\circ$;
+			\item aumentare la pulsazione critica $\omega_c$ porta una riduzione del margine di fase $\phi_m$.
+		\end{itemize}
 
+	\subsection{Calcolo del regolatore}
+		A questo punto, definita la funzione d'anello $L$ e studiato il comportamento del sistema da controllare $G$, è possibile ricavare il controllore $R$ tramite la relazione $L/G$. In generale questa operazione è piuttosto \textit{immediata} e non presenta criticità, tuttavia ci sono casi in cui $L(s)$ deve avere una particolare \textit{struttura} per la quale, altrimenti, si troverebbe un risultato sbagliato per il regolatore:
+		\begin{itemize}
+			\item se il sistema con funzione di trasferimento $G(s)$ presenta poli con parte reale positiva. In questo caso effettuando l'operazione di divisione $L/G$ si ottiene un regolatore $R(s)$ anch'esso con un polo a parte reale positiva, e dunque il regolatore sarebbe instabile. In questo caso la soluzione che si può utilizzare è quella di includere gli zeri \textit{destri } di $G(s)$ nella funzione d'anello $L(s)$:
+			
+			\item se il sistema da controllare presenta una funzione $G(s)$ contenente un ritardo di tempo è necessario includere in $L(s)$ tale ritardo.
+			
+		\end{itemize}	
 
-
-
-
+		Può inoltre accadere che, nel calcolo di $R$, che la stessa abbia più zeri che poli (e dunque la definiamo $R^*$), cosa che è impossibile (non esistono sistemi dinamici che hanno più zeri che poli). Per ovviare a questo problema si aggiungono poli ad $R^*$ ad alta frequenza e lontani dalle singolarità di $R^*$ e $L$: essendo ad alta frequenza infatti il loro effetto \textit{svanisce} rapidamente senza compromettere il progetto originario.
 
 
 
