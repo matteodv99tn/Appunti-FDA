@@ -1,0 +1,260 @@
+\usepackage[width=15.00cm, height=23.00cm]{geometry}
+\usepackage[italian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{dsfont}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{paracol}
+\usepackage{xparse}
+\usepackage{sidecap}
+\usepackage[makeroom]{cancel}
+\usepackage{capt-of}
+\usepackage{caption}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{xpatch}
+\usepackage{subcaption}
+\usepackage[most]{tcolorbox}
+\usepackage{lipsum}
+\usepackage{float}
+\usepackage{imakeidx}
+\usepackage{wrapfig}
+\usepackage{marginnote}
+\usepackage{ upgreek }
+\usepackage{bm}
+\usepackage{enumerate}
+
+\graphicspath{{Immagini/}}
+
+%\newcommand{\de}[1]{\textbf{\textcolor{NavyBlue}{#1}}}
+
+\makeindex[columns=3, title=Indice Analitico, intoc]
+
+\captionsetup{font = {it, small}, labelfont={color=NavyBlue, bf}}
+
+
+\renewcommand{\H}{\mathcal H}
+\renewcommand{\S}{\mathcal S}
+\newcommand{\F}{\mathcal F}
+\newcommand{\E}{\mathcal E}
+\newcommand{\R}{\mathcal R}
+\newcommand{\I}{\mathcal I}
+\renewcommand{\L}{\mathcal L}
+\newcommand{\C}{\mathcal C}
+\newcommand{\D}{\mathcal D}
+
+
+\newcommand{\ov}[1]{ \vett{#1}  	}
+\newcommand{\vers}[1]{ \boldsymbol{\hat{#1}}  	}
+\newcommand{\vett}[1]{ \boldsymbol{#1}  	}
+\newcommand{\dov}[1]{ \dot{\boldsymbol{#1}  }	}
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\inv}{\textrm{I}}
+\newcommand{\exx}{\varepsilon_{xx}}
+\newcommand{\exy}{\varepsilon_{xy}}
+\newcommand{\eyy}{\varepsilon_{yy}}
+\newcommand{\ezz}{\varepsilon_{zz}}
+\newcommand{\txy}{\tau_{xy}}
+\newcommand{\txz}{\tau_{xz}}
+\newcommand{\tyz}{\tau_{yz}}
+\newcommand{\ttz}{\tau_{\theta z}}
+\newcommand{\tzt}{\tau_{z \theta}}
+\newcommand{\gxy}{\gamma_{xy}}
+\newcommand{\gxz}{\gamma_{xz}}
+\newcommand{\gyz}{\gamma_{yz}}
+\newcommand{\sxx}{\sigma_{xx}}
+\newcommand{\syy}{\sigma_{yy}}
+\newcommand{\szz}{\sigma_{zz}}
+\newcommand{\seq}{\sigma_{eq}}
+\newcommand{\samm}{\sigma_{amm}}
+\newcommand{\scr}{\sigma_{cr}}
+\newcommand{\sys}{\sigma_{ys}}
+
+
+\newcommand{\Mx}{M_x}
+\newcommand{\My}{M_y}
+\newcommand{\Mz}{M_z}
+\newcommand{\Ixx}{I_{xx}}
+\newcommand{\Iyy}{I_{yy}}
+\newcommand{\Izz}{I_{zz}}
+
+\newcommand{\opdiff}{\Big[\ \partial \ \Big] }
+\newcommand{\matalpha}{\Big[\ \alpha \ \Big] } 
+\newcommand{\asmat}[1]{ \big[ \ #1 \ \big] }
+
+\newcommand{\figura}[5]{\begin{SCfigure}[#2][b!h!t!]
+		\centering
+		\includegraphics[width=#1 cm]{#3}
+		\caption{#4} \label{#5}
+\end{SCfigure}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newcommand{\bfcolor}[1]{\renewcommand*{\textbf}[1]{{\bfseries { \color{#1}##1}}}}
+
+\setcolumnwidth{0.3\textwidth}
+
+
+
+\newcounter{concetti}
+\newenvironment{concetto}{
+	
+	\bfcolor{NavyBlue}
+	\refstepcounter{concetti}
+	{\color{NavyBlue}\textbf{Concetto \theconcetti:}} \quad
+}{
+}
+\numberwithin{concetti}{chapter}
+\tcolorboxenvironment{concetto}{
+	boxrule=0pt,
+	boxsep=0pt,
+	colback={White!90!NavyBlue},
+	enhanced jigsaw, 
+	borderline west={2pt}{0pt}{NavyBlue},
+	sharp corners,
+	before skip=5pt,
+	after skip=10pt,
+	breakable,
+}
+
+\newcounter{teoremi}
+\newenvironment{teorema}[2]{
+	\bfcolor{ForestGreen}
+	\refstepcounter{teoremi}
+	\textbf{Concetto \theteoremi #1} 
+	\vspace{3mm} 
+	
+	\texttt{Ipotesi: } #2
+	
+	\vspace{3mm} 
+	
+	\texttt{Enunciato}: 
+}{
+}
+\numberwithin{teoremi}{chapter}
+\tcolorboxenvironment{teorema}{
+	boxrule=0pt,
+	boxsep=0pt,
+	colback={White!100!ForestGreen},
+	enhanced jigsaw, 
+	borderline west={2pt}{0pt}{ForestGreen},
+	sharp corners,
+	before skip=5pt,
+	after skip=10pt,
+	breakable,
+}
+
+
+\newenvironment{dimostrazione}{
+	\bfcolor{Orchid}
+	\textbf{Dimostrazione} \quad
+}{ }
+\tcolorboxenvironment{dimostrazione}{
+	boxrule=0pt,
+	boxsep=0pt,
+	colback={White!100!NavyBlue},
+	enhanced jigsaw, 
+	borderline west={2pt}{0pt}{Orchid},
+	sharp corners,
+	before skip=5pt,
+	after skip=10pt,
+	breakable,
+}
+
+\newenvironment{osservazione}{
+	\bfcolor{BurntOrange}
+	\textbf{Osservazione: }
+}{ }
+\tcolorboxenvironment{osservazione}{
+	boxrule=0pt,
+	boxsep=0pt,
+	colback={White!100!BurntOrange},
+	enhanced jigsaw, 
+	borderline west={2pt}{0pt}{BurntOrange},
+	sharp corners,
+	before skip=5pt,
+	after skip=10pt,
+	breakable,
+}
+
+\newenvironment{nota}{
+	\bfcolor{CadetBlue}
+	\textbf{Nota: }
+}{ }
+\tcolorboxenvironment{nota}{
+	boxrule=0pt,
+	boxsep=0pt,
+	colback={White!100!CadetBlue},
+	enhanced jigsaw, 
+	borderline west={2pt}{0pt}{CadetBlue},
+	sharp corners,
+	before skip=5pt,
+	after skip=10pt,
+	breakable,
+}
+
+
+
+
+\newcounter{numrichiamo}
+\newenvironment{richiamo}{
+	\noindent
+	\refstepcounter{numrichiamo}
+	
+%	\renewcommand{\de}[1]{ { \color{ForestGreen} \textbf{#1} } }
+	
+	{\color{ForestGreen}\textbf{Richiamo \thenumrichiamo:}}
+}{
+}
+\tcolorboxenvironment{richiamo}{
+	boxrule=0pt,
+	boxsep=0pt,
+	colback={White!90!ForestGreen},
+	enhanced jigsaw, 
+	borderline west={2pt}{0pt}{ForestGreen},
+	sharp corners,
+	before skip=5pt,
+	after skip=5pt,
+	breakable,
+}
+
+\newcounter{esempi}
+\numberwithin{esempi}{chapter}
+\newenvironment{esempio}[1]{
+	\bfcolor{Periwinkle}
+	\noindent
+	\refstepcounter{esempi}
+	{\color{Periwinkle}\textbf{Esempio \theesempi#1}  } 
+	\vspace{3mm}
+	
+	\noindent
+}{
+}
+
+
+\tcolorboxenvironment{esempio}{
+	boxrule=0pt,
+	boxsep=0pt,
+	colback={White!90!Periwinkle},
+	enhanced jigsaw, 
+	borderline west={2pt}{0pt}{Periwinkle},
+	sharp corners,
+	before skip=10pt,
+	after skip=10pt,
+	breakable,
+}
