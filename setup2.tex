@@ -25,7 +25,9 @@
 \usepackage{ upgreek }
 \usepackage{bm}
 \usepackage{enumerate}
+\usepackage{tickzit}
 
+\input{stilifigure.tikzstyles}
 \graphicspath{{Immagini/}}
 
 %\newcommand{\de}[1]{\textbf{\textcolor{NavyBlue}{#1}}}
@@ -91,6 +93,11 @@
 \end{SCfigure}}
 
 
+\newcommand{\figuratikz}[5]{\begin{SCfigure}[#2][b!h!t!]
+\centering
+\resizebox{#1cm}{!}{\tikzfig{Immagini/#3}}
+\caption{#4} \label{#5}
+\end{SCfigure}}
 
 
 

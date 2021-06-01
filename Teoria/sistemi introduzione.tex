@@ -9,5 +9,50 @@
 	\subsection{Sistema}
 	
 		\begin{concetto}
-			L'automatica si basa sullo studio di \textbf{sistemi}, ossia un insieme di elementi fisici o concettuali il cui comportamento cambia nel tempo e/o spazio e che interagiscono con il mondo circostante. 
+			L'automatica si basa sullo studio di \textbf{sistemi}, ossia un insieme di elementi fisici o concettuali il cui comportamento cambia nel tempo e/o spazio e che interagiscono con il mondo circostante. I sistemi, come mostrati in figura \ref{sistema}, sono modellati come delle \textit{black box} le cui interazioni con l'ambiente esterno sono rappresentate dai rami, ossia le frecce entranti/uscenti: in particolare si osservano
+			\begin{itemize}
+			    \item gli \textbf{ingressi di controllo}  $u$ (o semplicemente \textbf{ingressi}) i valori in ingresso al sistema che potranno essere modificati a piacimento dal controllore;
+			    \item gli \textbf{ingressi di disturbo} $d$, ossia valori la cui evoluzione non può essere influenzata e in generale dei quali non è conosciuto l'andamento;
+			    \item le \textbf{uscite} $y$ del sistema che descrivono la sua evoluzione e che dunque possono influenzare l'ambiente con il quale interagiscono.
+			\end{itemize}
 		\end{concetto}
+
+    	\figuratikz{4}{1}{sistema}{schema di un sistema.}{sistema}
+    	
+    	In molti casi la scelta di catalogare una variabile come ingresso o uscita è puramente arbitraria e deve essere contestualizzata al problema da risolvere. Considerando l'esempio di un'automobile, la coppia motrice può essere considerata come un'uscita se si considera che essa derivata dal motore che si interfaccia sul veicolo e che è determinata da ingressi quali la quantità di carburante, temperatura dell'aria ecc. Tuttavia la stessa coppia motrice può anche essere considerata come un ingresso che l'automobile utilizza per seguire la sua traiettoria.
+    	
+    \subsection{Controllo}
+        \begin{concetto}
+                Il \textbf{controllore} è la \textit{black box} che rappresenta il controllo automatico, ossia che descrive l'azione che deve essere applicata al sistema per farlo evolvere come desiderato. Il controllore, mostrato in figura \ref{controllore}, è del tutto similare come rappresentazione ad un sistema, dove tuttavia come rami in ingresso si osserva la \textbf{specifica del problema} $\overline y$, ossia il valore di \textbf{riferimento} al quale deve tendere a regime il sistema, mentre in uscita si ha l'\textbf{azione di controllo} $u$ del controllore $C$ sul sistema $S$. Altri ingressi sono connotati generalmente dalla variabile $i$.
+         \end{concetto}
+    	
+    	\figuratikz{4}{1}{controllo}{schema di un controllore.}{controllore}
+    	
+    	Idealmente la \textbf{variabile controllata} (ossia l'uscita $y$ del sistema $S$) deve essere pari al segnale di riferimento $\overline y$ in ogni condizione, ossia indipendentemente dal rumore $n$ e dai disturbi $d$ che agiscono sull'insieme di controllore e sistema. Tuttavia per modellare più \textit{correttamente} l'andamento reale in generale l'obbiettivo del controllo è quello di minimizzare l'errore $e$ del sistema:
+    	\begin{equation}
+    	    \underbrace{\textrm{errore}}_e = \underbrace{\textrm{valore di riferimento}}_{\overline y} - \underbrace{\textrm{variabile controllata}}_y
+    	\end{equation}
+    	
+    	Spesso i limiti delle specifiche di controllo sono limitate dalla grandezza della variabile di controllo stessa: per esempio una Fiat non potrà mai accelerare come una Ferrari per via del motore che è implementato sulla stessa.
+    	
+    \subsection{Sistema di controllo}
+        \begin{concetto}
+            Un opportuno collegamento tra controllore $C$ e sistema $S$ determina dunque il \textbf{sistema di controllo} (\textbf{FIGURA}); questo nuovo sistema contiene praticamente tutti gli elementi fin'ora visti, ossia in particolare il valore di riferimento $\overline y$, la variabile di controllo $u$ che si interfaccia sul sistema e l'uscita $y$ del sistema, ossia la \textbf{variabile da controllare}.
+            
+            E' inoltre possibile classificare i sistemi di controllo in base alla topologia degli stessi, in particolare si parla di \textbf{anello aperto} quando le uscite del sistema $y$ non sono poste in retroazione alla variabile di riferimento, mentre quando ciò avviene si parla di controllo in \textbf{anello chiuso}.
+        \end{concetto}
+        
+    	\textbf{AGGIUNGERE FIGURE SISTEMA DI CONTROLLO IN ANELLO APERTO E CHIUSO}
+    	
+        Come si osserverà un sistema in anello aperto per poter funzionare \textit{correttamente} deve conoscere perfettamente il funzionamento del sistema e i parametri dello stesso, mentre un sistema in anello chiuso, seppur più complesso (in quanto prevede il montaggio di sensori e algoritmo di controllo più sofisticati), permette di ottenere prestazioni sensibilmente \textit{migliori}, immuni da incertezze e interferenze esterne.
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
