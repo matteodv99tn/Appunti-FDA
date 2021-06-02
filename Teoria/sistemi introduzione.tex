@@ -83,9 +83,82 @@
 		Un \textbf{sistema} è detto \textbf{lineare} se rispetta le condizioni di linearità tra ingresso e uscita, ossia se nota l'uscita $f(u_1), f(u_2)$ per due ingressi noti $u_1,u_2$, allora l'uscita $f(u)$ di un ingresso ottenuto come combinazione lineare di $u_1,u_2$ deve essere la stessa combinazione lineare delle due uscite; in termini matematici una funzione per essere lineare deve essere tale che
 		\[ u = \alpha_1 u_1 + \alpha_2 u_2 \qquad \Rightarrow \quad f(u) = \alpha_1 f(u_1) + \alpha_2 f(u_2) \]
     	Ogni qualvolta questa condizione non venisse rispettata, il \textbf{sistema} è semplicemente detto \textbf{non lineare}.
+    
+    	\paragraph{Rappresentazione matriciale per sistemi lineari} In generale un sistema lineare di tipo mimo può essere espresso come un sistema di equazioni lineari del tipo
+    	\[\begin{cases}
+    		y_1 = k_{11} u_1 + \dots + k_{1m} u_m \\
+    		\ \vdots \\ 
+    		y_n = k_{n1} u_1 + \dots + k_{nm} u_m
+    	\end{cases}\]
+    	Per come visto in algebra lineare è altresì possibile convertire tale sistema in \textit{notazione algebrica} in un sistema rappresentato in forma matriciale dal vettore $\boldsymbol u$ degli ingressi e $\boldsymbol y$ delle uscite e dalla matrice dei coefficienti $\mathcal K$:
+    	\[ \boldsymbol{y} = \mathcal K \boldsymbol{u} \qquad \leftrightarrow\qquad \begin{pmatrix}
+    		y_1 \\ \vdots \\ y_n
+    	\end{pmatrix} = \begin{bmatrix}
+    		k_{11} & \dots & k_{1m} \\ 
+    		\vdots & \ddots \\
+    		k_{n1} & & k_{nm}
+    	\end{bmatrix} \begin{pmatrix}
+    		u_1 \\ \vdots \\ u_m
+    	\end{pmatrix}\]
+    	\begin{osservazione}
+    		In seguito non verrà più rappresentata alcuna differenza tra la rappresentazione degli ingressi $u$ e uscite $y$ come scalari o vettori, in quanto i due comportamenti per sistemi lineari sono analoghi.
+    	\end{osservazione}
     	
+    \subsubsection{Sistemi a tempo continuo e a tempo discreto}
+    	Nei \textbf{sistemi a tempo continuo} le variabili evolvo, per l'appunto, con continuità nel tempo $t$, mentre i \textbf{sistemi a tempo discreto} presentano variabili che mutano solamente in corrispondenza di tempi $k\in \mathds Z$ che possono assumere solamente valori discreti interi.
     	
+    	In generale i sistemi a tempo discreto derivano o dall'approssimazione di sistemi a tempo continuo oppure da sistemi dinamici (tendenzialmente concettuali) che nativamente devono prevedere una successione di eventi ad intervalli (come per esempio un algoritmo di calcolo di zeri di funzione tramite il metodo di Newton).
     	
+    \subsubsection{Sistemi tempo varianti e tempo invarianti}
+    	Sono detti \textbf{sistemi tempo varianti} tutti quei sistemi per cui il funzionale $f$ che lega l'uscita con l'ingresso dipende esplicitamente dal tempo, ossia assume una \textit{forma} del tipo
+    	\[  y = f(u,t)\]
+    	Un esempio di questo tipo di sistema è dato dalla funzione $f(u,t) = u^2 + 2t$.
     	
+    	Al contrario se la funzione $f$ è indipendente dal tempo $t$, allora il \textbf{sistema} è detto \textbf{tempo invariante} ed è rappresentato da una relazione del tipo
+    	\[ y = f(u) \]
+    	Un esempio di questo tipo di sistema è dato dalla relazione $f(u) = e^u + 2u^3$.
     	
+    	\begin{osservazione}
+    		La (in)varianza del sistema rispetto al tempo è riferita solamente rispetto al funzionale $f$ che lega in generale l'ingresso con l'uscita, ma non all'ingresso $u$ che può variare nel tempo per stabilire la \textit{dinamica} del sistema!
+    	\end{osservazione}
+    
+   	\subsubsection{Sistemi statici e sistemi dinamici}
+   		La distinzione tra sistemi statici e dinamici è la più importante in quanto ci permette di capire meglio come approcciare l'analisi del sistema.
     	
+    	\begin{concetto}
+    		Un \textbf{sistema} è detto \textbf{statico} se la relazione tra ingresso è uscita è descritta da un'equazione algebrica del tipo $$y=f(u)$$
+    		Intuitivamente ciò significa che per determinare l'uscita $y$ ad un istante generico di tempo $t^*$ è sufficiente conoscere il valore dell'ingresso $u^*$ in tale istante: in questo modo la \textit{storia} degli ingressi è ininfluente sulla determinazione dell'uscita e per questo tali sistemi sono detti \textbf{\textit{memory-less}}.
+    	\end{concetto}
+    	\begin{concetto}
+    		Al contrario di quanto appena affermato, sono detti \textbf{sistemi dinamici} tutti quei sistemi rispetto ai quali per determinare il valore dell'uscita $y$ al tempo $t^*$ non è sufficiente conoscere solamente l'ingresso $u(t^*)$, ma anche tutto il pregresso temporale dell'ingresso $u(t)$ nell'intervallo di tempo compreso tra l'origine dei tempi $t_0$ e il tempo in questione $t^*$. Matematicamente questo tipo di sistemi è dunque governato non da un'equazione algebrica ma da un'\textbf{equazione differenziale} (ordinarie).
+    		
+    		Per questi sistemi sono dette \textbf{variabili di stato}, generalmente indicate come $x$, quelle variabili che occorre conoscere all'istante $t_0$ (insieme alla storia degli ingressi $u(t)$) per determinare univocamente l'uscita $y(t^*)$.
+    	\end{concetto}
+    
+\section{Spazio di stato e sua rappresentazione}
+	\begin{concetto}
+		La \textit{metodologia universale} per descrivere i sistemi dinamici è basata sulla \textbf{rappresentazione in spazio di stato} del sistema stesso. Questa metodologia si basa sulla scrittura di una serie di \textbf{equazioni di stato} $f$ che relazionano la derivata prima $\dot x$ di una variabile di stato con le variabili di stato (non derivate), gli ingressi e il tempo secondo delle relazioni del tipo
+		\[ \dot x = f( x,u,t)\]
+		Per completare la rappresentazione è inoltre necessario scrivere anche le \textbf{trasformazioni d'uscita} $g$ che legano le uscite $y$ con le variabili di stato, gli ingressi e il tempo con una relazione del tipo
+		\[ y = g(x,u,t)  \]
+	\end{concetto}
+	\begin{osservazione}
+		Se il sistema prevede $n$ variabili di stato, allora sarà necessario scrivere un numero uguale di equazioni di stato $f_i$, una per ogni variabile. In modo analogo in presenza di $m$ uscite del sistema, sarà necessario determinare altrettante trasformazioni. Il tutto si basa sul fatto che $u,x,y$ possono rappresentare dei vettori ma anche degli scalari.
+	\end{osservazione}
+	Noto il numero $n$ di equazioni differenziali che è possibile individuare in un sistema dinamico, allora tale numero prende il nome di \textbf{ordine del sistema} e rappresenta il numero di variabili di stato $x$ che devono essere utilizzate nell'analisi per descrivere completamente il sistema stesso.
+	
+	\paragraph{Rappresentazione matriciale per sistemi lineari} Come osservato in precedenza, i sistemi lineari possono 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
