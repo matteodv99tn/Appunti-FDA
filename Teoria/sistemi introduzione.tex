@@ -37,19 +37,52 @@
     	
     \subsection{Sistema di controllo}
         \begin{concetto}
-            Un opportuno collegamento tra controllore $C$ e sistema $S$ determina dunque il \textbf{sistema di controllo} (\textbf{FIGURA}); questo nuovo sistema contiene praticamente tutti gli elementi fin'ora visti, ossia in particolare il valore di riferimento $\overline y$, la variabile di controllo $u$ che si interfaccia sul sistema e l'uscita $y$ del sistema, ossia la \textbf{variabile da controllare}.
+            Un opportuno collegamento tra controllore $C$ e sistema $S$ determina dunque il \textbf{sistema di controllo} (figura \ref{fig:sis:anelli}); questo nuovo sistema contiene praticamente tutti gli elementi fin'ora visti, ossia in particolare il valore di riferimento $\overline y$, la variabile di controllo $u$ che si interfaccia sul sistema e l'uscita $y$ del sistema, ossia la \textbf{variabile da controllare}.
             
             E' inoltre possibile classificare i sistemi di controllo in base alla topologia degli stessi, in particolare si parla di \textbf{anello aperto} quando le uscite del sistema $y$ non sono poste in retroazione alla variabile di riferimento, mentre quando ciò avviene si parla di controllo in \textbf{anello chiuso}.
         \end{concetto}
         
-    	\textbf{AGGIUNGERE FIGURE SISTEMA DI CONTROLLO IN ANELLO APERTO E CHIUSO}
-    	
+        \begin{figure}[bht]
+        	\centering 
+        	\begin{subfigure}{0.48\linewidth}
+        		\centering
+        		\resizebox{0.98\linewidth}{!}{\tikzfig{Immagini/sistema-controllo-a}} \caption{}
+        	\end{subfigure}
+	        \begin{subfigure}{0.48\linewidth}
+		        \centering
+		        \resizebox{0.98\linewidth}{!}{\tikzfig{Immagini/sistema-controllo-b}} \caption{}
+		    \end{subfigure}
+	    	\caption{esempio di sistema di controllo in anello aperto (a) e in anello chiuso (b).}
+	    	\label{fig:sis:anelli}
+        \end{figure}
+            	
         Come si osserverà un sistema in anello aperto per poter funzionare \textit{correttamente} deve conoscere perfettamente il funzionamento del sistema e i parametri dello stesso, mentre un sistema in anello chiuso, seppur più complesso (in quanto prevede il montaggio di sensori e algoritmo di controllo più sofisticati), permette di ottenere prestazioni sensibilmente \textit{migliori}, immuni da incertezze e interferenze esterne.
     	
-    	
-    	
-    	
-    	
+    	\begin{concetto}
+    		Il \textbf{problema di controllo} è quello dunque di determinare le variabili di controllo $u$ affinché le variabili da controllare siano simili al segnale di riferimento per ogni possibile \textit{traiettoria} del riferimento $\overline y$ e dei disturbi $d$:
+    		\[ y\simeq \overline y \]
+    	\end{concetto}
+    
+\section{Classificazione dei sistemi}
+	Come fin'ora visto, i sistemi (e i controlli) possono essere assimilati a delle black box caratterizzate dagli ingressi $u$ e le uscite $y$. In un sistema è possibile individuare sia deii \textbf{parametri}, ossia delle quantità che descrivono la struttura e le proprietà del sistema (come la massa o la geometria di un corpo) che tendenzialmente sono tempo-invarianti, sia delle \textbf{variabili}, ossia delle grandezze che descrivono l'evoluzione nel tempo del sistema (come posizione e velocità del corpo).
+	
+	A questo punto è dunque fondamentale \textbf{classificare} i vari sistemi nei cosiddetti \textit{\textbf{assi di classificazione}}, ossia una serie di connotazioni non esclusive che permettono di categorizzare i vari tipi di sistemi.
+	
+	\subsubsection{MIMO e SISO}
+		Questo asse di classificazione è caratterizzato dagli acronimi \textit{Multi-Input Multi-Output} MIMO e \textit{Single-Input Single-Output} SISO; come si può evincere dalla traduzione dall'inglese, un sistema MIMO presenta un numero multiplo sia di ingressi $u$ che di uscite $y$ e dunque tali valori possono essere rappresentati da un vettore. Al contrario un sistema SISO presenta un solo valore in ingresso $u$ e un'uscita $y$, e dunque possono essere descritti solamente da un valore scalare.
+		
+		In particolare le $n$ uscite di un sistema MIMO sono collegate agli $m$ ingressi dello stesso secondo delle relazioni funzionali $f_i$ secondo che possono essere espresse come
+		\begin{align*}
+			y_1 & = f_1\big(u_1, u_2,\dots, u_m\big) \\
+			y_2 & = f_2\big(u_1, u_2,\dots, u_m\big) \\
+			& \ \vdots \\
+			y_n & = f_n\big(u_1, u_2,\dots, u_m\big) 
+		\end{align*}
+	
+	\subsubsection{Sistemi lineari e non lineari}
+		Un \textbf{sistema} è detto \textbf{lineare} se rispetta le condizioni di linearità tra ingresso e uscita, ossia se nota l'uscita $f(u_1), f(u_2)$ per due ingressi noti $u_1,u_2$, allora l'uscita $f(u)$ di un ingresso ottenuto come combinazione lineare di $u_1,u_2$ deve essere la stessa combinazione lineare delle due uscite; in termini matematici una funzione per essere lineare deve essere tale che
+		\[ u = \alpha_1 u_1 + \alpha_2 u_2 \qquad \Rightarrow \quad f(u) = \alpha_1 f(u_1) + \alpha_2 f(u_2) \]
+    	Ogni qualvolta questa condizione non venisse rispettata, il \textbf{sistema} è semplicemente detto \textbf{non lineare}.
     	
     	
     	

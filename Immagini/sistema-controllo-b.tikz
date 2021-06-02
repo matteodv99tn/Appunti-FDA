@@ -5,11 +5,11 @@
 		\node [style=none] (2) at (-2.5, -0.75) {};
 		\node [style=none] (3) at (1.5, 0.75) {};
 		\node [style=none] (4) at (1.5, -0.75) {};
-		\node [style=none] (5) at (-2.5, -0.25) {};
-		\node [style=none] (6) at (-4, -0.25) {};
+		\node [style=none] (5) at (-4.25, -0.25) {};
+		\node [style=none] (6) at (-5.75, -0.25) {};
 		\node [style=none] (7) at (1.5, -0.25) {};
 		\node [style=none] (8) at (3, -0.25) {};
-		\node [style=none] (9) at (-3.5, 0.25) {$\overline y$};
+		\node [style=none] (9) at (-5.75, 0.25) {$\overline y$};
 		\node [style=none] (10) at (2.25, 0.25) {$u_c$};
 		\node [style=none] (11) at (-1.5, 0.75) {};
 		\node [style=none] (12) at (-1.5, 1.75) {};
@@ -22,12 +22,21 @@
 		\node [style=none] (19) at (4.5, -0.25) {};
 		\node [style=none] (20) at (8.5, -0.25) {};
 		\node [style=none] (22) at (8.5, -0.25) {};
-		\node [style=none] (23) at (10, -0.25) {};
-		\node [style=none] (24) at (9.5, 0.25) {$y$};
+		\node [style=none] (23) at (10.75, -0.25) {};
+		\node [style=none] (24) at (10.25, 0.25) {$y$};
 		\node [style=none] (25) at (5.5, 0.75) {};
 		\node [style=none] (26) at (5.5, 1.75) {};
 		\node [style=none] (27) at (5.75, 1.75) {$d$};
 		\node [style=none] (28) at (3.75, 0.25) {$u_s$};
+		\node [style=punto] (29) at (-4, -0.25) {};
+		\node [style=punto] (30) at (9.5, -0.25) {};
+		\node [style=none] (31) at (-2.5, -0.25) {};
+		\node [style=none] (32) at (-4, -2) {};
+		\node [style=none] (33) at (9.5, -2) {};
+		\node [style=none] (34) at (-4, -0.5) {};
+		\node [style=none] (35) at (-4.5, 0.25) {$+$};
+		\node [style=none] (36) at (-3.5, -1) {$-$};
+		\node [style=none] (37) at (-3.25, 0.25) {$e$};
 	\end{pgfonlayer}
 	\begin{pgfonlayer}{edgelayer}
 		\draw [style=spessa] (2.center) to (1.center);
@@ -44,5 +53,9 @@
 		\draw [style=freccia] (22.center) to (23.center);
 		\draw [style=freccia] (26.center) to (25.center);
 		\draw [style=freccia] (8.center) to (19.center);
+		\draw [style=freccia] (32.center) to (34.center);
+		\draw [style=freccia] (29) to (31.center);
+		\draw [style=nero] (30) to (33.center);
+		\draw [style=nero] (33.center) to (32.center);
 	\end{pgfonlayer}
 \end{tikzpicture}
