@@ -147,7 +147,7 @@
     		Questo esempio ci permette di capire che il \textbf{sistema} è \textbf{dinamico}; considerando per esempio gli istanti $t_1,t_2$, dal diagramma a sinistra è possibile osservare che gli ingressi sono uguali e pari a zero (non si ha flusso di acqua entrante nella bottiglia), tuttavia il livello di acqua nei due istanti è diverso per via del fatto che nell'intervallo di tempo $[t_a,t_b]$ si ha avuto un flusso di acqua entrante nel sistema che ha cambiato il livello di fluido nella bottiglia.
     	\end{esempio}
     
-\section{Spazio di stato e sua rappresentazione}
+\section{Spazio di stato e sua rappresentazione} \label{sec:intro:spaziostato}
 	\begin{concetto}
 		La \textit{metodologia universale} per descrivere i sistemi dinamici è basata sulla \textbf{rappresentazione in spazio di stato} del sistema stesso. Questa metodologia si basa sulla scrittura di una serie di \textbf{equazioni di stato} $f$ che relazionano la derivata prima $\dot x$ di una variabile di stato con le variabili di stato (non derivate), gli ingressi e il tempo secondo delle relazioni del tipo
 		\[ \dot x = f( x,u,t)\]
@@ -226,7 +226,7 @@
 	
 	Facendo riferimento al sistema dinamico dell'esempio \ref{es:intro:bottiglia-2}, esso risulta essere strettamente proprio in quanto l'uscita $y$ dipende solamente dalla variabile di stato $x$.
 	
-	\subsection{Metodo generale per la determinazione delle equazioni di stato}
+	\subsection{Metodo generale per la determinazione delle equazioni di stato} \label{sec:intro:metodogenerale}
 		A questo punto è lecito chiedersi come determinare, in maniera del tutto generale, le equazioni di stato del problema che si vuole analizzare. Data dunque l'equazione differenziale (o il sistema di equazioni differenziali) che governa il sistema dinamico da analizzare è possibile arrivare a determinare le $n$ equazioni di stato (ossia di numero coincidente all'ordine del sistema) effettuando i seguenti passaggi:
 		\begin{enumerate}
 			\item in primo luogo si inverte opportunamente l'equazione del sistema in modo da rendere l'$n$-esima derivata dell'uscita come una funzione delle sue derivate di ordine inferiore e dell'ingresso secondo un'espressione del tipo
@@ -300,6 +300,43 @@
 		
 		Anche in questo caso se i sistemi risultano essere lineari è possibile utilizzare la rappresentazione matriciale esposta nell'equazione \ref{eq:rapp-matriciale} (pag. \pageref{eq:rapp-matriciale}).
 	
+	\subsection{Sistemi dinamici nel dominio del tempo}
+		Con la descrizione dei sistemi nello spazio di stato (pag. \pageref{sec:intro:spaziostato}) si è arrivato a descrivere i sistemi dinamici nel dominio continuo del tempo tramite delle equazioni di stato che permettevano di esprimere le derivate delle variabili di stato come dipendenti dalle grandezze stesse, oltre che dagli ingressi e dal tempo:
+		\[ \dot x = f\Big(x(t), u(t), t\Big)\]
+		
+		\figuratikz{6}{1}{duecarrelli}{schema esemplificativo di due carrelli collegati tramite delle molle.}{duecarrelli}
+		
+		A pagina \pageref{sec:intro:metodogenerale} è stato mostrato un metodo generale per ricavare le equazioni di stato di un sistema, tuttavia si può dimostrare che tale rappresentazione non è mai unica, ma arbitraria, e la scelta delle variabili di stato può \textit{complicare} o \textit{semplificare} la rappresentazione matematica del modello. Considerando il sistema di due carrelli mutuamente collegati tramite delle molle (figura \ref{duecarrelli}), allora il sistema di equazioni fisico che lo modella è rappresentato dalle relazioni
+		\[\begin{cases}
+			m_1 \ddot s_1 + k_1s_1 + k_2(s_2-s_1) = 0 \\
+			m_2\ddot s_2 + k_2(s_2-s1)=F
+		\end{cases}\]
+		A questo punto è possibile osservare come scegliendo in maniera diversa le variabili di stato, la rappresentazione di tale dominio può diventare più o meno complessa:
+		\begin{itemize}
+			\item considerando come coordinate le posizioni assolute $s_1$ ed $s_2$ delle due masse, individuando come variabili di stato $x_1 = s_1$, $x_2 = \dot s_1$, $x_3 = s_2$ e $x_4 = \dot s_2$ è possibile scrivere il sistema in spazio di stato tramite le relazioni
+			\[ \begin{cases}
+				\dot x_1 = x_2 \\ \dot x_2 = \frac 1 {m_1} (-k_1x_1-k_2x_3 + k_2x_1) \\
+				\dot x_3 = x_4 \\ \dot x_4 = \frac 1 {m_2} (-k_2x_3 + k_2x_4 + u) \\
+			\end{cases} \]
+			\item scegliendo di rappresentare il sistema invece tramite la posizione assoluta $x_1$ della prima massa e la distanza relativa $\Delta$ tra $m_2$ e $m_1$ a cui sono associate le variabili di stato $x_1 = s_1$, $x_2 = \dot s_1$, $x_3 = \Delta$ e $x_4 = \dot \Delta$, procedendo alla scrittura del sistema in spazio di stato si ottiene:
+			\[\begin{cases}
+				\dot x_1 = x_2 \\
+				\dot x_2 = \frac 1{m_1} \big(-k_1x_1+k_2x_3\big) \\
+				\dot x_3 = x_4 \\
+				\dot x_4 = \frac 1 {m_2} \left[\frac{m_2}{m_1}k_1x_1 + \left(-\frac{m_2}{m_1}k_2-k_2\right)x_3+u´\right]
+			\end{cases}\]
+		\end{itemize}
+		Si osserva dunque che la prima scelta delle variabili di stato permette di ricavare una descrizione in spazio di stato che risulta essere più \textit{semplice} ed \textit{immediata}, mentre la seconda descrizione presenta delle equazioni differenziali più \textit{complesse} e \textit{lunghe}.
+		\begin{osservazione}
+			Nonostante le equazioni differenziali che descrivono il sistema per le due diverse scelte di variabili di stato siano diverse, esse tuttavia condividono delle proprietà cosiddette \textbf{\textit{strutturali}} che sono indipendenti dalla rappresentazione che si decide di utilizzare.
+		\end{osservazione}
+		
+		
+\section{Movimento di equilibrio}
+
+	\subsection{Formula di Lagrange}
+	
+	\subsection{Linearizzazione di sistemi non lineari}
 	
 	
 	
