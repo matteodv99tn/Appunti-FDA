@@ -135,7 +135,7 @@
     		Per questi sistemi sono dette \textbf{variabili di stato}, generalmente indicate come $x$, quelle variabili che occorre conoscere all'istante $t_0$ (insieme alla storia degli ingressi $u(t)$) per determinare univocamente l'uscita $y(t^*)$.
     	\end{concetto}
     
-    	\begin{esempio}{: bottiglia che si riempie}
+    	\begin{esempio}{: bottiglia che si riempie} \label{es:intro:bottiglia}
     		Si consideri il caso di una bottiglia (approssimata ad un cilindro) nella quale si versa una portata d'acqua $q$ (corrispondente all'ingresso $u$ del sistema) alla quale è associata la quota $h$ di fluido (corrispondente all'uscita del sistema) nella bottiglia stessa.
     		
     		In questo caso la \textbf{variabile di controllo} corrisponde alla portata $q=u$ (ingresso), mentre la \textbf{variabile controllata} è la quota $h = y$.
@@ -144,7 +144,7 @@
     		\end{center}
     		Osservando l'andamento dell'ingresso $u$ del sistema (diagramma a sinistra), è possibile osservare come nel tempo il livello del fluido (uscita $y$) vari nel tempo (diagramma a destra).
     		
-    		Questo esempio ci permette di capire che il sistema è dinamico; considerando per esempio gli istanti $t_1,t_2$ \textbf{DA FINIRE}
+    		Questo esempio ci permette di capire che il \textbf{sistema} è \textbf{dinamico}; considerando per esempio gli istanti $t_1,t_2$, dal diagramma a sinistra è possibile osservare che gli ingressi sono uguali e pari a zero (non si ha flusso di acqua entrante nella bottiglia), tuttavia il livello di acqua nei due istanti è diverso per via del fatto che nell'intervallo di tempo $[t_a,t_b]$ si ha avuto un flusso di acqua entrante nel sistema che ha cambiato il livello di fluido nella bottiglia.
     	\end{esempio}
     
 \section{Spazio di stato e sua rappresentazione}
@@ -158,6 +158,20 @@
 		Se il sistema prevede $n$ variabili di stato, allora sarà necessario scrivere un numero uguale di equazioni di stato $f_i$, una per ogni variabile. In modo analogo in presenza di $m$ uscite del sistema, sarà necessario determinare altrettante trasformazioni. Il tutto si basa sul fatto che $u,x,y$ possono rappresentare dei vettori ma anche degli scalari.
 	\end{osservazione}
 	Noto il numero $n$ di equazioni differenziali che è possibile individuare in un sistema dinamico, allora tale numero prende il nome di \textbf{ordine del sistema} e rappresenta il numero di variabili di stato $x$ che devono essere utilizzate nell'analisi per descrivere completamente il sistema stesso.
+	
+	\begin{esempio}{: rappresentazione in spazio di stato} \label{es:intro:bottiglia-2}
+		Facendo riferimento all'esempio \ref{es:intro:bottiglia} della bottiglia che si riempie, è possibile creare un modello matematico del sistema. Nota infatti l'area $A$ della base del cilindro, l'altezza $h$ del fluido (coincidente con l'uscita del sistema) e la densità $\rho$ dello stesso allora è possibile calcolare la quantità di acqua presente nel contenitore come
+		\[ Q = \rho A h\]
+		La portata $q(t)$ di fluido immesso nella bottiglia (ossia l'ingresso del nostro sistema) di fatto determina una variazione di quantità $Q$ di fluido secondo una relazione differenziale che permette di ricavare la variazione dell'uscita in funzione dell'ingresso:
+		\[ \frac {dQ}{dt}=q \qquad \xrightarrow{Q = \rho A h}\quad \rho A\dot h = q \qquad \Rightarrow \quad \dot h = \frac 1{\rho A} q \]
+		
+		Determinata dunque l'equazione differenziale caratteristica del problema è possibile osservare che l'ingresso $u$ è associato alla portata in ingresso $q$, mentre sia variabile di stato $x$ che uscita del sistema $y$ sono associate alla quota $h$ del fluido. In questo caso è possibile \textbf{classificare il sistema} come dinamico (per via dell'equazione differenziale) di ordine $n=1$, SISO, lineare (rispetto a ingresso/uscita/variabili di stato) tempo invariante la cui rappresentazione in forma di stato è data dal sistema:
+		\[ \begin{cases}
+			\dot h = \dot x = \dfrac 1 {\rho A} q` = \dfrac 1 {\rho A} u \qquad & \textrm{: equazione di stato} \\
+			h = y = x & \textrm{: trasformazione d'uscita} \\
+		\end{cases} \]
+		
+	\end{esempio}
 	
 	\subsection{Rappresentazione matriciale per sistemi lineari} Come osservato in precedenza, i sistemi lineari possono essere espressi come combinazione lineare di opportuni coefficienti; in particolare è possibile riscrivere il sistema di equazioni di stato e delle trasformazioni d'uscita come:
 	\begin{equation}
@@ -175,7 +189,7 @@
 	\end{aligned}
 	\end{equation}
 	A questo punto, noto l'ordine $n$ del sistema, il numero $m$ degli ingressi e il numero $p$ delle uscite è possibile riscrivere i sistemi dinamici lineari tramite una rappresentazione matriciale che utilizza le matrici $A\in \mathds R^{n\times n}$, $B\in \mathds R^{n\times m}$, $C\in \mathds R^{p\times n }$ e $D\in \mathds R^{p\times m}$ secondo le espressioni
-	\begin{equation}
+	\begin{equation} \label{eq:rapp-matriciale}
 	\begin{aligned}
 		\textrm{equazioni di stato:} & \qquad \dot x = Ax + Bu \\
 		\textrm{trasformazioni d'uscita:} & \qquad y = Cx + Du
@@ -210,10 +224,81 @@
 	
 	Secondo questa logica è possibile catalogare i sistemi statici come una sotto-classe di sistemi dinamici dove la trasformazione d'uscita non contiene alcuna variabile di stato $x$.
 	
+	Facendo riferimento al sistema dinamico dell'esempio \ref{es:intro:bottiglia-2}, esso risulta essere strettamente proprio in quanto l'uscita $y$ dipende solamente dalla variabile di stato $x$.
 	
+	\subsection{Metodo generale per la determinazione delle equazioni di stato}
+		A questo punto è lecito chiedersi come determinare, in maniera del tutto generale, le equazioni di stato del problema che si vuole analizzare. Data dunque l'equazione differenziale (o il sistema di equazioni differenziali) che governa il sistema dinamico da analizzare è possibile arrivare a determinare le $n$ equazioni di stato (ossia di numero coincidente all'ordine del sistema) effettuando i seguenti passaggi:
+		\begin{enumerate}
+			\item in primo luogo si inverte opportunamente l'equazione del sistema in modo da rendere l'$n$-esima derivata dell'uscita come una funzione delle sue derivate di ordine inferiore e dell'ingresso secondo un'espressione del tipo
+			\[ \frac{d^n y}{dt^n} = \varphi \left( \frac{d^{n-1}y}{dt^{n-1}}, \dots, \frac{dy}{dt}, y, u \right)  \]
+			\begin{nota}
+				In generale l'ingresso $u$ può essere anche un vettore, quindi un insieme di valori.
+			\end{nota}
+			
+			\item è ora possibile determinare le variabili di stato $x_i$ del sistema; in particolare la prima ($x_1$) la si impone coincidente all'uscita $y$ del sistema, mentre la seconda ($x_2$) alla derivata prima del sistema e cosi proseguendo:
+			\[ x_1 = y \qquad,\quad x_2 = \dot y = \frac{dy}{dt} \qquad, \quad x_3 = \ddot y = \frac{dy^2}{dt^2} \qquad, \quad \dots \quad x_n = \frac{d^{n-1}y}{dt^{n-1}} \]
+			
+			\item per proseguire si deriva ogni variabile di stato nel tempo, osservando in maniera generale che $\dot x_{i} = x_{i+1}$, infatti:
+			\[ \dot x_1 = \frac{dy}{dt} = x_2 \quad, \quad \dot x_2 = \frac d {dt} \frac{dy}{dt} = \frac{d^2y}{dt^2} = x_3 \quad \dots \quad \dot x_n = \frac{d^n y}{dt^n} =\varphi \left( x_n, \dots, x_2,x_1, u \right) \]
+			Iterando questo processo (per cui $\dot x_i = x_{i+1}$) fino all'$n$-esima variabile di stato, si osserva che la derivata di quest'ultima è uguale alla funzione $\varphi$ descritta al punto 1 che, per quanto visto nel punto 2, può essere riscritta in funzione delle sole variabili di stato $x_i$ ora;
+			
+			\item a questo punto si osserva che da un'unica equazione differenziale di ordine $n$ si sono determinate $n$ equazioni differenziali del primo ordine del tipo $\dot x_n = x_{n+1}$ che possono essere \textit{semplicemente risolte} per integrazione;
+			
+			\item per completare la descrizione in forma di stato del sistema è necessario dunque determinare la trasformazione d'uscita che, per come assunto nel punto 2, coincide di fatto con la prima variabile di stato:
+			\[ \textrm{trasformazione d'uscita: } \qquad y = x_1 \]
+		\end{enumerate}
+		
+		\begin{esempio}{: applicazione del metodo generale per scrivere in forma di stato un sistema massa-molla-smorzatore}
+			Un sistema massa-molla-smorzatore, mostrato in figura che segue, è un sistema dinamico caratterizzato dall'equazione differenziale
+			\[ m\ddot s + c\dot s + ks = F \]
+			dove $s$ è la coordinata dello spostamento della massa $m$, $c$ è il coefficiente di smorzamento e $k$ la costante elastica della molla; $F$ in questo caso rappresenta la forza applicata sulla massa.
+			
+			\begin{center}
+				\tikzfig{Immagini/smorzatore}
+			\end{center}
+			
+			Conoscendo la forza $F$ applicata al sistema (e dunque essa coincide con il nostro ingresso $u$) e volendo studiare lo spostamento $s$ del sistema (ossia l'uscita del sistema), è possibile risolvere il problema utilizzando la scrittura in forma di stato utilizzando il metodo appena descritto:
+			\begin{enumerate}
+				\item scrivendo l'equazione differenziale in funzione degli ingressi e delle uscite, essa risulta valere $m \ddot y + c\dot y + ky = u$; tramite inversione della relazione è possibile scrivere esplicitamente la derivata seconda dell'uscita come
+				\[ \ddot y = - \frac c m \dot y - \frac k m y + \frac u m  \]
+				
+				\item essendo l'equazione differenziale di partenza del secondo ordine, è necessario scrivere le due variabili di stato del sistema che sono
+				\[ x_1 = y = s \qquad x_2 = \dot y = \dot s \]
+				
+				\item a questo punto per determinare il sistema delle equazioni di stato è necessario derivare ogni variabile di stato nel tempo; la prima porta alla soluzione banale $\dot x_1 = x_2$, mentre la seconda risulta essere coincidente alla funzione di $\dot y,y,u$ determinata al punto 1 del metodo risolutivo:
+				\[ \dot x_2 = \ddot y = - \frac c m x_2 - \frac k m x_1 + \frac u m \]
+				E' possibile osservare come, a differenza del punto 1, in questo caso l'uscita (e la sua derivata) siano state sostituite dalle apposite variabili di stato.
+				
+				\vspace{2mm}
+				
+				A questo punto il \textbf{sistema delle equazioni di stato} è composto dalle relazioni
+				\[  \begin{cases}
+					\dot x_1 = x_2 \\ \dot x_2 = - \frac c m x_2 - \frac k m x_1 + \frac u m
+				\end{cases} \]				
+			\end{enumerate}
+			Per completare la descrizione del problema nella rappresentazione di stato sarebbe necessario scrivere la trasformazione d'uscita che in questo caso coincide con la relazione
+			\[  y = s = x_1 \]
+			Tuttavia per altri problemi potrebbe essere necessario considerare per esempio la velocità $\dot s$ della massa (oppure l'accelerazione $\ddot s$), cambiando dunque la trasformazione d'uscita ad una relazione $y = \dot s = x_2$.
+			
+			\paragraph{Rappresentazione matriciale} Osservando il sistema delle equazioni di stato e la trasformazione d'uscita è possibile osservare come tutte le relazioni caratteristiche siano lineari rispetto a ingressi, uscite e variabili di stato; questo dunque permette di affermare che il sistema è lineare le cui matrici che rendono verificate l'equazione \ref{eq:rapp-matriciale} (pag. \pageref{eq:rapp-matriciale}) sono
+			\[ A = \begin{bmatrix}
+				0 & 1 \\ -k/m & - c/m
+			\end{bmatrix} \qquad B = \begin{bmatrix}
+				0 \\ -1/m
+			\end{bmatrix} \qquad C = \begin{bmatrix}
+				1 & 0
+			\end{bmatrix} \qquad D = \begin{bmatrix}
+				0
+			\end{bmatrix} \]
+		\end{esempio}
 	
-	
-	
+	\subsection{Sistemi a tempo discreto}
+		Analizzare sistemi dinamici a tempo discreto richiede di utilizzare degli accorgimenti particolari. Infatti il metodo generale appena mostrato può essere considerato valido solamente se è possibile applicare il concetto di derivata al modello matematico che caratterizza il sistema. Per sistemi a tempo discreto questo non può avvenire (non essendo il tempo continuo, non è possibile calcolare la derivata come rapporto incrementale) e per questo si ricorre all'utilizzo delle \textbf{equazioni di stato alle differenze finite}
+		\[ x(k+1) = f\Big(x(k),u(k), k\Big)  \]
+		dove $k$ è un generico istante di tempo discreto. Per analogia è possibile scrivere le \textbf{trasformazioni d'uscita} utilizzando gli accorgimenti appena visti per rendere efficace la rappresentazione nel tempo discreto:
+		\[ y(k) = g\Big(x(k), u(k), k\Big)  \]
+		
+		Anche in questo caso se i sistemi risultano essere lineari è possibile utilizzare la rappresentazione matriciale esposta nell'equazione \ref{eq:rapp-matriciale} (pag. \pageref{eq:rapp-matriciale}).
 	
 	
 	
