@@ -331,9 +331,59 @@
 			Nonostante le equazioni differenziali che descrivono il sistema per le due diverse scelte di variabili di stato siano diverse, esse tuttavia condividono delle proprietà cosiddette \textbf{\textit{strutturali}} che sono indipendenti dalla rappresentazione che si decide di utilizzare.
 		\end{osservazione}
 		
+		\paragraph{Ordine di un sistema} In generale il numero di variabili di stato necessarie alla descrizione di un sistema dinamico (associate di fatto all'ordine delle equazioni differenziali) non sono una quantità fissa ma dipendono strettamente dal grado di complessità che si vuole utilizzare per descrivere il problema stesso.
+		
+		Facendo riferimento all'esempio dei due carrelli mutuamente collegati da una molla (fig. \ref{duecarrelli}) se si considera che il collegamento tra $m_1$ ed $m_2$ è molto più rigido rispetto al primo carrello e telaio, ossia se si verifica che $k_2\gg k_1$, allora è possibile \textit{semplificare} il modello ad un'unico carrello di massa equivalente $m_1+m_2$ collegato a telaio (figura \ref{duecarrelli-c}).
+		
+		\figuratikz{6}{1}{duecarrelli-c}{semplificazione del sistema in figura \ref{duecarrelli} nel caso in cui la molla $k_2$ sia molto più rigida della molla $k_1$.}{duecarrelli-c}
+		
+		In questa nuova configurazione si può osservare che il numero di variabili di stato scende da 4 a 2 (in quanto si ha una sola equazione differenziale del secondo ordine), tuttavia questo sistema presenterà solamente delle soluzioni approssimate rispetto al caso più complesso descritto in precedenza.
+		
+		\begin{concetto}
+			In generale fissata la complessità del problema, il numero delle variabili di stato rimane sempre costante.
+		\end{concetto}
+	
+		Esistono tuttavia dei sistemi dinamici \textit{speciali} che presentano un numero infinito di variabili di stato, e in particolare tra essi osserviamo:
+		\begin{itemize}
+			\item i sistemi descritti da equazioni differenziali alle derivate parziali;
+			\item i \textbf{sistemi a ritardo di tempo} la cui trasformazione d'uscita è una \textit{traslazione nel tempo} dell'ingresso (eventualmente modificato) del tipo
+			\[  y(t) = u(t-\tau) \]
+		\end{itemize}
+		
 		
 \section{Movimento di equilibrio}
-
+	
+	\begin{concetto}
+		Dato un sistema rappresentato nella sua forma di stato e il valore dello stato $x_0$ al tempo $t_0$ è possibile indicare il \textbf{movimento d'uscita} $y(t)$ e il \textbf{movimento di stato} $x(t)$ come le grandezze che rappresentano le soluzioni delle equazioni differenziali che caratterizzano il sistema stesso.
+	\end{concetto}
+	In particolare il movimento di stato $x(t)$ si ricava per integrazione dell'equazione di stato $\dot x = f(x,u)$; nota tale funzione è dunque possibile calcolare immediatamente, mediante la trasformazione d'uscita, la funzione $y(t)$.
+	
+	\begin{nota}
+		Un'osservazione che permetterà di semplificare l'analisi del problema si basa sul fatto che se il sistema è tempo invariante, allora i movimenti di stato e uscita non dipendono dalla scelta dell'istante $t_0$, ossia dal tempo di \textit{origine} del riferimento temporale.
+	\end{nota}
+	
+	\begin{concetto}
+		Studiando la dinamica di un sistema del quale si impone un'ingresso $u$ costante fissato al valore $\overline u$ e osservando che lo stato (e dunque l'uscita) risulta anch'essa stabilizzarsi ad un valore stazionario, allora quello che si determina è il \textbf{movimento di equilibrio} dello stato (uscita) del sistema stesso.
+		
+		Un movimento $\overline x$ per essere di equilibrio deve dunque essere tale da verificare la relazione
+		\[ \dot{\overline x} = f\left(\overline x(t), \overline u\right) = 0 \]
+	\end{concetto}
+	
+	\subsection{Movimento di equilibrio per sistemi lineari} 
+		Per semplificare la ricerca del movimento di equilibrio per particolari sistemi, si fa ora riferimento alla classe dei sistemi lineari tempo invarianti che, come vedremo, saranno il tipo di sistema più \textit{facile} da analizzare. Per determinare il movimento di equilibrio dunque è sufficiente annullare il vettore $\dot x$ della rappresentazione matriciale (eq. \ref{eq:rapp-matriciale}):
+		\[ 0 = Ax + Bu \qquad \Rightarrow \quad y = Cx + Du\]
+		Il movimento di equilibrio dello stato $\overline x$ si può dunque determinare per inversione di tale espressione e, di conseguenza, è anche possibile determinare il movimento di equilibrio dell'uscita $\overline y$:
+		\begin{equation}
+			\overline x = -A ^{-1}B\overline u \qquad \Rightarrow\quad \overline y = \big(-CA^{-1}B + D\big)\overline u
+		\end{equation}
+		
+		Da questa formulazione è possibile osservare che il l'equilibrio di un sistema lineare tempo invariante esiste solamente se la matrice di stato $A$ è invertibile, ossia se $\det(A)\neq 0$. Se tale condizione risulta essere verificata allora il punto di equilibrio (fissato l'ingresso costante $\overline u$) esiste ed è unico. Se si verificasse che $\det(A) = 0$ allora è possibile che:
+		\begin{itemize}
+			\item non ci siano soluzioni, ossia non esiste di fatto un equilibrio per il sistema;
+			\item ci sono infiniti punti di equilibrio per il sistema.
+		\end{itemize}
+		
+		
 	\subsection{Formula di Lagrange}
 	
 	\subsection{Linearizzazione di sistemi non lineari}
