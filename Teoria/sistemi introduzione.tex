@@ -362,7 +362,7 @@
 		Un'osservazione che permetterà di semplificare l'analisi del problema si basa sul fatto che se il sistema è tempo invariante, allora i movimenti di stato e uscita non dipendono dalla scelta dell'istante $t_0$, ossia dal tempo di \textit{origine} del riferimento temporale.
 	\end{nota}
 	
-	\begin{concetto}
+	\begin{concetto} \label{conc:intro:movequilibrio}
 		Studiando la dinamica di un sistema del quale si impone un'ingresso $u$ costante fissato al valore $\overline u$ e osservando che lo stato (e dunque l'uscita) risulta anch'essa stabilizzarsi ad un valore stazionario, allora quello che si determina è il \textbf{movimento di equilibrio} dello stato (uscita) del sistema stesso.
 		
 		Un movimento $\overline x$ per essere di equilibrio deve dunque essere tale da verificare la relazione
@@ -382,12 +382,83 @@
 			\item non ci siano soluzioni, ossia non esiste di fatto un equilibrio per il sistema;
 			\item ci sono infiniti punti di equilibrio per il sistema.
 		\end{itemize}
-		
+	
+		\begin{esempio}{: movimento di equilibrio}
+			Si consideri una massa $m$ \textit{tirata} da una forza $F$ (coincidente con l'ingresso $u$ del sistema). Tale sistema risulta essere dinamico in quanto l'equazione differenziale che governa il problema risulta essere $m\ddots s = F$ (dove $s$ è la coordinata di posizione della massa). Tale sistema può essere rappresentato in spazio di stato considerando come variabili di stato $x_1 = s$ e $x_2 = \dot s$ che permette di ricavare le equazioni differenziali
+			\[ \dot x_1 = x_2 \qquad \textrm e \qquad \dot x_2 = \frac F m = \frac u m \]
+			Nel caso in cui considerassimo di voler conoscere solamente come uscita la posizione $y = s$ della massa, si può classificare il sistema come SISO; osservando che lo stesso è anche lineare e tempo invariante nel dominio del tempo è possibile rappresentare il sistema con la notazione matriciale di matrici
+			\[ A = \matrice{0 & 1 \\ 0 & 0} \qquad B = \matrice{0 \\ 1/m} \qquad C = \matrice{1 & 0} \qquad D = \matrice 0 \]
+			
+			Calcolando il determinate della matrice $A$ si osserva che esso è nullo: questo significa che l'equilibrio o non esiste o ne esistono infiniti (ma sicuramente non ne esiste uno e uno solo). Per poter capire di che tipo di equilibrio si tratta è dunque necessario riscrivere le equazioni di stato imponendo che le derivate delle variabili di stato $\dot x_i$ siano nulle: cosi favendo è possibile determinare i movimenti di equilibrio per il sistema
+			\[\begin{cases}
+				0 = \overline x_2 \\ 0 = \frac 1 m \overline u
+			\end{cases} \qquad \Rightarrow\quad \overline x_2 = \dot s = 0 \quad \textrm e \quad \overline u = F = 0\]
+			Dal sistema di osserva dunque che si ha un movimento di equilibrio solamente se l'ingresso $\overline u$ coincide con una forza nulla; in questo caso i movimenti di equilibrio sono infiniti (per ogni possibile velocità $\dot s$ e dunque posizione). \\
+			Nel caso contrario in cui $\overline u$ non fosse un ingresso costante nullo il sistema delle equazioni di stato non ammetterebbe soluzione e quindi non si avrebbe alcun equilibrio.			
+		\end{esempio}
+		\begin{osservazione}
+			Per i sistemi lineari, come appena visto, è sempre possibile effettuare delle considerazioni matematiche per capire se esiste una posizione di equilibrio, e in particolare si osserva che esso o non esiste, o esiste (ed è unico) oppure esiste e ce ne sono infiniti.
+			
+			Per quanto riguarda invece sistemi non lineari questo non è vero in generale, e non sono presenti dei \textit{metodi standard} per poter determinare la natura del movimento di equilibrio. Inoltre per tali sistemi può anche succedere che la posizione di equilibrio sia multipla (con molteplicità definita) e non solamente unitaria.
+		\end{osservazione}		
 		
 	\subsection{Formula di Lagrange}
+		Per calcolare il movimento di equilibrio di sistemi non lineari non esiste uno strumento analitico che risolve il problema in maniera del tutto generale, e dunque spesso è complesso analizzare tale tipi di sistemi; al contrario invece per sistemi lineari è possibile utilizzare la formula di Lagrange che permette di determinare in maniera esplicita il movimento di equilibrio del sistema.
+		
+		\begin{concetto}
+			La \textbf{formula di Lagrange} permette di esprimere il movimento di stato $x(t)$ e la relativa uscita $y(t)$ nel tempo per qualsiasi ingresso e stato iniziale $x_0$ per un sistema lineare utilizzando le equazioni
+			\begin{equation} \label{eq:intro:lagrange}
+			\begin{aligned} 
+				x(t) & = e^{At} x_0 + \int_0^t e^{A(t-\tau)} B u(\tau)\, d\tau \\
+				y(t) & = Cx(t) + Du(t) = C e^{At} x_0 + C\int_0^t e^{A(t-\tau)} B u(\tau)\, d\tau + D u(t) \\
+			\end{aligned}
+			\end{equation}
+		\end{concetto}
+		Nell'equazione \ref{eq:intro:lagrange} è possibile osservare la presenza della \textbf{matrice esponenziale} (o di transizione) $e^{At}$ che è definita tramite uno sviluppo in serie di Taylor (in quanto è \textit{difficile} fare l'esponenziale di una matrice) tramite l'espressione
+		\begin{equation}
+			e^{At} = \sum_{k=0}^\infty \frac{(At)^k}{k!} = I + At + \frac{A^2t^2}{2!} + \frac{A^3t^3}{3!} + \dots 
+		\end{equation}
+		
+		\begin{osservazione}
+			Il movimento di stato $x(t)$ e di uscita $y(t)$ dipende sia dalla condizioni iniziali (ossia dallo stato $x_0$ al tempo $t_0 = 0$) che dalla storia degli ingressi $u$ in tutto l'intervallo di tempo compreso tra $t_0$ e il tempo rispetto al quale si vuole conoscere stato/uscita.
+		\end{osservazione}
 	
+		Osservando l'equazione \ref{eq:intro:lagrange} è anche possibile osservare come i movimenti $x(t),y(t)$ possano essere \textit{scomposti} in due contributi indipendenti: quello del \textbf{movimento libero} $x_l$ del sistema, dipendente solamente dalle condizioni iniziali (ossia da $x_0$), e dal \textbf{movimento forzato} $x_f$ dipendente solamente dall'ingresso variante nel tempo (la \textit{parte integrale} dell'equazione). Facendo riferimento al movimento di stato la parte di movimento libero e forzato è descritto dalle relazioni:
+		\[ x_l(t) = e^{At} x_0 \qquad x_f(t) = \int_0^t e^{A(t-\tau)} B u(\tau)\, d\tau  \]
+		
+	\subsection{Sovrapposizione degli effetti}
+		\begin{concetto}
+			Per sistemi dinamici lineari vige il cosiddetto \textbf{principio di sovrapposizione degli effetti} per il quale:
+			\begin{itemize}
+				\item il movimento libero dipende linearmente dalle condizioni iniziali, ossia considerando una situazione $x_0$ data dalla somma di due condizioni $\alpha x_0'+\beta x_0''$ (con $\alpha,\beta\in \mathds R$ coefficienti costanti), allora si verifica che
+				\[ x_l = \alpha x_l' + \beta x_l'' \]
+				
+				\item il movimento forzato dipende linearmente dall'ingresso $u(t)$, ossia dati due ingressi $u'(t)$ e $u''(t)$ che generano l'ingresso $u(t)$ secondo la relazione lineare $\alpha u'(t) + \beta u''(t)$, allora il movimento forzato complessivo varrà
+				\[ x_f(t) = \alpha x_f'(t) + \beta x_f''(t) \]				
+			\end{itemize}
+		\end{concetto}
+		Questo principio è estremamente comodo in quanto se è possibile scomporre l'ingresso $u(t)$ in una combinazione lineare di ingressi \textit{più semplici}, allora è possibile studiare l'uscita del sistema come combinazione lineare delle \textit{uscite semplici} associate. Questo principio è inoltre molto comodo per studiare sistemi multi-ingresso (chiaramente solo se essi sono lineari!) in quanto per determinare l'uscita complessiva è sufficiente considerare la somma di ogni ingresso calcolato singolarmente.		
+		
 	\subsection{Linearizzazione di sistemi non lineari}
-	
-	
-	
+		Fino ad ora si è principalmente discusso la determinazione del movimento di equilibrio per sistemi lineari (per i quali è infatti associato un metodo \textit{standard} di risoluzione del problema), tuttavia nella realtà la maggior parte dei sistemi dinamici è fortemente non lineare. Tuttavia, utilizzando al scomposizione in serie di Taylor (troncata al primo ordine), ogni sistema non lineare può essere approssimato, nell'intorno di un punto specifico, con un suo equivalente linearizzato.
+		
+		\paragraph{Richiamo sulla linearizzazione tramite la serie di Taylor} Data una funzione generica $f$ che lega la variabile dipendente $y$ con quella indipendente $u$, ossia tale che $y = f(u)$, scelto un punto \textit{fisso} $\overline u$ nel dominio della funzione è possibile linearizzare la funzione $f$ nell'intorno di tale punto. In altre parole per ogni ingresso $u$ prossimo ad $\overline u$, ossia descritto da una relazione del tipo $u = \overline u + \delta u$ con $\delta u$ sufficientemente piccolo, è possibile pensare che la relazione che lega l'uscita con l'ingresso sia lineare. In particolare al punto $\overline u$ è associata l'uscita $\overline y = f\big(\overline u\big)$ e dunque applicando la serie di Taylor è possibile verificare la relazione tra la variazione $\delta y$ e $\delta u$:
+		\begin{equation}\label{eq:intro:taylor}
+			f\big(\overline u + \delta u \big) = \overline y + \delta y \xrightarrow{\textrm{Taylor}} f\big(\overline u\big) + \left. \pd f u \right|_{\overline u} \delta u \qquad \Rightarrow \quad \delta y = \left. \pd f u \right|_{\overline u} \delta u 
+		\end{equation}
+		In altre parole si osserva che la variazione dell'uscita $\delta y$ rispetto al valore nominale $\overline y$ è proporzionale alla variazione $\delta u$ dell'ingresso secondo un coefficiente pari alla \textit{pendenza} di $f$ nel punto di valutazione $\overline u$.
+		
+		\paragraph{Linearizzazione della rappresentazione in spazio di stato} Un sistema dinamico rappresentato in spazio di stato è determinato dalle equazioni di stato $\dot x = f(x,u)$ e dalla trasformazioni d'uscita $y = g(x,u)$; scelte dunque delle condizioni iniziali per lo stato $\overline x_0$ e l'ingresso $\overline u$ è dunque possibile determinare il movimento di equilibrio delle grandezze $\overline x,\overline y$ (pag. \pageref{conc:intro:movequilibrio}). A questo punto per linearizzare il sistema nell'intorno della condizione di equilibrio è sufficiente applicare la linearizzazione di Taylor (eq. \ref{eq:intro:taylor}) sia nell'intorno dell'ingresso $\overline u$ (ossia per $u = \overline u + \delta u$ con $\delta u$ sufficientemente piccolo), sia nell'intorno dello stato $\overline x$ (associato a $x = \overline x + \delta x$).
+		
+		Procedendo alla linearizzazione della rappresentazione in spazio di stato del sistema si arriva dunque al seguente risultato:
+		\[ \begin{cases}
+			\dot{\overline x} + \delta \dot x = f\big(\overline x + \delta x,\overline u + \delta u\big) \approx f\big(\overline x,\overline u\big) + \left. \pd f x \right|_{\overline x,\overline u} \delta x + \left. \pd f u \right|_{\overline x,\overline u}\delta u \\
+			\overline y + \delta y = g\big(\overline x + \delta x,\overline u + \delta u\big) \approx g\big(\overline x,\overline u\big) + \left. \pd g x \right|_{\overline x,\overline u} \delta x + \left. \pd g u \right|_{\overline x,\overline u}\delta u \\
+		\end{cases} \]
+		Tramite questo sistema è possibile capire come variano le derivate delle grandezze di stato $\delta \dot x$ e uscita $\delta y$ nell'intorno del punto di equilibrio $\overline u, \overline x$ per variazioni $\delta u,\delta x$ di ingresso e stato; in particolare è possibile ricavare le matrici rappresentative del sistema linearizzato nell'intorno di tale punto come
+		\begin{equation}
+			A = \left. \pd f x \right|_{\overline x,\overline u} \qquad B = \left. \pd f u \right|_{\overline x,\overline u} \qquad C = \left. \pd g x \right|_{\overline x,\overline u} \qquad D = \left. \pd gu \right|_{\overline x,\overline u}
+		\end{equation}
+		
+		Questo modello risulta essere tempo invariante fintanto che i termini $\overline x,\overline u$ rimangono costanti (in quanto non cambia il \textit{punto} di valutazione della derivata, e dunque le matrici sono a coefficienti fissi), ossia sono associati ad un movimento di equilibrio del sistema. Se invece il movimento non è di equilibrio allora è possibile mantenere il sistema linearizzato tuttavia introducendo la varianza nel tempo delle matrici $A,B,C,D$ associata allo spostamento di $\overline x,\overline u$ dipendente dal tempo $t$.
 	
