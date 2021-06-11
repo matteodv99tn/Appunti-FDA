@@ -1,0 +1,25 @@
+\chapter{Introduzione alla teoria del controllo classico}
+	Il \textit{mondo reale} nel quale viviamo è descritto nel dominio del tempo $t$, ossia i modelli che caratterizzano i sistemi sono descritti da equazioni differenziali che legano l'uscita $y(t)$ con l'ingresso $u(t)$: l'approccio analitico per il controllo di sistemi nel dominio del tempo prende il nome di \textbf{teoria del controllo moderno} ed è piuttosto \textit{complessa} da analizzare.
+	
+	\begin{concetto}
+		Per \textit{semplificare} l'analisi in questo corso si utilizzerà dunque la \textbf{teoria del controllo classico} che si basa non più sull'analisi dei segnali nel dominio del tempo, ma trasformando i segnali nel dominio nella \textbf{variabile complessa} (o \textbf{\textit{di Laplace}}) $s$ in cui i sistemi, originariamente descritti da equazioni differenziali, sono descritti da equazioni algebriche \textit{ordinarie}, semplificando dunque la trattazione matematica.
+		
+		Per \textit{trasportare} i segnali dal dominio del tempo a quello della variabile complessa si utilizza la cosiddetta \textbf{trasformata di Laplace} $\L$ e dunque per riportare i segnali dal secondo dominio a quello del tempo si utilizza l'anti-trasformata di Laplace $\aL$.
+	\end{concetto} 
+
+	Il vantaggio dell'utilizzare la teoria del controllo classico è che essa è più intuitiva per via del fatto che le equazioni differenziali \textit{scompaiono} e si trasformano in equazioni algebriche che sono più facilmente risolvibili e rappresentabili; questa metodologia infatti è molto simile all'analisi dei sistemi nel dominio della frequenza.
+	
+	Un problema tuttavia associato a questo tipo di analisi  è che per \textit{leggere} i risultati nel dominio del tempo (interpretabile dall'uomo) è necessario effettuare una doppia operazione di trasformazione e anti-trasformazione nel dominio di Laplace. Questo rende dunque pesante l'analisi di sistemi MIMO; inoltre la rappresentazione di sistemi non lineari nel dominio della variabile di Laplace è piuttosto complessa.
+
+\section{Trasformata di Laplace}
+	\begin{concetto}
+		Nella teoria del controllo classico l'analisi viene effettuata nel dominio della \textbf{variabile complessa} $s \in \mathds C$ definita da una parte reale $\sigma$ e una parte immaginaria $\omega$, ossia determinata dalla relazione
+		\[ s = \sigma + i \omega \qquad \textrm{con } i = \sqrt{-1} \]  
+		A questo punto nota una funzione $f(t)$ nel dominio del tempo è possibile definire la sua rispettiva $F(s)$ nel dominio della variabile di Laplace utilizzando la \textbf{trasformata di Laplace} così definita:
+		\begin{equation}
+			F(s) = \trasf{f(t)} := \int_0^\infty f(t) e^{-st} \, dt
+		\end{equation}		
+	\end{concetto}
+	\begin{osservazione}
+		La trasformata di Laplace di alcune funzioni può non esistere: questo può succedere quando il calcolo dell'integrale non porta alla convergenza dello stesso ad un valore finito.
+	\end{osservazione}

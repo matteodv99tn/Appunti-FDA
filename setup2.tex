@@ -26,6 +26,7 @@
 \usepackage{bm}
 \usepackage{enumerate}
 \usepackage{tickzit}
+\usepackage{ mathrsfs }
 
 \input{stilifigure.tikzstyles}
 \graphicspath{{Immagini/}}
@@ -43,7 +44,10 @@
 \newcommand{\E}{\mathcal E}
 \newcommand{\R}{\mathcal R}
 \newcommand{\I}{\mathcal I}
-\renewcommand{\L}{\mathcal L}
+\renewcommand{\L}{\mathscr L}
+\newcommand{\aL}{\mathscr {L}^{-1} }
+\newcommand{\trasf}[1]{\mathscr L \left( #1 \right)}
+\newcommand{\anti}[1]{\mathscr {L}^{-1} \left( #1 \right) }
 \newcommand{\C}{\mathcal C}
 \newcommand{\D}{\mathcal D}
 
@@ -53,34 +57,8 @@
 \newcommand{\vett}[1]{ \boldsymbol{#1}  	}
 \newcommand{\dov}[1]{ \dot{\boldsymbol{#1}  }	}
 \newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
-\newcommand{\inv}{\textrm{I}}
-\newcommand{\exx}{\varepsilon_{xx}}
-\newcommand{\exy}{\varepsilon_{xy}}
-\newcommand{\eyy}{\varepsilon_{yy}}
-\newcommand{\ezz}{\varepsilon_{zz}}
-\newcommand{\txy}{\tau_{xy}}
-\newcommand{\txz}{\tau_{xz}}
-\newcommand{\tyz}{\tau_{yz}}
-\newcommand{\ttz}{\tau_{\theta z}}
-\newcommand{\tzt}{\tau_{z \theta}}
-\newcommand{\gxy}{\gamma_{xy}}
-\newcommand{\gxz}{\gamma_{xz}}
-\newcommand{\gyz}{\gamma_{yz}}
-\newcommand{\sxx}{\sigma_{xx}}
-\newcommand{\syy}{\sigma_{yy}}
-\newcommand{\szz}{\sigma_{zz}}
-\newcommand{\seq}{\sigma_{eq}}
-\newcommand{\samm}{\sigma_{amm}}
-\newcommand{\scr}{\sigma_{cr}}
-\newcommand{\sys}{\sigma_{ys}}
 
 
-\newcommand{\Mx}{M_x}
-\newcommand{\My}{M_y}
-\newcommand{\Mz}{M_z}
-\newcommand{\Ixx}{I_{xx}}
-\newcommand{\Iyy}{I_{yy}}
-\newcommand{\Izz}{I_{zz}}
 
 \newcommand{\opdiff}{\Big[\ \partial \ \Big] }
 \newcommand{\matalpha}{\Big[\ \alpha \ \Big] } 
