@@ -16,10 +16,74 @@
 		Nella teoria del controllo classico l'analisi viene effettuata nel dominio della \textbf{variabile complessa} $s \in \mathds C$ definita da una parte reale $\sigma$ e una parte immaginaria $\omega$, ossia determinata dalla relazione
 		\[ s = \sigma + i \omega \qquad \textrm{con } i = \sqrt{-1} \]  
 		A questo punto nota una funzione $f(t)$ nel dominio del tempo è possibile definire la sua rispettiva $F(s)$ nel dominio della variabile di Laplace utilizzando la \textbf{trasformata di Laplace} così definita:
-		\begin{equation}
+		\begin{equation} \label{teoria:eq:trasformata}
 			F(s) = \trasf{f(t)} := \int_0^\infty f(t) e^{-st} \, dt
 		\end{equation}		
 	\end{concetto}
 	\begin{osservazione}
 		La trasformata di Laplace di alcune funzioni può non esistere: questo può succedere quando il calcolo dell'integrale non porta alla convergenza dello stesso ad un valore finito.
 	\end{osservazione}
+	
+	Convenzionalmente si rappresentano le funzioni nel dominio del tempo con le lettere minuscole (per esempio $f(t)$ ), mentre le trasformate nel dominio della variabile di Laplace si scrivono con la rispettiva lettera maiuscola:
+	\[ \textrm{dom. del tempo: } f(t) \qquad \leftrightarrow \qquad \textrm{dom. variabile di Laplace: }\trasf{f(t)} =F(s)  \]
+	
+	\figura5 1 {scalino}{funzione a scalino.}{scalino}
+	\paragraph{Trasformata della funzione a scalino} Si consideri la \textbf{funzione \textit{a scalino}}, mostrata in figura \ref{scalino}, definita per intervalli dall'espressione
+	\begin{equation}
+	    \scal(t)= \begin{cases} 0 \qquad & t \leq 0 \\ 1 \qquad & t \geq 0 \end{cases} 
+	\end{equation}
+    
+    Questa funzione risulterà essere particolarmente utile in quanto ogni segnale che verrà analizzato in questo corso sarà considerato come nullo per tempi minori di 0 in quanto si considera la condizione iniziale del sistema completamente descritta dallo stato del sistema stesso (e non dalla storia pregressa degli ingressi). Inoltre tale funzione sarà importante per analizzare sia le \textit{proprietà di equilibrio} sia le \textit{proprietà transitorie} del sistema.
+    
+    Applicando la definizione della trasformata di Laplace (eq. \ref{teoria:eq:trasformata}) è dunque possibile determinare esplicitamente la funzione nel dominio della variabile complessa $s$:
+    \begin{equation} \label{eq:trasf:scalino}
+    \begin{aligned}
+        F(s) = \trasf{\scal(t)} & = \int_0^\infty \scal(t) e^{-st} \, dt = \int_0^\infty e^-{st}\, dt = \left. - \frac{e^{-st}}{s} \right|_0^\infty \\ & = \frac{1}{s}
+    \end{aligned}
+    \end{equation}
+    
+	\figura5 1 {impulso}{funzione impulso.}{impulso}
+	
+	\paragraph{Trasformata del segnale impulso} La \textbf{funzione \textit{impulso}} $\imp(t)$, rappresentata in figura \ref{impulso}, è determinata da un segnale con valore infinito in un intervallo infinitesimo dello stesso ordine (ossia tale che l'integrale $\int_{-\infty}^\infty \imp(t)\, dt$ sia unitario) che può essere descritta dalla relazione
+	\begin{equation}
+	    \imp(t) = \lim_{\varepsilon \rightarrow 0} \imp_\varepsilon(t) \qquad \textrm{con } \imp_\varepsilon(t) = \begin{cases}
+	    1 / \varepsilon \qquad & 0 \leq t \leq \varepsilon \\ 0 & \textrm{altrove} 
+	    \end{cases}
+	\end{equation}
+	Anche in questo caso è possibile applicare la definizione della trasformata di Laplace per poter stabilire come la funzione impulso si trasforma nel dominio della della variabile complessa $s$:
+	\begin{equation} \label{eq:trasf:impulso}
+	\begin{aligned}
+	    F(s)=\trasf{\imp(t)} &= \lim_{\varepsilon\rightarrow 0} \int_0^\varepsilon \frac 1 \varepsilon e^{-st} \, dt = \lim_{\varepsilon\rightarrow 0} \left( \left. \frac{e^{-st}}{-s\varepsilon} \right|_0^\varepsilon \right) = \lim_{\varepsilon\rightarrow 0} \frac{e^{-s\varepsilon} - 1}{-s\varepsilon} \\ & = 1
+	\end{aligned}
+	\end{equation}
+	
+	Questa funzione viene spesso utilizzata per modellare i fenomeni impulsivi (da qui il suo nome) ed è particolarmente importante in quanto, come si dimostrerà nel seguito, sarà importante per stabilire la risposta (nel dominio della variabile complessa $s$) di un qualsiasi sistema lineare per ogni tipo di ingresso applicato per via del fatto che la sua trasformata $\trasf{\imp(t)}$ è sempre costante e pari a 1 (indipendentemente da $s$).
+	
+	
+	\subsection{Proprietà della trasformata di Laplace}
+	    La trasformata di Laplace gode di 3 proprietà fondamentali che la rendono uno strumento molto \textit{potente} per analizzare i sistemi dinamici, in particolare si osserva che:
+	    \begin{enumerate}[i)]
+	        \item l'\textbf{operatore} $\L$ è di tipo \textbf{lineare}, ossia è possibile verificare che
+	        \begin{equation}
+	            \L\Big( \alpha\, f(t) + \beta\, g(t)\Big) := \alpha\, \trasf{f(t)} + \beta \trasf{g(t)} \qquad \forall \ \alpha,\beta\in\mathds R 
+	        \end{equation}
+	        
+	        \item e' possibile osservare la relazione per la \textbf{traslazione nel dominio del tempo}, ossia dato un ritardo $\tau$ appartenente a tale dominio è possibile verificare la trasformata di $f(t-\tau)$ come
+	        \begin{equation}
+	            \L \Big( f(t-\tau)\Big) := \trasf{f(t)} e^{-s\tau} = F(s) e^{-s\tau} 
+	        \end{equation}
+	        
+	        \item dualmente alla proprietà ii) è possibile determinare una proprietà di \textbf{traslazione nel dominio della variabile di Laplace} determinata dalla relazione
+	        \begin{equation}
+	            \trasf{e^{at} f(t) } := F(s-a) \qquad \forall \ a \in \mathds R
+	        \end{equation}
+	        
+	    \end{enumerate}
+	
+	\subsection{Trasformazioni notevoli}
+	    A partire dalle trasformate notevoli della funzione a scalino (eq. \ref{eq:trasf:scalino}) e della funzione impulso (eq. \ref{eq:trasf:impulso}) è possibile determinare le trasformate di altre funzioni di particolare interesso pratico. Considerando per esempio l'\textbf{esponenziale} per un tempo positivo, definito dalla funzione $e^{at}\scal(t)$, sfruttando la proprietà iii) di traslazione nel dominio della variabile complessa si arriva al risultato che
+	    \begin{equation}
+	        \trasf{e^{at} \scal(t)} = \frac 1 {s-a}
+	    \end{equation}
+	    
+	    \paragraph{Segnali (co)sinusoidali}
