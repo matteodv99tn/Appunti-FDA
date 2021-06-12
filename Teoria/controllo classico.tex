@@ -86,4 +86,89 @@
 	        \trasf{e^{at} \scal(t)} = \frac 1 {s-a}
 	    \end{equation}
 	    
-	    \paragraph{Segnali (co)sinusoidali}
+	    \paragraph{Segnali (co)sinusoidali} Considerando un \textbf{segnale cosinusoidale} per soli tempi positivi di pulsazione $\omega$ definito dall'espressione $f(t) = \cos(\omega t)\scal(t)$, per arrivare alla trasformazione nel dominio della variabile di Laplace si ricorre all'utilizzo della trasformazione di Eulero che permette di riscrivere $f(t)$ tramite una notazione fasoriale con i numeri complessi:
+	    \[ f(t) = \cos(\omega t) \scal(t) = \frac{e^{i\omega t}+ e^{-i\omega t}}{2} \scal(t)\]
+	    
+	    Sfruttando dunque la terza proprietà della trasformata $\L$ è possibile ottenere l'analogo della funzione cosinusoidale nel dominio della variabile complessa, in particolare:
+	    \begin{equation}
+	   	\begin{aligned}
+	   		\trasf{f(t)} & = \frac 1 2 \trasf{e^{i\omega t}\scal(t)} + \frac 1 2 \trasf{e^{-i\omega t} \scal(t)} = \frac 1 2 \frac{1}{s-i\omega} + \frac 1 2 \frac{1}{s+i\omega} \\ & = \frac{s}{s^2+\omega^2}
+	   	\end{aligned}
+	    \end{equation}
+	    Seguendo un procedimento analogo è anche possibile determinare la trasformata di un segnale sinusoidale arrivando al risultato che
+	    \begin{equation}
+	    	\trasf{\sin(\omega t) \scal(t)} = \frac \omega {s^2 + \omega^2}
+	    \end{equation}
+	    
+	    Combinando i risultati appena ottenuti con un andamento esponenziale che moltiplica l'ampiezza del seno (funzione che spesso è possibile trovare nell'analisi di sistemi dinamici in regime transitorio), utilizzando la terza proprietà della trasformata si arriva a verificare che
+	    \[ \trasf{e^{at}\cos(\omega t) \scal (t)} = \frac{s-a}{(s-a)^2+\omega^2} \qquad \trasf{e^{at}\sin(\omega t) \scal (t)} = \frac{\omega}{(s-a)^2+\omega^2} \]
+	    
+	\subsection{Derivate e integrali}
+		Una peculiarità di descrivere i sistemi dinamici nel dominio della variabile di Laplace è che tutte le derivate e integrali nel tempo di una funzione generica $f$ vengono ridotte a delle operazioni algebriche.
+		\begin{concetto}
+			La \textbf{trasformata della derivata} di una funzione generica $\dot f(t)$ (supponendo di conoscere $\trasf f = F(s)$ ) può essere calcolata immediatamente secondo l'operazione
+			\begin{equation}
+				\trasf{\dot f(t)} := s \, F(s) + f(0)
+			\end{equation}
+			dove $f(0)$ sono le condizioni iniziali del sistema. Da questa relazione deriva il fatto che l'operatore $s$ è spesso definito \textbf{\textit{operatore derivata}}.
+			\vspace{2mm}
+			
+			Analogamente all'operazione di derivazione è possibile calcolare l'\textbf{integrale} di una funzione utilizzando l'\textbf{\textit{operatore integrale}} $\frac 1 s$ che verifica la relazione
+			\begin{equation} \label{eq:trasf:integrale}
+				\trasf{\int_0^t f(t)\, dt} : = \frac 1 s F(s)
+			\end{equation}
+		\end{concetto}
+	
+		\paragraph{Trasformata di una rampa} Considerando la funzione \textbf{\textit{rampa}} $\ramp(t)$ definita dalla relazione $t \scal(t)$, si può osservare che la funzione rampa coincide con l'integrazione della funzione scalino: sfruttando la proprietà di integrazione (eq. \ref{eq:trasf:integrale}) allora si calcola la trasformata dalla rampa come
+		\begin{equation}
+			\trasf{\ramp(t)} = \frac 1 s \trasf{\scal(t)} = \frac{1}{s^2}
+		\end{equation}
+		
+		\paragraph{Proprietà di derivazione} Una proprietà conseguente agli operatori di derivazione e integrazione nel dominio del tempo, è il concetto di derivata nel dominio della variabile complessa: in particolare si osserva che essa coincide con la moltiplicazione nel dominio del tempo della funzione originaria secondo l'equazione
+		\begin{equation}
+			- \frac d {ds}F(s) = \trasf{t f(t)}
+		\end{equation}
+		
+		
+\section{Anti-trasformata di Laplace}
+	L'\textbf{anti-trasformata di Laplace}, indicata generalmente come $\aL$, rappresenta l'\textit{operazione inversa} alla trasformazione, ossia è un'operazione che permette di ricavare la funzione $f(t)$ nel dominio del tempo nota la sua corrispettiva $F(s)$ nel dominio della variabile complessa $s$.
+	
+	Seguirà ora prima l'introduzione di due teoremi principali che permetteranno di stabilire la risposta al tempo iniziale ($t=0$) e asintotica ($t\rightarrow \infty$) di un sistema dinamico, per arrivare successivamente a scrivere la definizione formale dell'anti-trasformata stessa.
+	
+	\subsection{Teorema del valore iniziale e finale}
+		
+		\begin{concetto}
+			Una \textbf{trasformata} $F(s)$ ottenuta dall'operazione $\trasf{f(t)}$ è detta \textbf{razionale} se e solo se la stessa può essere espressa come un rapporto tra due polinomi nella variabile complessa $s$:
+			\[ \textrm{trasformata razionale} \qquad \Leftrightarrow \qquad F(s) := \frac{N(s)}{D(s)} \ \textrm{ con $N(s), D(s)$ polinomi}  \]			
+		\end{concetto}
+		\begin{nota}
+			A questo livello l'idea di \textit{trasformata razionale} può sembrare \textit{riduttiva} in quanto considera trasformate che possono essere espresse solo come rapporto di polinomi (e non da funzioni generiche). Tuttavia ai fini di questo corso, come è possibile osservare dalle trasformate fin'ora riportate nelle pagine seguenti, i principali segnali di ingresso (e di uscita) sono sempre espressi come polinomi nel dominio della variabile di Laplace. In generale infatti i sistemi lineari determinano sempre trasformate che sono razionali.
+		\end{nota}
+		\begin{esempio}
+			Un esempio di trasformata $F(s)$ razionale è descritta dalla funzione
+			\[ F(s) = \frac{s+1}{s^2 + 2s + 2}\]
+			Al contrario una trasformata $F(s) = e^s \cos(s)$ non è razionale e vedremo che su di essa non si potranno applicare i teoremi che verranno enunciati.
+		\end{esempio}
+		
+		\begin{teorema}{teorema del valore iniziale} \label{teor:valiniziale}
+			
+			\texttt{Ipotesi:} La trasformata $F(s)$ rispetto al quale si può applicare tale teorema deve essere razionale. \vspace{3mm}
+			
+			\texttt{Enunciato:} \textit{Data una trasformata di Laplace $F(s)$ razionale, allora il valore della rispettiva funzione $f(t)$ valutata al tempo iniziale $t = 0$ può essere calcolato tramite la relazione}
+			\begin{equation}
+				f(0) := \lim_{s\rightarrow \infty} s\,F(s)
+			\end{equation}
+		\end{teorema}
+	
+		\begin{teorema}{teorema del valore finale} \label{teor:valfinale}
+		
+			\texttt{Ipotesi:} La trasformata $F(s)$ rispetto al quale si può applicare tale teorema deve essere razionale e si deve verificare che le radici del denominatore $D(s)$ della stessa siano tutte a parte reale negativa non nulla. \vspace{3mm}
+			
+			\texttt{Enunciato:} \textit{Data una trasformata di Laplace $F(s)$ razionale (che rispetta le ipotesi), allora il valore asintotico della funzione $f(t)$ valutata al tempo $t\rightarrow \infty$ può essere calcolato tramite la relazione}
+			\begin{equation}
+				\lim_{t\rightarrow \infty}f(t) := \lim_{s\rightarrow 0} s\,F(s)
+			\end{equation}
+		\end{teorema}
+				
+
+
