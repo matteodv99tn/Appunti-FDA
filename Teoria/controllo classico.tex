@@ -30,7 +30,7 @@
 	\figura5 1 {scalino}{funzione a scalino.}{scalino}
 	\paragraph{Trasformata della funzione a scalino} Si consideri la \textbf{funzione \textit{a scalino}}, mostrata in figura \ref{scalino}, definita per intervalli dall'espressione
 	\begin{equation}
-	    \scal(t)= \begin{cases} 0 \qquad & t \leq 0 \\ 1 \qquad & t \geq 0 \end{cases} 
+	    \scal(t)= \begin{cases} 0 \qquad & t < 0 \\ 1 \qquad & t \geq 0 \end{cases} 
 	\end{equation}
     
     Questa funzione risulterà essere particolarmente utile in quanto ogni segnale che verrà analizzato in questo corso sarà considerato come nullo per tempi minori di 0 in quanto si considera la condizione iniziale del sistema completamente descritta dallo stato del sistema stesso (e non dalla storia pregressa degli ingressi). Inoltre tale funzione sarà importante per analizzare sia le \textit{proprietà di equilibrio} sia le \textit{proprietà transitorie} del sistema.
@@ -140,13 +140,16 @@
 		\begin{concetto}
 			Una \textbf{trasformata} $F(s)$ ottenuta dall'operazione $\trasf{f(t)}$ è detta \textbf{razionale} se e solo se la stessa può essere espressa come un rapporto tra due polinomi nella variabile complessa $s$:
 			\[ \textrm{trasformata razionale} \qquad \Leftrightarrow \qquad F(s) := \frac{N(s)}{D(s)} \ \textrm{ con $N(s), D(s)$ polinomi}  \]			
+			Di questo tipo di trasformata si denotano \textbf{poli} le radici del polinomio del denominatore $D(s)$, mentre sono detti \textbf{zeri} le radici del polinomio a numeratore $N(s)$.
 		\end{concetto}
 		\begin{nota}
 			A questo livello l'idea di \textit{trasformata razionale} può sembrare \textit{riduttiva} in quanto considera trasformate che possono essere espresse solo come rapporto di polinomi (e non da funzioni generiche). Tuttavia ai fini di questo corso, come è possibile osservare dalle trasformate fin'ora riportate nelle pagine seguenti, i principali segnali di ingresso (e di uscita) sono sempre espressi come polinomi nel dominio della variabile di Laplace. In generale infatti i sistemi lineari determinano sempre trasformate che sono razionali.
 		\end{nota}
-		\begin{esempio}
+		\begin{esempio}{: trasformate razionali}
 			Un esempio di trasformata $F(s)$ razionale è descritta dalla funzione
-			\[ F(s) = \frac{s+1}{s^2 + 2s + 2}\]
+			\[ F(s) = \frac{s+1}{s^2 +s-2}\]
+			Fattorizzando il denominatore come $(s-1)(s+2)$, allora si evince che i poli di $F(s)$ sono pari a $1$ e $-2$, mentre esiste un unico zero ($N(s)$ è già fattorizzato) pari al valore $-1$.
+			
 			Al contrario una trasformata $F(s) = e^s \cos(s)$ non è razionale e vedremo che su di essa non si potranno applicare i teoremi che verranno enunciati.
 		\end{esempio}
 		
@@ -169,6 +172,93 @@
 				\lim_{t\rightarrow \infty}f(t) := \lim_{s\rightarrow 0} s\,F(s)
 			\end{equation}
 		\end{teorema}
+	
+	\subsection{Definizione}
+		\begin{concetto}
+			Data una trasformata $F(s)$ da convertire nel dominio del tempo per determinare $f(t)$ si utilizza l'\textbf{anti-trasformata di Laplace} definita dall'espressione
+			\begin{equation}
+				f(t) = \trasf{F(s)} := \frac{1}{2\pi i} \int_{\sigma-i\omega}^{\sigma+i\omega} F(s) e^{st} \, dt \qquad \textrm{con $t>\geq 0$ e } \sigma \in \mathds R
+			\end{equation}
+		\end{concetto}
+		Applicare la definizione formale della trasformata di Laplace spesso è \textit{costoso} dal punto di vista operativo: per questo in generale si utilizzano dei \textit{metodi alternativi} per anti-trasformare le funzioni.
+		
+	\subsection{Metodo di Heaviside}
+		\begin{concetto}
+			Il \textbf{metodo di Heaviside} è una procedura che viene utilizzata per \textit{semplificare} l'anti-trasformazione di funzioni $F(s)$. Tale sistema, per funzionare, richiede che la funzione $F(s)$ sia razionale e con grado del numeratore inferiore rispetto al grado del denominatore (come si vedrà questa seconda ipotesi potrà essere facilmente \textit{aggirata}) e si basa su:
+			\begin{enumerate}
+				\item scomporre la trasformata $F(s)$ in una combinazione lineare di trasformate di Laplace note (esponenziali/cosinusoidi... \textit{semplici});
+				\item sfruttando la linearità dell'anti-trasformata $\aL$, si calcola $f(t)$ come combinazione lineare delle anti-trasformate note.
+			\end{enumerate}
+		\end{concetto}	
+		Questo metodo sembra \textit{più facile a dirsi che a farsi}, tuttavia nel seguito verranno sviluppati, mediante degli esempi, le anti-trasformate di funzioni di trasferimento piuttosto comuni.
+		
+		\subsubsection{Poli reali distinti}
+			Si consideri una trasformata $F(s)$ (già fattorizzata) a poli reali distinti del tipo
+			\[F(s) = \frac{s+2}{s(s+6)(s+1)}\]
+			Verificato che $F(s)$ è razionale e che il grado del denominatore (pari a 3) coincide con il grado del denominatore (1), allora è possibile applicare il metodo di Heaviside. In particolare si vuole scomporre la trasformata in 3 elementi (associati ad ogni fattore del polinomio a denominatore) che rendono verificata l'uguaglianza
+			\[ F(s) = \frac{s+2}{s(s+6)(s+1)} = \frac A s + \frac{B}{s+6} + \frac{C}{s+1}  \]
+			Determinando dunque i coefficienti numerici $A,B,C$ permette di ricavare l'anti-trasformata di $F(s)$ in quanto
+			\[ f(t) = \anti{F(s)} = A\scal(t) + Be^{-6t}\scal(t) + C e^{-t}\scal(t) \]
+			
+			\paragraph{Determinazione dei coefficienti} Per determinare i coefficienti $A,B,C$ che caratterizzano l'anti-trasformata è possibile seguire due possibili \textit{strategie}:
+			\begin{itemize}
+				\item determinare i coefficienti esplicitando la somma delle funzioni elementari, ossia:
+				\begin{align*}
+					\frac{s+2}{s(s+6)(s+1)} & = \frac A s + \frac{B}{s+6} + \frac{C}{s+1} = \frac{ A(s+6)(s+1) Bs(s+1) + Cs(s+6) }{s(s+6)(s+1)} \\
+					& = \frac{s^2(A+B+C) + s(7A+B+6C)+6A}{s(s+6)(s+1)}
+				\end{align*}
+				A questo punto per eguagliare il membro a destra con quello a sinistra è necessario imporre l'uguaglianza sui polinomi al numeratore: questo significa risolvere il sistema lineare
+				\[ \begin{cases}
+					A+B+C = 0 \\ 7A+B+6C = 1 \\ 6A = 2
+				\end{cases} \qquad \Rightarrow \quad A = \frac 1 3 \ , \ B = - \frac 2 {15} \ , \ C= -\frac 1 5 \]
 				
-
-
+				\item un secondo metodo per determinare più \textit{agilmente} i coefficienti $A,B,C$ si basa sul fatto che polinomi equivalenti, se valutati nello stesso punto, determinano un risultato uguale. A questo punto si definisce il polinomio del numeratore originario $p_a (s) = s+2$, mentre si definisce il secondo polinomio (partendo dal caso precedente) sommando i contributi iniziali e prendendo in considerazione il numeratore, e dunque $p_b (s) = A(s+6)(s+1) Bs(s+1) + Cs(s+6)$. A questo punto valutando tali polinomi in \textit{punti furbi}, coincidenti di fatto con i poli della funzione $F(s)$, è possibile determinare i coefficienti
+				\begin{align*}
+					p_a(0) &= p_b(0) \qquad &\Rightarrow 2 & = 6A \qquad & \Rightarrow A &= \frac 1 3  \\
+					p_a(-1) &= p_b(-1) \qquad &\Rightarrow 1 & = -5C \qquad & \Rightarrow C &= - \frac 1 5  \\
+					p_a(-6) &= p_b(-6) \qquad &\Rightarrow -4 & = -30B \qquad & \Rightarrow B &= - \frac 2 {15}  
+				\end{align*}
+				
+			\end{itemize}
+			In entrambi i casi si osserva che l'anti-trasformata della funzione di partenza vale
+			\[ f(t) = \anti{\frac{s+2}{s(s+6)(s+1)}} = \frac 1 3\scal(t) -\frac 2 {15}e^{-6t}\scal(t) - \frac 1 5 e^{-t}\scal(t) \]
+			
+		\subsubsection{Poli reali multipli}
+			Data una trasformata $F(s)$ razionale con grado del numeratore inferiore di quella del denominatore con poli reali multipli (e dunque coincidenti), la scomposizione di Heaviside risulta essere analoga al caso di poli reali distinti con l'accortezza di considerare, nella scomposizione in fattori semplici, anche i \textit{termini multipli} associati ai poli coincidenti. Considerando per esempio la funzione
+			\[ F(s) = \frac{s+2}{s^2(s+1)}\]
+			allora per effettuare la scomposizione di Heaviside è necessario determinare i 3 coefficienti numerici $A,B,C$ che rendono verificata l'uguaglianza
+			\[  F(s) = \frac A s + \frac{B}{s^2} + \frac{C}{s+1} \qquad \xrightarrow{\aL} \quad f(t) = A\scal(t) + B\,\ramp(t) + Ce^{-t}\scal(t) \]
+			\begin{nota}
+				La nostra funzione $F(s)$ di fatto presenta due poli reali coincidenti nel punto $s=0$: per questo nella scomposizione è necessario considerare un denominatore associato alla radice singola (denominatore $s$) e successivamente quello alla radice multipla (denominatore $s^2$).
+			\end{nota}
+			
+			Volendo a questo punto determinare i coefficienti numerici di linearità, è sufficiente utilizzare uno dei due metodi mostrati in precedenza per i poli reali distinti; utilizzando il secondo si determina che
+			\[ \frac{s+2}{s^2(s+1)} = \frac{As (s+1)+ B(s+1) +Cs^2}{s^2(s+1)} = \frac{s^2(A+C) + s(A+B) + B}{s^2(s+1)} \]
+			\[ \Rightarrow \qquad p_a (s) = s^2 (s+1) \qquad p_b(s) = s^2(A+C) + s(A+B) + B \]
+			In questo caso esistendo solamente due \textit{punti furbi} (due poli di coordinate $s = 0,-1$) è possibile determinare solo due coefficienti che risultano valere $B=2$ e $C=1$. Il terzo parametro $A$ si può ricavare valutando i polinomi in un altro punto generico (in quanto gli altri coefficienti sono ora noti) che determina  $ A = -1$. L'anti-trasformata complessiva vale dunque
+			\[ f(t) = \anti{F(s)} = -\scal(t) + 2\,\ramp(t) + e^{-t}\scal(t) \]
+			
+		\subsubsection{Poli complessi coniugati}
+			Si consideri la funzione $F(s) = \dfrac{1}{s(s^2+2s+2)}	$ della quale si osservano soddisfatte le condizioni di applicabilità per Heaviside. Cercando di calcolare le radici del denominatore di tale funzione si osserva che le stesse presentano una coppia di numeri complessi coniugati, in particolare i poli si trovano nelle posizioni
+			\[ s_1 = 0 \qquad s_{2,3} = \frac{-2\pm \sqrt{4-8}}{2} = -1\pm i\]
+			A questo punto è possibile pensare di utilizzare l'approccio di Heaviside utilizzando la fattorizzazione con i numeri complessi e cercando di determinare 3 parametri $A,B,C$ tali che
+			\[F(s) = \dfrac{1}{s(s^2+2s+2)} = \frac{1}{s(s+1+i)(s+1-i)} = \frac A s + \frac{B}{s+1+i} + \frac{C}{s+1-i}\]
+			Il problema di questo tipo di trasformazione è che risulta \textit{difficile} intuire l'anti-trasformata degli ultimi due termini, e dunque tale scomposizione è poco efficace. Per questo (ma tale idea dovrà essere verificata) si può pensare di scomporre la funzione $F(s)$ come
+			\[F(s) = \frac A s + \frac{\beta s + \alpha}{s^2+2s+2} = \frac A s + \gamma \frac{s-a}{(s-a)^2+\omega^2} +\delta \frac{\omega}{(s-a)^2+\omega^2} \]
+			Se si riuscisse infatti a determinare il valore dei coefficienti $\gamma,a,\omega$ e $\delta$ sarebbe possibile calcolare l'anti-trasformata di $F(s)$ come
+			\[f(t) = \anti{F(s)} = A \scal(t) + \gamma e^{at}\cos(\omega t) \scal(t) + \delta e^{at} \sin(\omega t)\scal(t)\]
+			
+			\paragraph{Determinazione dei coefficienti} Per determinare i coefficienti numerici di linearità dell'anti-trasformata è necessario in primo luogo calcolare il valore dei parametri $A,\alpha,\beta$; effettuando l'equivalenza delle due espressioni
+			\[\frac{1}{s(s^2+2s+2)}  = \frac A s + \frac{\beta s + \alpha}{s^2+2s+2} = \frac{s^2(A+\beta) + s(2A+\alpha) + 2A}{s(s^2+2s+2)}\]
+			è possibile determinare i valori numerici dei coefficienti che sono pari ad $A=\frac 1 2,\alpha = -1$ e $\beta = - \frac 1 2$. Determinati questi coefficienti è possibile pensare di risolvere la seconda relazione di equivalenza per la quale
+			\[ \xrightarrow[\beta = - 1/2]{\alpha = -1} \quad \frac{-\frac 1 2 s - 1}{s^2+2s+2} = \gamma \frac{s-a}{(s-a)^2+\omega^2} +\delta \frac{\omega}{(s-a)^2+\omega^2} = \frac{\gamma s -\gamma a + \delta \omega }{(s-a)^2+\omega^2} \]
+			Eguagliando dunque i polinomi a denominatore si determinano sia il coefficiente $a = -1$ che il termine $\omega= 1$. Conoscendo tali valori è possibile proseguire con la determinazione dei coefficienti $\gamma,\delta$ che risultano essere uguali e pari a $-\frac 1 2$. A questo punto l'anti-trasformata complessiva risulta valere
+			\[f(t) = \anti{\frac{1}{s(s^2+2s+2)}} = \frac 1 2 \scal(t) -\frac 1 2 e^{-t}\cos(t)\scal(t) - \frac 1 2 e^{-t}\sin(t)\scal(t)  \]
+			
+			
+			
+			
+			
+			
+			
+			
