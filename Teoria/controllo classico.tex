@@ -125,7 +125,7 @@
 		\end{equation}
 		
 		\paragraph{Proprietà di derivazione} Una proprietà conseguente agli operatori di derivazione e integrazione nel dominio del tempo, è il concetto di derivata nel dominio della variabile complessa: in particolare si osserva che essa coincide con la moltiplicazione nel dominio del tempo della funzione originaria secondo l'equazione
-		\begin{equation}
+		\begin{equation} \label{eq:trasf:propderivazione}
 			- \frac d {ds}F(s) = \trasf{t f(t)}
 		\end{equation}
 		
@@ -254,6 +254,46 @@
 			\[ \xrightarrow[\beta = - 1/2]{\alpha = -1} \quad \frac{-\frac 1 2 s - 1}{s^2+2s+2} = \gamma \frac{s-a}{(s-a)^2+\omega^2} +\delta \frac{\omega}{(s-a)^2+\omega^2} = \frac{\gamma s -\gamma a + \delta \omega }{(s-a)^2+\omega^2} \]
 			Eguagliando dunque i polinomi a denominatore si determinano sia il coefficiente $a = -1$ che il termine $\omega= 1$. Conoscendo tali valori è possibile proseguire con la determinazione dei coefficienti $\gamma,\delta$ che risultano essere uguali e pari a $-\frac 1 2$. A questo punto l'anti-trasformata complessiva risulta valere
 			\[f(t) = \anti{\frac{1}{s(s^2+2s+2)}} = \frac 1 2 \scal(t) -\frac 1 2 e^{-t}\cos(t)\scal(t) - \frac 1 2 e^{-t}\sin(t)\scal(t)  \]
+			
+		\subsubsection{Poli complessi coniugati multipli}
+			Si consideri la trasformata $F(s) = \dfrac{1}{(s^2+2s+2)^2}	$ molto simile a quella appena analizzata. In questo caso, in modo diverso rispetto alla situazione precedente, è possibile osservare come i poli complessi coniugati siano multipli: il sistema di ordine 4 presenta 4 poli di valori
+			\[ s_{1,2,3,4} = -1 \pm j \]
+			
+			Sfruttando i concetti visti per i poli reali multipli, si può pensare di effettuare una scomposizione di $F(s)$ secondo una forma
+			\[ F(s) = \frac{\beta s + \alpha}{s^2+2s+2} + \frac{\dots}{(s^2+2s+2)^2}\]
+			Di questa scomposizione il primo termine può essere anti-trasformato secondo la metodologia mostrata per i poli complessi coniugati distinti, mentre meno intuitivo è determinare il numeratore del secondo addendo e capire come lo stesso si anti-trasforma.
+			
+			Un processo \textit{intuitivo} che si può seguire per anti-trasformare tale elemento si basa sul considerare una funzione $h(t)$ definita come $e^t\sin(\omega t) \scal(t)$ che, per $\omega = 1$, determina un'anti-trasformata pari a 
+			\[H(s) = \anti{h(t)} = \frac{1}{(s+1)^2+1} = \frac 1 {s^2+2s+2}\]
+			
+			Considerando ora la funzione $h'(t) =t \, h(t) = t e^t\sin( t)\scal(t)$, la sua trasformata può essere determinata sfruttando la proprietà di derivazione (eq. \ref{eq:trasf:propderivazione}, pag. \pageref{eq:trasf:propderivazione}) per la quale
+			\[ H'(s) = \anti{h'(t)} = - \frac{dH(s)}{ds} = - \Big(-1 \big(s^2+2s+2\big)^{-2}(2s+2)\Big) = \frac{2s+ 2}{\big(s^2 +2s+2\big)^2} \]
+			
+			Si è cosi mostrato, a livello piuttosto intuitivo e di alto livello, come determinare i coefficienti del numeratore per la scomposizione di Heaviside e dunque anti-trasformare $F(s)$ (l'anti-trasformata è infatti pari alla funzione $h'(t)$).
+		
+		\subsubsection{Grado del denominatore minore del grado del numeratore}
+			
+			Specifica richiesta di applicabilità del metodo di Heaviside è che la trasformata $F(s)$, oltre ad essere razionale, presenti un numeratore con grado del polinomio inferiore a quella del denominatore. In realtà questa \textit{specifica} può essere aggirata sfruttando la divisione tra i polinomi: considerando infatti una funzione $F(s) = N(s) / D(s)$ il cui grado del numeratore è maggiore (o uguale) di quello del denominatore, è possibile determinare un coefficiente numerico $\alpha$ e un polinomio $\tilde N(s)$ ottenuto dal resto della divisione in modo che si verifichi
+			\[F(s) = \frac{N(s)}{D(s)} = \frac{\tilde N(s)}{D(s)} + \alpha\]
+			
+			A questo punto la trasformata razionale $\tilde N(s)/D(s)$ può essere anti-trasformata tramite le metodologie precedentemente descritte, mentre il coefficiente numerico $\alpha$ rappresenta un fattore moltiplicativo da anteporre alla funzione impulso, ossia l'anti-trasformata del valore unitario.
+			
+			\begin{esempio}{: trasformata con grado del numeratore pari a quello del denominatore}
+				Si consideri la trasformata $F(s)=\dfrac{s+2}{s+3}$ caratterizzata da un numeratore di grado pari al polinomio a denominatore. Formalmente per tale espressione non sarebbe possibile applicare il metodo di Heaviside, tuttavia è possibile determinare due coefficienti $\alpha,\beta \in \mathds R$ tali da rendere verificata la relazione
+				\[\frac{s+2}{s+3} = \frac{\beta}{s+3} + \alpha = \frac{\beta + (s+3)\alpha}{s+2}\]
+				Imponendo l'uguaglianza dei numeratori e risolvendo dunque il sistema lineare associato si determinano i parametri $\alpha = 1$, $\beta = -1$ della scomposizione rispetto alla quale si può applicare il metodo di Heaviside con il risultato che
+				\begin{align*}
+					F(s) & = \frac{-1}{s+3} + 1 \\
+					\xrightarrow{ \quad \aL \quad } \qquad f(t) & = - 1 e^{-3t} \scal(t) + \imp(t)
+				\end{align*}
+				
+			\end{esempio}
+			
+			
+			
+			
+			
+			
 			
 			
 			

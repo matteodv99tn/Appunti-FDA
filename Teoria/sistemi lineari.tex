@@ -1,0 +1,108 @@
+\chapter{Analisi di sistemi dinamici lineari tempo invarianti nel dominio di Laplace}
+	A pagina \pageref{eq:rapp-matriciale} è stato mostrato come, nel dominio del tempo, la rappresentazione in spazio di stato di un sistema lineare tempo invariante possa essere descritta tramite una notazione matriciale in cui le equazioni di stato assumono una forma $\dot x = Ax+Bu$, mentre le trasformazioni d'uscita diventano $y = Cx+ Du$.
+	
+	A questo punto per procedere con l'analisi di questo tipo di sistemi è possibile effettuare una trasformazione nel dominio di Laplace, il che si riduce a trasformare completamente la rappresentazione di stato del sistema:
+	\[\trasf{\ \begin{cases}
+		\dot x = Ax + Bu \\ y = Cx+Du
+		\end{cases}} \qquad \Rightarrow\quad \begin{cases}
+		\trasf{\dot x(t)} = A\trasf{x(t)} + B\trasf{u(t)} \\
+		\trasf{y(t)} = C\trasf{x(t)} + D\trasf{u(t)} 
+	\end{cases}\]
+	
+	Sfruttando a questo punto la proprietà della trasformata della derivata di una funzione per la quale $\trasf{\dot x} = sX(s) - x_0$, allora la rappresentazione in forma di stato rispetto al dominio di Laplace può essere espressa come
+	\begin{equation} \label{eq:lti:statolaplace}
+		\begin{cases}
+			sX(s) - x_0 = AX(s) + BU(s) \\ Y(s) = CX(s) + DU(s)
+		\end{cases}
+	\end{equation}
+	
+	\begin{concetto}
+		Un \textbf{sistema lineare tempo invariante} può sempre essere descritto sia nel dominio del tempo che nel dominio della variabile di Laplace secondo una notazione matriciale della sua rappresentazione di stato, e nel caso di analisi tramite la teoria del controllo classico tale rappresentazione è mostrata in equazione \ref{eq:lti:statolaplace} (dove in particolare $x_0$ rappresenta lo stato del sistema al tempo $t=0$). \\ Invertendo opportunamente l'equazione di stato e la trasformata di uscita è dunque possibile stabilire il \textbf{movimento di stato} e \textbf{uscita} di un sistema lineare tempo invariante tramite la notazione
+		\begin{equation} \label{eq:lti:movimenti}
+		\begin{aligned}
+			X & = \big(sI-A\big)^{-1} x_0 + \big(sI-A\big)^{-1} BU \\
+			Y & = C \big(sI-A\big)^{-1} x_0 + \Big(C\big(sI-A\big)^{-1}B + D\Big)U
+		\end{aligned}
+		\end{equation}	
+	\end{concetto}
+	\begin{nota}
+		Considerare un sistema come lineare ci permette di utilizzare una rappresentazione di stato in forma matriciale, mentre l'invarianza del sistema permette di stabilire che i coefficienti numerici delle matrici $A,B,C,D$ siano costanti nel sistema (e non dipendano dunque dal tempo).
+	\end{nota}
+	\begin{nota}
+		Nel passaggio dall'equazione \ref{eq:lti:statolaplace} all'equazione \ref{eq:lti:movimenti} si ha l'introduzione del termine $sI$, con $I$ matrice identità, per rendere \textit{confrontabili} le operazioni di somma tra coefficiente scalare $s$ e matrice $A$.
+	\end{nota}
+
+	Dall'equazione \ref{eq:lti:movimenti} è dunque possibile stabilire come nel dominio di Laplace sia più \textit{facile} stabilire il movimento di stato e uscita di un sistema, in quanto si tratta di risolvere delle equazioni algebriche in forma matriciale. In particolare al calcolo del movimento libero $ e^{At} x_0 $ è associato il calcolo della matrice $(sI-A)^{-1}$, mentre al calcolo del movimento forzato $\int_0^t e^{A(t-\tau)} B u(\tau)\, d\tau$ è associata l'operazione $(sI-A)^{-1}BU$.
+	
+	Il \textit{costo} di analizzare il sistema nel dominio di Laplace è che è necessario prima trasformare l'ingresso $u(t)$ e poi anti-trasformare l'uscita $Y(s)$ per poter \textit{visualizzare intuitivamente} il movimento della stessa.
+	
+\section{Analisi del movimento di stato e uscita}
+	Dall'equazione \ref{eq:lti:movimenti} è possibile osservare che per determinare i movimenti sia di stato che di uscita è necessario invertire la matrice $sI - A$; in particolare supponendo che la matrice $A$ (sempre quadrata di dimensioni pari all'ordine del sistema) sia composta da elementi $a_{ij}$, allora si può esprimere 
+	\[ sI - A = \matrice{s - a_{11} & \dots & -a_{1n} \\ \vdots & \ddots \\ -a_{n1} & & s-a_{nn} }   \]
+	
+	A questo punto è necessario invertire tale relazione e per fare questo si deve calcolare il \textbf{polinomio caratteristico} della matrice pari a $\varphi(s) = \det(sI-A)$ e calcolare i \textbf{complementi algebrici} $k_{ij}(s)$ della matrice (che risulteranno essere dei polinomi nella variabile $s$ di grado massimo pari a $n-1$):
+	\[\big(sI-A\big) ^{-1} = \frac 1 {\varphi(s)} \underbrace{\matrice{k_{11}(s) & \dots & k_{1n}(s) \\ \vdots & \ddots \\ k_{n1}(s) & & k_{nn}(s) }}_K \]
+	
+	\begin{richiamo}
+		Il \textbf{complemento algebrico} $k_{ij}$ (anche detto \textbf{cofattore}) di una matrice quadrata $A$ è calcolato come il determinante della sotto-matrice ottenuta eliminando ad $A$ l'$i$-esima riga e la $j$-esima colonna. Tale coefficiente è moltiplicato per un valore $1$ se la somma $i+j$ è pari, mentre con un valore $-1$ se $i+j$ è dispari.
+	\end{richiamo}
+	Avendo espresso dunque il termine $(sI-A)^{-1}$ come $\frac 1 {\varphi(s)} K$, ossia come una matrice di polinomi $K$ divisa per il determinante di $sI-A$, è possibile riscrivere il termine $(sI-A)^{-1} B $ dell'equazione \ref{eq:lti:movimenti} come
+	\[  \big(sI-A\big)^{-1} = \frac 1 {\varphi(s)} KB = \frac{W(s)}{\varphi(s)} \]
+	Anche in questa espressione $W(s)$ rappresenta una matrice di polinomi di ordine massimo pari ad $n-1$ ottenuta come combinazione lineare dei coefficienti di $B$ della matrice dei polinomi di $K(s)$.
+	
+	Considerando infine il termine $C\big(sI-A\big)^{-1}B + D$, anche questo può essere espresso alla fine come una combinazione lineare di $K(s)$ ottenuta dalle matrici $C$ e $B$ in modo da ottenere una matrice polinomiale $M(s)$ tale da soddisfare
+	\[ C\big(sI-A\big)^{-1}B + D = \frac 1 {\varphi(s)} M(s) + D \]
+	
+	Per praticità scegliendo un sistema dinamico SISO quello che si ottiene è che sia la matrice $M$ che la matrice $D$ risultano essere monodimensionali (ossia appartenenti all'insieme $\mathds R^{1\times 1} = \mathds R$): questo significa che il termine $C\big(sI-A\big)^{-1}B + D$ può essere ridotto ad un polinomio razionale il cui denominatore coincide con il determinante di $sI-A$:
+	\[ C\big(sI-A\big)^{-1}B + D = \frac 1 {\varphi(s)} M(s) + D = \frac{N(s)}{\varphi(s)}  \]
+	
+	\begin{osservazione}
+		Il polinomio associato al denominatore $\varphi(s)$ potrà sempre avere grado massimo pari $n$ (dove $n$ è l'ordine del sistema), mentre essendo i polinomi delle matrici $K,W,M$ associati ai complementi algebrici di calcolati partendo da delle sotto-matrici di $sI-A$, il logo grado massimo sarà necessariamente pari a $n-1$ (come già affermato in precedenza). A questo punto considerando quest'ultima relazione riportata per i sistemi SISO si può affermare che $N(s)$ sarà un polinomio di grado al più $n$: in particolare se $D=0$ sicuramente il grado è inferiore (o uguale) a $n-1$ (in quando deriva direttamente da $M(s)$), mentre se $D\neq 0$ può arrivare ad avere un grado pari a quello del denominatore.
+	\end{osservazione}
+	\begin{concetto}
+		Lavorando con sistemi dinamici lineari tempo invarianti, le trasformate associate ai vari ingressi con cui si avrà a che fare avranno sempre la seguenti caratteristiche:
+		\begin{itemize}
+			\item saranno sempre delle trasformate razionali, ossia sempre esprimibili come un rapporto tra due polinomi:
+			\[F(s) = \frac{N(s)}{D(s)} \qquad \textrm{con $N(s),D(s)$ polinomi}\]
+			\item il grado del numeratore sarà sempre uguale o minore del grado del denominatore.
+		\end{itemize}
+	\end{concetto}
+	
+\section{Stabilità di un sistema}
+	
+	Dato un sistema lineare tempo invariante descritto in forma di stato dalle relazioni $\dot x = f(x,u)$ e $y=g(x,u)$, allora noto lo stato $x_0$ al tempo iniziale e la \textit{storia} degli ingressi $u(t)$, effettuando il passaggio al dominio di Laplace è dunque possibile calcolare il movimento sia dello stato che dell'uscita secondo le espressioni riportate in figura \ref{eq:lti:movimenti}. A questo punto, potendo calcolare tali movimenti, si vuole analizzarne la rispettiva stabilità.
+	
+	\begin{concetto}
+		La \textbf{stabilità} studia la differenza tra un \textbf{movimento nominale} $\hat x, \hat y$ e un \textbf{movimento perturbato} $\tilde x, \tilde y$. In particolare si parla di \textbf{stabilità interna} quando il confronto viene effettuato rispetto al movimento di stato, mentre si parla di \textbf{stabilità esterna} se riferito alle uscite:
+		\[ \textrm{stabilità interna: } \|\tilde x(t) - \hat x(t) \| \qquad \textrm{stabilità esterna: } \|\tilde y(t) - \hat y(t) \| \]
+	\end{concetto}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
