@@ -141,7 +141,7 @@
 		\textrm{converge se il polo è negativo ($a>0$)} 
 	\end{cases} \]	
 	
-	\begin{teorema}{stabilità di sistemi lineari tempo invarianti} 
+	\begin{teorema}{stabilità di sistemi lineari tempo invarianti}  
 		
 		\texttt{Enunciato:}  { \itshape Dato  un sistema lineare tempo invariante la cui risposta all'impulso è caratterizzata dall'equazione
 		\[ Y(s) = C \big(sI-A\big)^{-1} B + D = \frac{N(s)}{\det(sI-A)} = \frac{N(s)}{\varphi(s)} \]  \label{teor:lti:stabilita}
@@ -168,18 +168,112 @@
 	Nel caso di sistemi di ordine elevato (maggiore di 3) spesso può risultare difficile calcolare i poli dell'uscita $Y(s)$ (e dunque sfruttare il teorema \ref{teor:lti:stabilita}): per questo si devono introdurre dei criteri alternativi per il calcolo della stabilità (indipendenti dal calcolo dei poli).
 	
 	\subsection{Tabella di Routh}
+		Il metodo basato sulla tabella di Routh è un criterio di stabilità basato sull'analisi diretta del polinomio a denominatore della trasformata $Y(s)$ ed è particolarmente efficace quando la fattorizzazione dello stesso non è immediata. In generale il polinomio a denominatore $D(s)$ può essere espresso tramite dei coefficienti generici $d_i$ del tipo
+		\[  D(s) = d_0s^n + d_1 s^{n-1} + \dots + d_{n-1}s + d_n \]
+		
+		\begin{teorema}{condizione di asintotica stabilità} 
+			
+			Condizione necessaria (ma non sufficiente) affinché un sistema risulti \textbf{asintoticamente stabile} è che tutti i coefficienti $d_i$ del polinomio che compongono il denominatore siano non nulli e di verso concorde. \label{teor:lti:asintotrouth}
+		\end{teorema}
+		In particolare per polinomi di grado $n=1,2$, tale condizione oltre ad essere necessaria è anche sufficiente. Per polinomi di ordine superiore ($n\geq 3$) la \textbf{condizione sufficiente} per avere asintotica stabilità è che tutti i coefficienti della \textbf{tabella di Routh} siano tutti non nulli e concordi in segno.
+		
+		\paragraph{Tabella di Routh} Dato un polinomio di grado $n$ (associato al denominatore di una trasformata razionale $Y(s)$), la \textbf{tabella di Routh} (il cui schema generico è mostrato in tabella \ref{tab:lti:routh}) derivante dalla stessa è una tabella di $n+1$ righe così costituite:
+		\begin{itemize}
+			\item la prima riga contiene i coefficienti $d_i$ con indice $i$ pari (in ordine crescente), mentre la seconda riga contiene i coefficienti di indice dispari;
+			\item le $n-1$ righe restanti sono costruite ricorsivamente tramite la seguente relazione: noti i coefficienti di due righe contigue $h_i,k_i$, l'$i$-esimo elemento della riga a loro successiva $l_i$ è determinato dall'equazione
+			\[ l_i = - \frac 1{k_1}\det \matrice{h_1 & h_{i+1} \\ k_1 & k_{i+1}} \]
+		\end{itemize}
+		Gli elementi delle prime due righe che sono necessarie per calcolare gli elementi \textit{discendenti} sono tutti da considerarsi come degli zeri.
+		\begin{SCtable}[1][bht]
+			\centering
+			\begin{tabular}{r | c c c c| }
+				prima riga & $d_0$ & $d_2$ & $d_4$ & $\dots$ \\
+				seconda riga & $d_1$ & $d_3$ & $d_5$ & $\dots$ \\
+				& $\vdots$ \\
+				& $h_1$ & $h_2$ & $h_3$ & $\dots$ \\
+				& $k_1$ & $k_2$ & $k_3$ & $\dots$ \\
+				& $l_1$ & $l_2$ & $l_3$ & $\dots$ \\
+			\end{tabular}
+			\caption{schema di riferimento della tabella di Routh.} \label{tab:lti:routh}
+		\end{SCtable}
+		
+		\begin{dimostrazione}
+			Avendo introdotto il principio di funzionamento della tabella di Routh è ora possibile dimostrare come, per sistemi di ordine 2, la condizione necessaria di coefficienti $d_i$ non nulli concordi (teorema \ref{teor:lti:asintotrouth}) sia anche sufficiente. Considerando il polinomio $D(s) = d_0s^2 + d_1s + d$ composto da coefficienti $d_0,d_1,d_2$ concordi (non nulli), allora le prime due righe della tabella di Routh possono essere considerate nella matrice
+			\[ \matrice{d_0 & d_2 \\ d_1 & 0} \]
+			
+			Essendo il polinomio di ordine 2, allora la tabella di Routh necessiterà solamente di un'altra riga i cui coefficienti $l_i$ possono essere calcolati come
+			\[ l_1 = - \frac 1 {d_1}\det \matrice{d_0 & d_2 \\ d_1 & 0} = d_2 \qquad l_2 = - \frac 1 {d_1}\det \matrice{d_0 & 0 \\ d_1 & 0} = 0 \]
+			Questo significa che la tabella di Routh presenta coefficienti
+			\[ \matrice{d_0 & d_2 \\ d_1 & 0 \\ d_2 & 0} \]
+			e dunque essendo $d_0,d_1,d_2$ (elementi della prima colonna della tabella di Routh) tutti concordi e non nulli (per ipotesi iniziale), allora si dimostra che ogni sistema dinamico di ordine 2 (con tale proprietà sui coefficienti) è asintoticamente stabile.
+		
+		\end{dimostrazione}
+
+	\subsection{Autovalori della matrice di stato e poli di una trasformata}
+		In precedenza si era affermato che i poli di una trasformata razionale $Y(s) = N(s)/D(s)$ erano  correlati agli autovalori della matrice di stato $A$ (in quando direttamente determinati dal polinomio caratteristico di tale matrice), tuttavia è necessario fare chiarezza sul considerare gli autovalori per determinare la stabilità o meno di un sistema.
+		
+		Considerando, per esempio, il sistema rappresentato in forma di stato (nel dominio di Laplace) dalle relazioni
+		\[ \dot X= \matrice{0 & 0 \\ 0 & 0} X + \matrice{1 \\ 1}U \qquad Y = \matrice{1 & 1} X + \matrice{0}U \]
+		e' possibile osservare che gli autovalori della matrice di stato $A$ sono coincidenti e pari a zero ($\lambda_1 = \lambda_2 = 0$): se tali valori coincidessero con i poli dell'uscita $Y(s)$, allora, per come visto nel teorema \ref{teor:lti:stabilita} (pag. \pageref{teor:lti:stabilita}), si dovrebbe concludere che il sistema è instabile. Tuttavia analizzando la risposta all'impulso si ottiene un risultato diverso, infatti:
+		\begin{align*}
+			C\big(sI-A\big)^{-1} B + D & = \matrice{1 & 1 } \frac 1 {s^{\cancel{2}}} \matrice{\cancel s & 0 \\ 0 & \cancel s} \matrice{1 \\ 1} + \matrice 0 \\
+			& = \frac 1 s \matrice{1 & 1} \matrice{1 \\ 1} = \frac 2 s
+		\end{align*}
+		Infatti il denominatore dell'uscita $Y$ vale per l'appunto $D(s) = s$, e dunque per lo stesso criterio di stabilità essendo presente una sola radice nulla del denominatore, il sistema può essere considerato come semplicemente stabile.
+		
+		\begin{concetto}
+			In generale è possibile utilizzare gli autovalori della matrice di stato per determinare la stabilità (o meno) di un sistema solamente se gli stessi sono \textit{regolari}, ossia e la loro molteplicità geometrica coincide con quella algebrica: negli altri casi non è possibile asserire alcuna proprietà di stabilità del sistema.
+		\end{concetto}
+		Per enunciare un criterio di stabilità basato sugli autovalori della matrice di stato analogo a quello visto per le radici di $D(s)$ occorrerebbe analizzare altre proprietà della matrice di stato stessa.
+		
+		\begin{concetto}
+			Gli \textbf{autovalori} determinano di fatto la \textbf{stabilità interna} del sistema, mentre la risposta dell'uscita ad un impulso in ingresso permette di analizzare la \textbf{stabilità esterna} del sistema: in particolare i due movimenti possono essere \textit{diversi} per via della presenza di \textbf{\textit{parti nascoste}} del sistema dinamico che lo rendono \textit{irregolare}.
+		\end{concetto}
+		\begin{osservazione}
+			Per quanto appena affermato, e osservando l'esempio riportato in calce al paragrafo, è possibile affermare che l'instabilità interna non determina necessariamente l'instabilità esterna: il sistema originario infatti era instabile internamente ma semplicemente stabile per quanto riguarda l'uscita.
+		\end{osservazione}
+		
+		\begin{esempio}{: stabilità interna ed esterna}
+			Si consideri il seguente sistema dinamico lineare tempo invariante rappresentato in forma di stato nel dominio di Laplace delle equazioni
+			\[ \dot X= \matrice{1 & 1 \\ 0 & -3} X + \matrice{1 \\ 1}U \qquad Y = \matrice{0 & 1} X \]
+			
+			Essendo la matrice di stato $A$ triangolare allora i suoi autovalori coincidono con gli elementi diagonali e dunque sono pari a $\lambda_1 = 1$ e $\lambda_2 = -2$: applicando il teorema di stabilità essendo $\lambda_1$ un elemento a parte reale positiva, allora il movimento di stato (associato alla \textbf{stabilità interna}) è \textbf{instabile}. Al contrario analizzando la risposta all'impulso si può osservare la cancellazione di tale polo, infatti:
+			\[ Y(s) = C \big(sI-A\big)^{-1}B = \frac{\cancel{s-1}}{\cancel{(s-1)}(s+2)} = \frac 1 {s+2} \] 
+			La radice del denominatore è dunque unica e pari a $s_1 = -2$: utilizzando il teorema di stabilità si evince dunque che il \textbf{sistema} è \textbf{esternamente asintoticamente stabile}.
+			
+			\vspace{3mm}
+			Considerando più nel dettaglio la struttura delle equazioni di stato si determina infatti che
+			\[ \begin{cases}
+				\dot x_1 = x_1 \\ \dot x_2 = x_1-2x_2 + u \\ y = x_1 + x_2
+			\end{cases} \]
+			\begin{center}
+				\includegraphics[width=4cm]{sist-nonragg}
+			\end{center}
+			In questo caso si può affermare che il sistema non è completamente raggiungibile dall'ingresso $u$: gli autovalori della matrice di stato sono in quantità superiore dei poli dell'uscita che risponde all'impulso e dunque l'analisi di stabilità esterna può non coincidere con la stabilità esterna.
+			
+		\end{esempio}
 	
+	\subsection{Osservabilità di un sistema dinamico}
+		Si consideri il sistema dinamico mostrato in figura \ref{sist-inoss} composto da due masse che possono scorrere sul piano. L'attuatore idraulico (o il sensore di elongazione) permettono dunque di determinare uno spostamento (o misurarlo rispettivamente) relativo tra le due masse $m_1,m_2$, ma non permettono di determinare la posizione assoluta delle stesse.	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		\figura{5}{3}{sist-inoss}{sistema composto da due carrelli in cui $m_1$ è collegato a telaio da una molla, mentre $m_2$ è collegato ad $m_1$ tramite una molla e un attuatore/sensore (evidenziato in giallo).}{sist-inoss}
+		
+		Questo è un esempio pratico di \textbf{sistema non completamente raggiungibile/osservabile}: analizzando la rappresentazione in forma di stato del sistema dinamico ci si accorge infatti che l'ordine del denominatore $D(s)$ è minore dell'ordine del sistema dinamico di partenza, il che implica che nel processo di analisi dell'impulso è stata commessa una cancellazione.
+		
+		\vspace{3mm}
+		
+		La sola ispezione delle equazioni di stato non sempre permette di individuare se il sistema è completamente raggiungibile o osservabile; per effettuare tale analisi è necessario ricorrere a strumenti quali:
+		\begin{itemize}
+			\item il confronto dell'ordine del polinomio a denominatore $D(s)$ con l'ordine del sistema (se il primo ha grado inferiore del secondo, allora sono state effettuate delle cancellazioni critiche);
+			\item utilizzare dei test specifici di raggiungibilità ed osservabilità; tali metodi (che non verranno trattati) si basano sulla formulazione della matrice di raggiungibilità $R = f(A,B)$ e dalla matrice di osservabilità $O = f(A,C)$.
+		\end{itemize}
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	
