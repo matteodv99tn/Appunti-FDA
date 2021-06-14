@@ -36,7 +36,7 @@
 	
 	Il \textit{costo} di analizzare il sistema nel dominio di Laplace è che è necessario prima trasformare l'ingresso $u(t)$ e poi anti-trasformare l'uscita $Y(s)$ per poter \textit{visualizzare intuitivamente} il movimento della stessa.
 	
-\section{Analisi del movimento di stato e uscita}
+\section{Analisi del movimento di stato e uscita} \label{sec:lti:studiomovimenti}
 	Dall'equazione \ref{eq:lti:movimenti} è possibile osservare che per determinare i movimenti sia di stato che di uscita è necessario invertire la matrice $sI - A$; in particolare supponendo che la matrice $A$ (sempre quadrata di dimensioni pari all'ordine del sistema) sia composta da elementi $a_{ij}$, allora si può esprimere 
 	\[ sI - A = \matrice{s - a_{11} & \dots & -a_{1n} \\ \vdots & \ddots \\ -a_{n1} & & s-a_{nn} }   \]
 	
@@ -70,27 +70,104 @@
 	
 \section{Stabilità di un sistema}
 	
-	Dato un sistema lineare tempo invariante descritto in forma di stato dalle relazioni $\dot x = f(x,u)$ e $y=g(x,u)$, allora noto lo stato $x_0$ al tempo iniziale e la \textit{storia} degli ingressi $u(t)$, effettuando il passaggio al dominio di Laplace è dunque possibile calcolare il movimento sia dello stato che dell'uscita secondo le espressioni riportate in figura \ref{eq:lti:movimenti}. A questo punto, potendo calcolare tali movimenti, si vuole analizzarne la rispettiva stabilità.
+	Dato un sistema dinamico (in questo caso non necessariamente lineare tempo invariante) descritto in forma di stato dalle relazioni $\dot x = f(x,u)$ e $y=g(x,u)$, allora noto lo stato $x_0$ al tempo iniziale e la \textit{storia} degli ingressi $u(t)$, effettuando il passaggio al dominio di Laplace è dunque possibile calcolare il movimento sia dello stato che dell'uscita secondo le espressioni riportate in figura \ref{eq:lti:movimenti}. A questo punto, potendo calcolare tali movimenti, si vuole analizzarne la rispettiva stabilità.
 	
 	\begin{concetto}
 		La \textbf{stabilità} studia la differenza tra un \textbf{movimento nominale} $\hat x, \hat y$ e un \textbf{movimento perturbato} $\tilde x, \tilde y$. In particolare si parla di \textbf{stabilità interna} quando il confronto viene effettuato rispetto al movimento di stato, mentre si parla di \textbf{stabilità esterna} se riferito alle uscite:
 		\[ \textrm{stabilità interna: } \|\tilde x(t) - \hat x(t) \| \qquad \textrm{stabilità esterna: } \|\tilde y(t) - \hat y(t) \| \]
 	\end{concetto}
 	
+	La perturbazione del movimento perturbato può essere ottenuta come variazione sia delle condizioni iniziali $\tilde x_0\neq \hat x_0$, sia come variazione degli ingressi $\tilde u(t) \neq \hat u(t)$, tuttavia questo secondo caso generico lo si trascura in quanto è possibile modellare la \textit{storia} degli ingressi pregressi scegliendo un opportuno valore dello stato $\tilde x_0$ al tempo iniziale. In generale le perturbazioni sull'ingresso possono essere sempre ricondotte a perturbazioni sulle condizioni iniziali sullo stato $x_0$ del sistema stesso.
 	
+	\begin{concetto}
+		Analizzando la stabilità di un movimento perturbando lo stato di un sistema permette di determinare 3 tipi di equilibri del moto perturbato rispetto a quello nominale, in particolare
+		\begin{itemize}
+			\item il movimento è \textbf{instabile} se il moto perturbato diverte da quello nominale ad un valore \textit{infinito};
+			\item il movimento è \textbf{semplicemente stabile} se asintoticamente esso converge ad un valore diverso da quello nominale (tuttavia rimane sempre confinato in un intorno del valore perturbato);
+			\item il movimento è detto \textbf{asintoticamente stabile} se il moto perturbato converge asintoticamente al valore del movimento nominale.
+		\end{itemize}
+	\end{concetto}
 	
+	La classificazione delle proprietà di stabilità del movimento dipende strettamente dal sistema dinamico che si vuole analizzare e dal modello di analisi utilizzato per lo stesso: per esempio un pendolo con attrito risulta essere asintoticamente stabile, mentre un pendolo senza attrito è semplicemente stabile.
 	
+	\begin{osservazione}
+		La stabilità di un movimento è una proprietà locale, ossia solo alcuni movimenti sono stabili e solamente per alcune perturbazioni limitate rispetto allo stato iniziale nominale che si sta considerando. Questo permette di definire infatti la \textbf{regione di attrazione} come l'insieme delle condizioni iniziai per cui il movimento è asintoticamente stabile al valore nominale $\hat x_0$. Quando la regione di attrazione coincide con tutte le possibili condizioni iniziali, si parla allora di \textbf{stabilità asintotica globale}.
+	\end{osservazione}
 	
+	\subsection{Stabilità del movimento per sistemi lineari tempo invarianti}
+		Considerando ora il caso di sistemi lineari tempo invarianti, l'equazione \ref{eq:lti:movimenti} permette di descrivere completamente il movimento d'uscita $\|\tilde y(t) - \hat y(t) \|$ (e analogamente il movimento d'uscita). Considerando che per determinare la stabilità si considerano delle perturbazioni sullo stato del sistema e non sugli ingressi, allora è possibile affermare che $\tilde u(t) = \hat u(t)$ il cui risultato si rispecchia anche sulle trasformate $\tilde U(s) = \hat U(s)$. A questo punto è possibile calcolare la variazione tra uscita nominale e perturbata nel dominio di Laplace arrivando al risultato che
+		\begin{equation} \label{eq:lti:deltauscita}
+			\Delta Y(s) = \hat Y(s) - \tilde Y(s) = C \big(sI-A\big)^{-1}\big(\hat x_0 - \tilde x_0\big) = C\big(sI-A\big)^{-1} \Delta x_0
+		\end{equation}
+		\begin{concetto} \label{conc:lti:regionetotale}
+			Dall'equazione \ref{eq:lti:deltauscita} è possibile osservare che la \textbf{stabilità del movimento d'uscita} di un sistema lineare tempo invariante è associata al \textbf{movimento libero} del sistema; si osserva infatti che la stabilità di questi sistemi non dipende dal particolare movimento considerato, ma assume valenza generale e dunque vale per ogni movimento del sistema.
+		\end{concetto}
+		Dall'equazione \ref{eq:lti:deltauscita} è possibile osservare che la perturbazione $\Delta x_0$ rappresenta solo un \textit{fattore di scala} della variazione dell'uscita $\Delta Y$, la cui proprietà di stabilità (instabile o asintoticamente/semplicemente stabile) dipende solamente dal termine $C\big(sI-A\big)^{-1}$ e non dalla perturbazione dello stato. Dimostrando dunque che il sistema è asintoticamente stabile, allora la regione di stabilità è globale.
+		
+		\begin{concetto}
+			Lo studio del movimento di stato/uscita perturbato al fronte di cambiamenti/perturbazioni iniziali è equivalente, salvo alcune eccezioni che verranno discusse, allo studio del movimento tramite la risposta del sistema ad un impulso in ingresso.
+		\end{concetto}
+		Questa affermazione non può essere attualmente dimostrata (ma lo sarà nel seguito), e si basa sul fatto che la trasformata dell'impulso è unitaria per ogni valore del dominio di Laplace $s$. A questo punto per descrivere la stabilità è possibile utilizzare indipendentemente uno dei due metodi: studio della variazione dello stato iniziale o risposta all'impulso:
+		\[\textrm{stabilità:} \qquad \Delta Y(s) = C\big(sI-A\big)^{-1} \Delta x_0 \quad \leftrightarrow \quad Y(s) = \Big(C\big(sI-A\big)^{-1}B + D\Big)\cancel{U(s)}\]
+		
+		In entrambi i casi è possibile osservare che sia la relazione $C\big(sI-A\big)^{-1}$ che $C\big(sI-A\big)^{-1}B + D$ possono essere descritti come un rapporto di un polinomi di numeratore rispettivamente $N(s)$ e $W(s)$ e denominatore uguale e pari a $\varphi(s) = \det(sI-A)$ (rispetto a come visto da pagina \pageref{sec:lti:studiomovimenti}).
+		
+		Dal punto di vista pratico è più \textit{conveniente} studiare la stabilità come risposta del sistema all'impulso piuttosto che analizzare una variazione dello stato iniziale. Infatti in questo secondo caso la variazione di uscita $\Delta Y$ dipende da $n$ condizioni iniziali coincidenti con l'ordine del sistema, mentre nel caso di risposta all'impulso unitario l'uscita è univocamente determinata dal prodotto matriciale
+		\[ \underbrace{\Delta Y(s) = C\big(sI-A\big)^{-1} \Delta x_0}_{\substack{\textrm{1 uscita} \\ \textrm{$n$ condizioni iniziali} }} \qquad \leftrightarrow \qquad \underbrace{Y(s) = C\big(sI-A\big)^{-1}B + D}_{\substack{\textrm{1 uscita} \\ \textrm{condizione iniziale fissata} }}\]
+
+\section{Criteri di stabilità}
+	Nel concetto \ref{conc:lti:regionetotale} è affermato che la stabilità di un sistema lineare tempo invariante è una proprietà \textit{strutturale} del sistema stesso, ossia è indipendente dal movimento. A questo punto quello che si vuole stabilire è se, di fatto, il sistema è asintoticamente stabile.
 	
+	Studiando la risposta all'impulso $Y= C\big(sI-A\big)^{-1} B + D$ è possibile infatti osservare 3 possibili comportamenti del sistema:
+	\begin{itemize}
+		\item se l'uscita converge al valore nullo allora il \textbf{sistema} è \textbf{asintoticamente stabile};
+		\item se l'uscita converge ad un valore reale non nullo, allora il sistema è \textbf{semplicemente stabile};
+		\item se l'uscita diverge al valore $\pm \infty$ allora il sistema è detto \textbf{instabile}.
+	\end{itemize}	
 	
+	Potendo scrivere la trasformata dell'uscita $Y(s)$ (per ingressi \textit{canonici}) come un rapporto polinomiale $N(s)/D(s)$, allora applicando il metodo di Heaviside (pag. \pageref{sec:class:heaviside}) è possibile esprimere tale movimento come una combinazione lineare di \textit{elementi più semplici}:
+	\[ Y(s) = \frac{N(s)}{D(s)} = \frac A \dots + \frac B \dots + \dots \]
+	A questo punto ipotizzando che la trasformata non presenti poli multipli (le radici del denominatore sono \textit{semplici}, non multiple)  e che gli stessi siano reali, allora i vari termini nel dominio del tempo sono associati a degli esponenziali del tipo $e^{-at}$, dove $a$ è il coefficiente costante dei polinomi a denominatore degli elementi semplici di $D(s)$. In particolare il termine $a$ rappresenta l'opposto dei poli della trasformata, e dunque si evince che se i poli sono positivi allora l'esponenziale tende a divergere, per poli nulli l'esponenziale diventa costante e dunque il sistema semplicemente stabile, mentre per poli negativi l'uscita converge al valore nullo e il sistema è asintoticamente stabile.
+	\begin{esempio}{: poli e stabilità}
+		Si consideri la trasformata $F(s)= \frac{3s^2 - 2 s - 2}{s(s+1)(s-2)} $ i cui poli sono $s=-1,0,2$; applicando la scomposizione di Heaviside è possibile osservare che
+		\[ F(s) = \frac{3s^2 - 2 s - 2}{s(s+1)(s-2)}  = \frac 1 s+ \frac 1 {s+1} + \frac  1{s - 2}\]
+		\[ \Rightarrow \qquad f(t) = \anti{F(s)} = e^{0t} + \scal (t) e^{-1t} \scal(t) + e^{2t}\scal(t) \]
+		Considerando infatti il primo \textit{contributo elementare} pari a $\frac 1 s$ (con coefficiente $a = 0$) a cui è associata l'anti-trasformata $\cancel{e^{0t}} ^{=1} \scal(t)$, si osserva che per $t\rightarrow\infty$ il termine tende al valore unitario. Considerando ora il secondo termine elementare, ossia il polo reale negativo $s=-1$ (cui è associato il coefficiente $a= 1$), si osserva che la sua anti-trasformata $e^{-t}\scal(t)$, per $t\rightarrow \infty$, tende proprio al valore nullo. Al contrario il polo positivo in $s =2$ (coefficiente $a= -2$) presenta anti-trasformata pari a $e^{2t}\scal(t)$ che a tempo infinito diverge.		
+	\end{esempio}
 	
+	Nel caso di poli complessi coniugati distinti, allora la scomposizione di Heaviside determina delle anti-trasformate del tipo $e^{-\sigma t} \sin(\omega t)$, ossia dei segnali (co)sinusoidali smorzati: anche in questo caso la convergenza è associata alla parte reale del polo e in particolare se essa è negativa il sistema è asintoticamente stabile, mentre se essa è positiva il sistema è instabile. Anche nel caso di poli multipli è possibile osservare la convergenza degli elementi in base al \textit{segno} della parte reale delle radici in quanto si osserva che
+	\[ \anti{\frac 1 {(s+a)^n}} t^{n-1} e^{-at} \quad \begin{cases}
+		\textrm{diverge se il polo è positivo ($a<0$)} \\
+		\textrm{converge se il polo è negativo ($a>0$)} 
+	\end{cases} \]	
 	
+	\begin{teorema}{stabilità di sistemi lineari tempo invarianti} 
+		
+		\texttt{Enunciato:}  { \itshape Dato  un sistema lineare tempo invariante la cui risposta all'impulso è caratterizzata dall'equazione
+		\[ Y(s) = C \big(sI-A\big)^{-1} B + D = \frac{N(s)}{\det(sI-A)} = \frac{N(s)}{\varphi(s)} \]  \label{teor:lti:stabilita}
+		allora il \textbf{sistema} è \textbf{asintoticamente stabile} se e solo se tutte i \textbf{poli} (radici di $\varphi(s)$) hanno \textbf{parte reale negativa}; il sistema è semplicemente stabile se esiste un solo polo (non multiplo) a parte reale nulla mentre se esiste anche un solo polo a parte reale positiva (o esistono poli a parte reale nulla multipli), il sistema è instabile.}
+	\end{teorema}
+
+	In pratica dunque l'analisi di stabilità (esterna) di un sistema lineare tempo invariante si pratica calcolando in primo luogo l'uscita $Y(s)$ come risposta all'impulso, ossia pari a $C \big(sI-A\big)^{-1} B + D$, e poi vi si calcolano i poli che lo compongono.
 	
+	\begin{esempio}{: stabilità in un sistema lineare tempo invariante} 
+		Si consideri il sistema dinamico lineare tempo invariante la cui rappresentazione in forma di stato (nel dominio di Laplace) è dato dalle relazioni
+		\[ \dot X= \matrice{-2 & 0 \\ 0 & 4} X + \matrice{1 \\ 1}U \qquad Y = \matrice{1 & 1} X + \matrice{0}U \]
+		A questo punto per studiare la stabilità dell'uscita del sistema è sufficiente calcolare la risposta all'impulso dello stesso:
+		\begin{align*}
+			C\big(sI-A\big)^{-1} B + D & = \matrice{1 & 1} \frac 1 {(s+2)(s-4)} \matrice{s-4 &0 \\ 0 & s+2 }\matrice{1 \\ 1} \\
+			& = \matrice{1 & 1} \frac 1 {(s+2)(s-4)} \matrice{s-4 \\ s+2} \\
+			&= \frac{2s-2}{(s+2)(s-4)}
+		\end{align*}
+		Osservando il polinomio $\varphi(s) =(s+2)(s-4)$ a denominatore, si osserva che i suoi zeri (ossia i poli della trasformata dell'uscita $Y$) sono $s_1 = -2$ ed $s_2 = 4$: il primo è a parte reale negativa, e dunque compatibile con l'asintotica stabilità, tuttavia il secondo, essendo a parte reale positiva, determina l'instabilità del sistema dinamico.
+	\end{esempio}
 	
+	\begin{osservazione}
+		I poli del denominatore $D(s)$ della trasformata $Y$ di fatto sono associati agli zeri del determinante di $sI-A$, ossia coincidono con le radici del polinomio caratteristico della matrice di stato, o, per essere più precisi, i poli coincidono con gli \textbf{autovalori} della matrice di stato $A$. Va notato però che calcolare la stabilità dell'uscita di un sistema non è consigliato calcolare solamente gli autovalori di $A$: tale metodo infatti può portare a degli errori nell'applicare il teorema i stabilità. Infatti nel calcolo esplicito di $N(s)/D(s)$ è possibile incontrare delle \textit{cancellazioni critiche} tra elementi a numeratore e denominatore che rendono un sistema da instabile a asintoticamente stabile.
+	\end{osservazione}
+	Nel caso di sistemi di ordine elevato (maggiore di 3) spesso può risultare difficile calcolare i poli dell'uscita $Y(s)$ (e dunque sfruttare il teorema \ref{teor:lti:stabilita}): per questo si devono introdurre dei criteri alternativi per il calcolo della stabilità (indipendenti dal calcolo dei poli).
 	
-	
-	
-	
+	\subsection{Tabella di Routh}
 	
 	
 	

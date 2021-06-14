@@ -153,9 +153,9 @@
 			Al contrario una trasformata $F(s) = e^s \cos(s)$ non è razionale e vedremo che su di essa non si potranno applicare i teoremi che verranno enunciati.
 		\end{esempio}
 		
-		\begin{teorema}{teorema del valore iniziale} \label{teor:valiniziale}
+		\begin{teorema}{teorema del valore iniziale} 
 			
-			\texttt{Ipotesi:} La trasformata $F(s)$ rispetto al quale si può applicare tale teorema deve essere razionale. \vspace{3mm}
+			\texttt{Ipotesi:} \label{teor:valiniziale} La trasformata $F(s)$ rispetto al quale si può applicare tale teorema deve essere razionale. \vspace{3mm}
 			
 			\texttt{Enunciato:} \textit{Data una trasformata di Laplace $F(s)$ razionale, allora il valore della rispettiva funzione $f(t)$ valutata al tempo iniziale $t = 0$ può essere calcolato tramite la relazione}
 			\begin{equation}
@@ -163,9 +163,9 @@
 			\end{equation}
 		\end{teorema}
 	
-		\begin{teorema}{teorema del valore finale} \label{teor:valfinale}
+		\begin{teorema}{teorema del valore finale}
 		
-			\texttt{Ipotesi:} La trasformata $F(s)$ rispetto al quale si può applicare tale teorema deve essere razionale e si deve verificare che le radici del denominatore $D(s)$ della stessa siano tutte a parte reale negativa non nulla. \vspace{3mm}
+			\texttt{Ipotesi:}  \label{teor:valfinale} La trasformata $F(s)$ rispetto al quale si può applicare tale teorema deve essere razionale e si deve verificare che le radici del denominatore $D(s)$ della stessa siano tutte a parte reale negativa non nulla. \vspace{3mm}
 			
 			\texttt{Enunciato:} \textit{Data una trasformata di Laplace $F(s)$ razionale (che rispetta le ipotesi), allora il valore asintotico della funzione $f(t)$ valutata al tempo $t\rightarrow \infty$ può essere calcolato tramite la relazione}
 			\begin{equation}
@@ -182,7 +182,7 @@
 		\end{concetto}
 		Applicare la definizione formale della trasformata di Laplace spesso è \textit{costoso} dal punto di vista operativo: per questo in generale si utilizzano dei \textit{metodi alternativi} per anti-trasformare le funzioni.
 		
-	\subsection{Metodo di Heaviside}
+	\subsection{Metodo di Heaviside} \label{sec:class:heaviside}
 		\begin{concetto}
 			Il \textbf{metodo di Heaviside} è una procedura che viene utilizzata per \textit{semplificare} l'anti-trasformazione di funzioni $F(s)$. Tale sistema, per funzionare, richiede che la funzione $F(s)$ sia razionale e con grado del numeratore inferiore rispetto al grado del denominatore (come si vedrà questa seconda ipotesi potrà essere facilmente \textit{aggirata}) e si basa su:
 			\begin{enumerate}
