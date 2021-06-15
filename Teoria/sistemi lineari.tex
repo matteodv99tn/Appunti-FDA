@@ -269,9 +269,56 @@
 		\end{itemize}
 		
 		
+	\subsection{Osservazioni e BIBO stabilità}
+		Dato un sistema dinamico lineare tempo invariante, e ipotizzando che lo stesso sia completamente raggiungibile/osservabile, allora la stabilità del sistema stesso è una proprietà strutturale, ossia è indipendente dalla rappresentazione che si fa dello stesso (una scelta di diverse variabili di stato deve necessariamente portare alla stessa conclusione sui risultati).
 		
+		Per questo tipo di sistemi l'asintotica stabilità in uscita dipende solamente dall'ingresso $u(t)$, e non dalle specifiche condizioni iniziali $x_0$ del sistema: tale asserzione è particolarmente desiderata nelle applicazioni reali in quanto si \textit{eliminano} così gli effetti di disturbo (il movimento di equilibrio dipende solo dall'ingresso, e non dallo stato).
 		
+		Sistemi lineari tempo invarianti asintoticamente stabili sono caratterizzati dall'avere uno e un solo punto di equilibrio (unico): gli autovalori della matrice di stato sono tutti a parte reale negativa. Essendo garantita la possibilità di calcolare l'inversa (per il fatto che $\det A \neq 0$), allora si può determinare l'equilibrio del sistema ed essendo per ingressi costanti l'uscita asintotica, allora l'uscita tende al movimento di equilibrio.
 		
+		\begin{concetto}
+			Un sistema è dunque detto \textbf{BIBO stabile} se e solo se ad ogni suo ingresso limitato (\textit{Bounded Input}) corrisponde un'uscita limitata (\textit{Bounded Output}).
+		\end{concetto}
+		A questo punto è possibile dimostrare che condizione necessaria e sufficiente affinché un sistema lineare tempo invariante sia BIBO stabile è che i poli dell'uscita ottenuta da uno scalino in ingresso abbia poli siano tutti a parte reale positiva (ossia che il sistema sia esternamente asintoticamente stabile).
+		
+	\subsection{Stabilità per sistemi non lineari}
+		In generale il concetto di \textit{stabilità} di un sistema dinamico è associato al \textit{movimento dell'uscita} e non al \textit{sistema} stesso (per sistemi lineari spesso tale concetto può essere confuso in quanto la stabilità è una proprietà del sistema, ma non vale in generale per sistemi non lineari). A questo punto per analizzare il tipo di stabilità dei movimenti dell'uscita di sistemi non lineari è possibile utilizzare diversi strumenti matematici; verranno qui accennati due metodi per lo studio del movimento di equilibrio di un sistema per questo tipo di sistemi.
+		
+		\paragraph{Metodo indiretto di Lyapunov} Il \textbf{metodo indiretto di Lyupanov} si basa sullo studio della stabilità del movimento dell'uscita del sistema linearizzando lo stesso nell'intorno del punto di equilibrio. Facendo così è possibile trasformare il sistema non lineare in un sistema lineare che può essere analizzato con le metodologie accennate in precedenza.
+		
+		Se analizzando il sistema linearizzato si conclude che lo stesso è semplicemente stabile, allora non è possibile asserire alcuna conclusione sulla stabilità del sistema non lineare originario (potrebbe infatti essere che, nella realtà, il sistema sia asintoticamente stabile oppure instabile).
+		
+		\paragraph{Metodo grafico per sistemi scalari} Per sistemi non lineari scalari, ossia di ordine $n=1$, è possibile analizzarne la stabilità tramite un metodo grafico. Facendo riferimento per esempio all'equazione di stato $\dot x = f(x,\overline u)$ in figura \ref{graf-scal} associata all'ingresso costante $\overline u$, è possibile osservare che i punti di equilibrio sono quelli che annullano la derivata $\dot x$ (indicati con $\overline x_1,\overline x_2,\overline x_3$).		
+			
+		\figura{6}{1}{graf-scal}{grafico di riferimento per l'analisi grafica di stabilità di un sistema non lineare.}{graf-scal}
+		
+		Per studiare la stabilità dei punti di equilibrio determinati è possibile pensare di perturbare lo stato $x$ nell'intorno di uno dei punti di equilibrio $\overline x_i$. Osservando il verso della derivata $\dot x$ è infatti possibile predire lo spostamento dello stato: per esempio nel caso di derivata positiva (indicata dalle frecce gialle nel diagramma di riferimento) la variabile di stato perturbata tenderà ad andare verso destra, mentre se la derivata è negativa (in blu) lo stato tenderà a spostarsi verso sinistra.
+		
+		A questo punto è possibile osservare che il punto di equilibrio $\overline x_1$ è asintoticamente stabile in quanto una perturbazione (non troppo accentuata) dello stato verrà \textit{riportata} per l'effetto della derivata al punto di equilibrio. Al contrario perturbando i punti $\overline x_2,\overline x_3$ lo stato, per effetto della derivata, tenderà a divergere dal punto di equilibrio: il sistema è dunque instabile.
+		
+		\begin{esempio}{: stabilità di un sistema non lineare scalare}
+			Si consideri il sistema dinamico non lineare di ordine unitario la cui rappresentazione di stato è
+			\[ \begin{cases}
+				\dot x = - x^3 + u \\ y = x
+			\end{cases} \]
+			Volendo studiare la stabilità per un ingresso costante $\overline u = 0$, risolvendo l'equazione di stato si ottengono 3 soluzioni coincidenti per lo stato di equilibrio del sistema $\overline x_{1,2,3} = 0$. Volendo provare a determinare il tipo di stabilità del sistema lineare è possibile pensare di \textbf{linearizzare} la rappresentazione di stato del sistema, ossia determinando le matrici $A,B,C,D$ come visto a pagina \pageref{sec:intro:linearizzazione}; in particolare essendo il sistema scalare ogni matrice sarà di dimensione $1\times 1$, ossia un coefficiente numerico:
+			\[ A = \left. \pd f x\right|_{\overline x,\overline u} = - 3x^2 \Big|_{\substack{x = 0 \\ u = 0}} = 0 \qquad
+			B = \left. \pd f u\right|_{\overline x,\overline u} = 1 \Big|_{\substack{x = 0 \\ u = 0}} = 1 \]
+			\[ C = \left. \pd g x\right|_{\overline x,\overline u} = 1 \Big|_{\substack{x = 0 \\ u = 0}} = 1 \qquad 
+			D = \left. \pd g u\right|_{\overline x,\overline u} = 0 \Big|_{\substack{x = 0 \\ u = 0}} = 0 \]
+			
+			Per procedere con lo studio della stabilità del sistema è necessario determinare la risposta allo scalino del sistema che è determinata dall'equazione
+			\[ C\big(sI-A\big)^{-1} B +  D = \frac 1 s \]
+			A questo punto l'unico polo dell'uscita $Y(s)$ è posto nella posizione $s=0$, e dunque se il sistema fosse lineare significherebbe che il sistema è \textbf{semplicemente stabile}. Tuttavia essendo il sistema non lineare, allora non è possibile affermare con precisione il tipo di stabilità. 
+			\begin{multicols}{2}
+			Analizzando \textbf{graficamente} invece l'equazione di stato risulta evidente immediatamente che nella realtà il sistema è \textbf{asintoticamente stabile}: spostando infatti lo stato dalla sua condizione di equilibrio $\overline x=0$, il \textit{segno} della derivata tenderà sempre a riportarlo verso il punto di equilibrio (che è per questo asintoticamente stabile).
+			
+			\begin{center}
+				\includegraphics[width=3cm]{graf-scal-es}
+			\end{center}
+		\end{multicols}
+		
+		\end{esempio}
 		
 		
 		
