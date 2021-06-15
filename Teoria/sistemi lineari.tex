@@ -320,7 +320,100 @@
 		
 		\end{esempio}
 		
+\section{Funzione di trasferimento}
+	In precedenza si er descritto il movimento d'uscita di un sistema dinamico lineare nel dominio di Laplace, osservando che (come nel dominio del tempo) esso prevedeva sia una componente di movimento libero che di movimento forzato (eq. \ref{eq:lti:movimenti}, pag. \pageref{eq:lti:movimenti}).
+	\begin{concetto} Considerando ora solamente la parte di movimento forzato, ossia imponendo che lo stato iniziale $x_0$ sia nullo, è possibile determinare la cosiddetta \textbf{funzione di trasferimento} $G(s)$ di un sistema dinamico tempo invariante
+		\begin{equation}
+			Y(s) = \underbrace{\Big(C\big(sI-A\big)^{-1}B+D\Big)}_{G(s)} U(s)
+		\end{equation}
+	\end{concetto}
+	La funzione di trasferimento dunque permette di correlare direttamente l'uscita $Y$ di un sistema (nel dominio di Laplace) con la sua uscita; considerando il movimento forzato espresso nel dominio del tempo come
+	\[ y(t) = C\int_0^t e^{A(t-\tau)}Bu(\tau)\, d\tau + Du(t) \]
+	appare evidente che la relazione ingresso-uscita mediante funzione di trasferimento è molto più \textit{facile} da calcolare rispetto alla rispettiva relazione nel dominio del tempo.
+	
+	Nella pratica è possibile determinare la funzione di trasferimento di un sistema lineare attraverso due metodologie:
+	\begin{itemize}
+		\item supponendo di conoscere il modello analitico del sistema, ossia note le matrici $A,B,C,D$ che lo descrivono, è possibile determinare \textit{a priori} analiticamente la funzione di trasferimento applicando la definizione:
+		\[ G(s) = C\big(sI-A\big)^{-1}B+D \]
+		\item se non si conosce il modello del sistema ma è tuttavia possibile calcolare le trasformate di un ingresso arbitrario e la rispettiva uscita, si può determinare la funzione di trasferimento per inversione del modello:
+		\[ G(s) = \frac{Y(s)}{U(s)}\]
+	\end{itemize}
+	
+
+	\begin{concetto}
+		La \textbf{funzione di trasferimento} rappresenta di fatto la \textbf{risposta all'impulso} di un sistema dinamico: considerato infatti che $\trasf{\imp(t)} = 1 $ per ogni valore $s$, allora calcolando l'uscita del sistema si osserva che essa coincide con la funzione di trasferimento:
+		\[ Y(s) = G(s) \cancel 1 \qquad \textrm{se } U(s) = \trasf{\imp(t)} \]
+	\end{concetto}	
+
+	Nel caso particolare di sistema lineare SISO la funzione di trasferimento è di fatto una trasformata razionale (rapporto di due polinomi), mentre se il sistema è MIMO $G(s)$ rappresenta di fatto una \textbf{matrice di trasferimento}, ossia una \textit{collezione} di trasformate razionali caratterizzate dall'avere il polinomio a denominatore comune; in questo caso l'elemento $g_{ij} \in G(s)$ rappresenta la funzione di trasferimento sussistente tra l'$i$-esima uscita e il $j$-esimo ingresso (vigendo il principio di sovrapposizione degli effetti, l'uscita complessiva del sistema sarà determinata dalla somma dei contributi di tutti gli ingressi).
+	
+	\vspace{3mm} E' anche possibile osservare che l'analisi di stabilità esterna fin'ora analizzata di fatto si basava sul determinare la posizione dei poli nel piano complesso della funzione di trasferimento $G(s)$ del sistema dinamico; per come già visto nel caso di sistemi lineari tempo invarianti completamente raggiungibili/osservabili tali poli coincidono con gli autovalori della matrice di stato $A$ e la funzione di trasferimento è una proprietà \textit{strutturale} del sistema, ossia indipendente dalla scelta delle variabili di stato per descrivere il problema.
+	
+	\subsection{Parametrizzazioni della funzione di trasferimento}
+		La stessa funzione di trasferimento $G(s)$ può essere espressa in diverse formulazioni alternative. Essa infatti (ai fini di questo corso) è sempre descritta come il rapporto tra due polinomi $N(s)$ e $D(s)$: tali polinomi possono infatti essere descritti, in maniera equivalente, tramite una \textit{forma fattorizzata} e una \textit{forma polinomiale} come nell'esempio che segue
+		\[ \underbrace{(s+1)(s+2)}_\textrm{fattorizzata} = \underbrace{s^2+3s + 2}_\textrm{polinomiale} \]
+	
+		\begin{concetto}
+			Sfruttando l'idea di \textit{riscrivere} in maniera alternativa i polinomi, in equazione \ref{eq:lti:parametrizzazione} è possibile osservare 3 rappresentazioni analoghe una funzione di trasferimento, in particolare sono rappresentante la \textbf{forma polinomiale} (a), la \textbf{forma fattorizzata di Nyquist} (b) e \textbf{forma fattorizzata di Bode} (c).
+			\begin{subequations} \label{eq:lti:parametrizzazione}
+			\begin{align}
+				G(s) & = \frac{\beta_ns^n + \beta_{n-1}s^{n-1} + \dots + \beta_1 s + \beta_0}{s_n + \alpha_{n-1}s^{n-1}+ \dots + \alpha_0} \\
+				& = \frac{\rho}{s^g} \frac{ \prod_i \big(s + z_i\big) \prod_i \big( s^2 + 2\eta_i\alpha_i s+ \alpha_i^2 \big) }{ \prod_i \big(s + p_i\big) \prod_i \big( s^2 + 2\xi_i\omega_i s+ \omega_i^2 \big) } \\
+				& = \frac{\mu}{s^g} \frac{ \prod_i \big(\tau_is + 1\big) \prod_i \left( \frac{s^2}{\alpha_i^2} + 2 \frac{\eta_i}{\alpha_i} s + 1  \right) } { \prod_i \big(T_is + 1\big) \prod_i \left( \frac{s^2}{\omega_i^2} + 2 \frac{\xi_i}{\omega_i} s + 1  \right) }
+			\end{align}
+			\end{subequations}
+		\end{concetto}
+	
+		La forma polinomiale (\ref{eq:lti:parametrizzazione}a) di fatto è caratterizzata da $2n-1$ coefficienti associati ai parametri $\alpha_i,\beta_i$ dei termini del polinomio. Questa forma risulta essere di poca utilità pratica in quanto è difficile determinare la stabilità del sistema dinamico in quanto non è immediato determinare i poli della funzione di trasferimento: per questo motivo sono più \textit{comode} le forme fattorizzate di Nyquist e di Bode.
 		
+		In entrambe le forme fattorizzate è possibile osservare la presenza del parametro $g$: esso prende il nome di \textbf{grado} del sistema dinamico e rappresenta il numero di poli (se positivo) o zeri (se negativo) presenti nell'origine. \\
+		Per quanto riguarda la forma fattorizzata di Nyquist (\ref{eq:lti:parametrizzazione}b) si indica con  $\rho$ la \textbf{costante di trasferimento}, con $z_i\neq 0$ i valori opposti degli zeri reali della funzione di trasferimento, mentre $p_i \neq 0$ rappresentano l'opposto dei poli reali (termini associati alla produttoria \textit{a sinistra} di numeratore e denominatore). Le produttorie \textit{a destra} di numeratore/denominatore determinate dai coefficienti $\eta_i/\xi_i$ e $\alpha_i/\omega_i$ sono utilizzate per rappresentare invece i poli complessi coniugati. In particolare i termini $\eta_i,\xi_i$ (il cui modulo è sempre inferiore o pari a 1) rappresentano gli \textbf{smorzamenti del polo}, mentre i termini $\alpha_i,\omega_i > 0$ rappresentano le \textbf{pulsazioni naturali}.\\
+		La forma fattorizzata di Bode (\ref{eq:lti:parametrizzazione}c) è molto simile a quella di Nyquist, in quanto si può pensare come la sua \textit{ normalizzazione}; il termine $\mu$ prende il nome di \textbf{guadagno} mentre i termini $\tau_i = 1 / z_i$ e $T_i = 1 / p_i$ rappresentano le \textbf{costanti di tempo} di zeri e poli rispettivamente.
+		
+		Nota la costante di trasferimento $\rho$ nella forma di Nyquist di può ricavare il guadagno nella forma di Bode tramite la relazione
+		\[ \mu = \rho \frac{\prod_i z_i \prod\alpha_i^2}{\prod_i p_i \prod\omega_i^2} \] 
+		
+		\paragraph{Poli (e zeri) complessi coniugati} Si consideri un polo di smorzamento $\xi$ e pulsazione naturale $\omega$ (ma il ragionamento è analogo per gli zeri di una funzione di trasferimento), allora la rappresentazione nella forma di Nyquist e Bode vale rispettivamente
+		\[ \underbrace{s^2 + 2 \xi \omega s + \omega^2}_\textrm{Nyquist} \qquad \leftrightarrow \qquad \underbrace{\frac{s^2}{\omega^2} +2 \frac \xi \omega s + 1 }_\textrm{Bode} \]
+		 In entrambi i casi calcolando le radici di tali espressioni si ottengono i valori
+		 \[ s_{1,2} = \underbrace{- \xi \omega}_\textrm{Re} \pm i\underbrace{ \omega \sqrt{1 - \xi^2}}_\textrm{Im} \]
+		 Le due radici sono infatti dei numeri complessi composti da una parte reale pari a $-\xi\omega$ e da una parte immaginaria di valore $\omega \sqrt{1-\xi^2}$. Volendo dare un \textit{significato rappresentativo} (come in figura \ref{complessi}) alle due grandezze, i poli complessi coniugati possono essere descritti nel piano dei numeri immaginari come dei punti (descritti da vettori) distanti $\omega$ dal centro del piano e con angolo $\theta$ (calcolato come in figura \ref{complessi}) tale che
+		 \[ \xi = \cos\theta \]
+		 
+		\figura{6}{1}{complessi}{rappresentazione nel piano dei numeri immaginari di un polo complesso coniugato.}{complessi}
+		Essendo i poli complessi coniugati, determinato un polo l'altro può essere ottenuto specchiando il primo rispetto all'asse dei numeri reali. Poli con smorzamento positivo sono posizionati nel semipiano a parte reale negativa, mentre smorzamenti negativi sono nel semipiano destro a parte reale positiva.
+		 
+	
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 		
 		
 	
