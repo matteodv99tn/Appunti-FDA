@@ -383,34 +383,170 @@
 		\figura{6}{1}{complessi}{rappresentazione nel piano dei numeri immaginari di un polo complesso coniugato.}{complessi}
 		Essendo i poli complessi coniugati, determinato un polo l'altro può essere ottenuto specchiando il primo rispetto all'asse dei numeri reali. Poli con smorzamento positivo sono posizionati nel semipiano a parte reale negativa, mentre smorzamenti negativi sono nel semipiano destro a parte reale positiva.
 		 
+	\subsection{Sistemi a ritardo di tempo}
+		\begin{concetto}
+			Sono detti \textbf{sistemi a ritardo di tempo} tutti quei sistemi che \textit{ritardano} l'uscita; in particolare l'uscita $y(t)$ è pari all'ingresso $u$ in ritardo di un coefficiente $\tau$, ossia $y(t) = u(t-\tau)$. Sfruttando la proprietà di traslazione nel dominio del tempo (eq. \ref{eq:class:proptraslazionetempo}, pag. \pageref{eq:class:proptraslazionetempo}) la funzione di trasferimento di questo sistema può dunque essere espressa come
+			\begin{equation}
+				G(s) = e^{-\tau s}
+			\end{equation}
+		\end{concetto}
+		Questo tipo di sistema dinamico sarà l'unico \textit{non canonico} nel corso: la sua trasformata infatti non è razionale ma è una funzione trascendente (cosa che in generale può dare problemi nell'analizzare il problema).	
 	
+\section{Studio del legame ingresso-uscita}
+	Avendo determinato la funzione di trasferimento $G(s)$ di un sistema dinamico tempo invariante tramite la forma fattorizzata di Nyquist/Bode (eq. \ref{eq:lti:parametrizzazione}), si vuole ora cercare di interpretare il \textit{significato} dei vari elementi che compongono le parametrizzazioni (poli, zeri, smorzamenti, pulsazioni...) e come gli stessi influenzano i sistemi dinamici. Particolarmente importante sarà dunque analizzare due tipi di risposta: quella ad un ingresso a scalino (per determinare le proprietà di transitorio del sistema) e quelle di un ingresso sinusoidale.
+	
+	\subsection{Risposta allo scalino}
+		La risposta allo scalino di un sistema dinamico è interessante da analizzare in quanto permette di studiare il comportamento di un sistema che passa da una condizione di quiete ad un'altra condizione di quiete diversa (chiaramente affinché ciò si verifichi si deve garantire l'asintotica stabilità del sistema che si sta analizzando). In particolare essendo il sistema lineare è sufficiente calcolare la risposta del sistema allo scalino unitario in quanto ogni altro tipo di scalino può essere determinato tramite il principio di sovrapposizione degli effetti.
 		
+		\begin{concetto}
+			La \textbf{risposta allo scalino} viene utilizzata per determinare molte delle proprietà \textit{salienti} del transitorio di un sistema dinamico, in particolare:
+			\begin{itemize}
+				\item il \textbf{valore iniziale} $y_0$ (ed eventualmente le sue derivate $\dot y_0,\ddot y_0,\dots$) dell'uscita del sistema;
+				\item il \textbf{valore asintotico} $y_\infty$ dell'uscita, ossia il valore cui tende la stessa per $t\rightarrow \infty$;
+				\item il \textbf{tempo di assestamento} $t_a$, ossia dopo quanto tempo la risposta del segnale può essere approssimata al valore asintotico, e l'eventuale \textbf{periodo} $T$ di oscillazioni del sistema;
+				\item l'eventuale \textbf{sovra-elongazione} (\textit{overshoot}) $s_\%$ dell'uscita, definita come il rapporto percentuale tra uscita massima $y_{max}$ nella fase transitoria e valore asintotico:
+				\[ s_\% = \frac{|y_{max} - y_\infty|}{y_\infty} 100 \]
+			\end{itemize}
+		\end{concetto}
+		Nel seguito verranno dunque discusse alcune casistiche di funzioni di trasferimento \textit{semplici} ma i cui risultati verranno estesi a carattere più generale
+		
+		\subsubsection{Sistemi del primo ordine con un polo nell'origine}
+			Si consideri il sistema di ordine unitario la cui parametrizzazione della funzione di trasferimento è $G(s) = \dfrac \mu s$, dove $\mu$ è il guadagno del sistema; questo sistema presenta dunque un solo polo nell'origine (mentre non sono presenti zeri). A questo punto per studiare la risposta allo scalino è necessario moltiplicare $G(s)$ per la trasformata dell'ingresso dello scalino, ossia
+			\[ Y(s) = G(s) U(s) = \frac \mu s \frac 1 s = \frac{\mu}{s^2} \]
+			
+			Essendo verificate le condizioni iniziali del teorema \ref{teor:valiniziale} del valore iniziale (pag. \pageref{teor:valiniziale}) è possibile calcolare l'uscita $y_0$ nel dominio del tempo tramite la relazione
+			\[ y_0 = \lim_{s\rightarrow\infty}s \, Y(s) = \lim_{s\rightarrow\infty}\cancel{s}  \frac{\mu}{s^{\cancel{2}}} = 0 \]
+			Osservato che l'uscita iniziale è nulla è possibile pensare di calcolarne la derivata: sfruttando la relativa proprietà (eq. \ref{eq:class:derivata}, pag. \pageref{eq:class:derivata}) è possibile affermare infatti che $\trasf{\dot y} = s Y(s) - y(0)$. Noto che $y(0)=y_0=0$ (ed essendo ancora la trasformata razionale) è possibile applicare ulteriormente il limite del valore iniziale e dunque
+			\[ \dot y_0 = \lim_{s\rightarrow \infty} s \big(sY(s) - y_0\big) = \lim_{s\rightarrow\infty} \cancel{s^2} \frac{\mu}{\cancel{s^2}} = \mu \]
 	
+			Per quanto riguarda la risposta asintotica è possibile invece utilizzare il teorema \ref{teor:valfinale} del valore finale (pag. \pageref{teor:valfinale}): essendo la trasformata razionale e con poli a parte reale nulla allora vale che
+			\[ y_\infty = \lim_{s\rightarrow 0} s\,Y(s) = \lim_{s\rightarrow 0} \frac \mu s = \infty \]
+			
+			Questi risultati in realtà sono \textit{attendibili} rispetto a quello che ci si aspettava dal sistema: anti-trasformando l'uscita $Y(s)$ si osserva infatti che
+			\[ y(t) = \anti{F(s)} = \mu \anti{\frac 1 {s^2}} = \mu \ramp(t) \]
+			Osservando infatti il grafico dell'uscita $y(t)$ nel dominio del tempo (fig. \ref{scal1-a}) si osserva che l'uscita parte da valore nullo e con una pendenza pari a $\mu$ diverge a $\infty$. Essendo il sistema non asintoticamente stabile (il polo in $s=0$ afferma che il sistema è semplicemente stabile) allora esso non potrà essere neanche BIBO stabile: ad un ingresso limitato quale lo scalino è associata infatti un'uscita non limitata.
+			
+			\figura{5}{1}{scal1-a}{risposta allo scalino di un sistema con funzione di trasferimento $G(s) = \mu / s$ con $\mu = 10$.}{scal1-a}
 	
+			\begin{concetto}
+				Facendo riferimento all'esempio appena mostrato è possibile affermare che, a carattere generale, se il tipo $g$ della funzione è positivo non nullo (in questo caso essendo presente un polo nell'origine si ha $g=1$) allora la risposta allo scalino del sistema non si assesta a nessun valore di regime.
+			\end{concetto}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		\subsubsection{Sistema del primo ordine con polo non nell'origine}
+			Si consideri ora un sistema di ordine $n=1$ con un polo a parte reale negativa non nulla (in modo da garantire l'asintotica stabilità del sistema) la cui funzione di trasferimento fattorizzata in forma di Bode vale
+			\[ G(s) = \mu \frac 1{Ts + 1} \qquad \xrightarrow[\textrm{scalino}]{\textrm{risposta allo}} \quad Y(s) = G(s) U(s) =  \frac \mu {s\big(Ts + 1\big)} \]
+			
+			Calcolata dunque la trasformata $Y(s)$ della risposta allo scalino applicando il teorema del valore iniziale è possibile calcolare che $y_0=0$, mentre $\dot y_0 = \mu / T$ (come nel caso di polo nell'origine il valore iniziale è nullo, tuttavia la derivata dell'uscita risulta divisa per la costante di tempo $T$ del polo). Applicando invece il teorema del valore finale si osserva che
+			\[ y_\infty = \lim_{s\rightarrow 0} s\,Y(s) = \lim_{s\rightarrow 0} \frac \mu{s\big(Ts + 1\big)} = \mu \]
+			\begin{nota}
+				E' possibile applicare il teorema del valore finale solamente perché si era ipotizzato inizialmente che il polo fosse a parte reale negativa (ossia deve essere che $T>0$), altrimenti non sarebbero rispettate le ipotesi di applicabilità.
+			\end{nota}
+			Effettuando l'anti-trasformazione con il metodo di Heaviside è possibile risalire all'uscita $y(t)$  del sistema nel dominio del tempo, e in particolare
+			\[ y(t) = \anti{\frac \mu{s\big(Ts + 1\big)}} = \mu \left(1 - e^{-t/T}\right)\]
+			Osservando la rappresentazione grafica dell'uscita (figura \ref{scal1-b}) è possibile osservare che $y(t)$ non presenta oscillazioni (e dunque il relativo periodo è pari a zero) e come anche l'elongazione percentuale $s_\%$ sia nulla.
+			\figura{5}{1}{scal1-b}{risposta allo scalino di un sistema con funzione di trasferimento $G(s) = \frac \mu {Ts + 1}$ con parametri $\mu = 10$ e $T=2$.}{scal1-b}
+			
+			A questo punto non resta altro che calcolare il tempo di assestamento $t_a$ del sistema, ossia quel valore che, scelta una tolleranza $\varepsilon$, verifica la relazione
+			\begin{equation} \label{eq:lti:tolleranza}
+				\big|y(t_a) - y_\infty\big| \leq \varepsilon \, y_\infty
+			\end{equation}
+			
+			\begin{concetto}
+				Impostata una tolleranza $\varepsilon = 0.01$ (ossia $1\%$) tramite calcolo esplicito della relazione \ref{eq:lti:tolleranza} è possibile determinare che il \textbf{tempo di assestamento} di una funzione di trasferimento ad un solo polo che vale
+				\begin{equation} \label{eq:lti:tempo1polo}
+					t_a = 4.6T \approx 5T
+				\end{equation}
+			\end{concetto}
+			Questo significa che ad un tempo $t$ pari a 5 volte la costante di tempo $T$ del polo l'errore che si commette a considerare l'uscita asintotica rispetto a quella reale è inferiore all'$1\%$ e dunque, a livello ingegneristico, è possibile considerare che il sistema è a regime.
+			\begin{osservazione}
+				Il tempo di assestamento non dipende dal guadagno $\mu$ del sistema, ma solamente dalla costante di tempo $T$ del polo.
+				\begin{center}
+					\includegraphics[width=5cm]{scal1-c}
+				\end{center}
+				In figura sono infatti riportate 3 funzioni di trasferimento per le quali la costante di tempo è uguale e pari a $T=1$, mentre il guadagno è variabile ($\mu = 3,10,20$): è possibile osservare che in tutti i casi dopo il tempo $t_a = 5T=5$ la risposta può essere considerata pressoché stazionaria.
+			\end{osservazione}
+			
+			Rappresentando nel piano dei numeri immaginari i poli si osserva che la loro posizione nell'asse dei numeri reali dipende dalla costante di tempo $T$ e vale $-1/T$ (figura \ref{lentoveloce}): questo significa che dati due sistemi per cui $T_1 > T_2$ allora il primo sistema sarà più lento (per via del maggiore tempo di assestamento) e dunque il polo associato sarà più vicino all'origine. 
+			
+			\figura{5}{1}{lentoveloce}{posizione nel piano complesso di due poli con costanti di tempo $T_1>T_2$.}{lentoveloce}
+			
+			Questo significa che per avere dei sistemi dinamici con tempo di assestamento molto basso è necessario \textit{spostare} i poli il più possibile lontano (\textit{verso sinistra}) dal centro del piano dei numeri complessi, diminuendo il più possibile la parte reale, il che può essere fatto diminuendo il più possibile la costante di tempo (in figura \ref{scal1-d} è mostrato un esempio).
+		
+			\figura{5}{1}{scal1-d}{risposta allo scalino di un sistema con funzione di trasferimento $G(s) = \frac \mu {Ts + 1}$ con guadagno $\mu = 10$ e costanti di tempo $T=1$ (funzione arancione) e $T = 3$ (blu).}{scal1-d}
+		\subsubsection{Sistema del secondo ordine a poli coincidenti}
+			Si consideri ora un sistema del secondo ordine a poli coincidenti (a costante di tempo $T >0$ in modo da garantire che i poli siano a parte reale negativa) la cui funzione di trasferimento e relativa risposta allo scalino sono descritte dalle trasformate razionali
+			\[ G(s) =  \frac \mu{\big(Ts + 1\big)^2} \qquad \xrightarrow[\textrm{scalino}]{\textrm{risposta allo}} \quad Y(s) = G(s) U(s) = \frac \mu{s\big(Ts + 1\big)^2} \]
+			
+			Applicando il teorema del valore iniziale si calcola che sia $y_0$ che la sua derivata $\dot y_0$ sono nulle, mentre il primo termine non nullo è la derivata seconda dell'uscita che risulta valere $\ddot y_0 = \mu / T^2$.
+			\begin{osservazione}
+				A livello intuitivo è dunque possibile iniziare a pensare che il numero di poli della funzione di trasferimento è associato all'ordine del primo valore di derivata che risulterà non essere nulla al tempo iniziale.
+			\end{osservazione}
+			Avendo ipotizzato che il polo multiplo della funzione di trasferimento sia a parte reale negativa è dunque possibile applicare il teorema del valore finale e osservare che l'uscita asintotica (come nel caso di un solo polo a parte reale negativa) vale $y_\infty = \mu$. \\			
+			A questo punto è possibile anti-trasformare l'uscita $Y(s)$ tramite il metodo di Heaviside che determina l'uscita
+			\[ y(t) = \anti{ \frac \mu{s(Ts + 1)^2}} = \mu \left( 1- e^{-t/T} - \frac t T e^{-t/\tau} \right) \] 
+			\begin{nota}
+				La trasformata razionale dell'uscita $Y(s)$ è di ordine 3 e la scomposizione di Heaviside associata a tale funzione vale
+				\[ Y(s) = \frac As + \frac B{Ts+1} + \frac C{\big(Ts+1\big)^2} \]
+				Determinando dunque i coefficienti $A$ (che risulterà valere $\mu$), $B$ ($-\mu$) e $C$ ($-\mu/T$) l'anti-trasformata è composta da $y(t) = A \scal(t) + Be^{-t/T} + Ct e^{-t/T}$.					 
+			\end{nota}
+			
+			\figura{5}{1}{scal2-a}{risposta allo scalino di un sistema con funzione di trasferimento $G(s) = \frac \mu {(Ts + 1)^2}$ con parametri $\mu = 10$ e $T=2$.}{scal2-a}
+			
+			Graficando l'uscita del sistema dinamico (figura \ref{scal2-a}) si osserva che la funzione non è periodica ($y$ è composta da un solo esponenziale) e non si ha neanche sovra-elongazione (in quanto $y_{max} = y_\infty$). Invertendo l'equazione \ref{eq:lti:tolleranza} per l'uscita nel dominio del tempo appena determinata, considerando una tolleranza $\varepsilon = 1\%$ allora si dimostra che il tempo di assestamento del sistema vale
+			\begin{equation}\label{eq:lti:tempo2poli}
+				t_a = 6.64T
+			\end{equation}
+			
+			Confrontando questo risultato con quello ottenuto per i sistemi ad un polo (eq. \ref{eq:lti:tempo1polo}) è possibile osservare che, a parità di costante di tempo $T$, i sistemi a polo multiplo sono più lenti (figura \ref{scal2-b}).
+			\figura{5}{1}{scal2-b}{risposta allo scalino di un sistema ad un polo (arancione) e due poli coincidenti (azzurro) con costanti di tempo e guadagno eguali.}{scal2-b}
+		
+		\subsubsection{Sistema a due poli reali distinti}
+			Considerando ora un sistema a due poli reali distinti (a costanti di tempo $T_1,T_2>0$ in modo da garantire l'asintotica stabilità del sistema) allora è possibile esprimere la sua funzione di trasferimento e relativa risposta allo scalino tramite le trasformate razionali
+			\[ G(s) =  \frac \mu{\big(T_1s + 1\big) \big(T_2s + 1\big) } \qquad \xrightarrow[\textrm{scalino}]{\textrm{risposta allo}} \quad Y(s) = G(s) U(s) = \frac \mu{s\big(T_1s + 1\big) \big(T_2s + 1\big) } \]
+			Tramite i teoremi di valore iniziale e finale si osserva che, come nel caso precedente, $y_0 = \dot y_0 = 0$ e la risposta asintotica $y_\infty$ è costante e pari al guadagno $\mu$; l'unica variazione che si può osservare è nel calcolo della derivata seconda del valore iniziale che risulta valere $\ddot y_0 = \dfrac \mu {T_1T_2}$. \\
+			A questo punto anti-trasformando con il metodo di Heaviside l'uscita $Y(s)$ del sistema può essere espressa nel dominio del tempo arrivando alla conclusione che
+			\[ y(t) = \mu \Big(  1 - \underbrace{\frac{T_1}{T_1-T_2} e^{-t/T_1}}_{\substack{\textrm{esponenziale} \\ \textrm{associato} \\ \textrm{a $T_1$}}} + \underbrace{\frac{T_2}{T_1-T_2} e^{-t/T_2} }_{\substack{\textrm{esponenziale} \\ \textrm{associato} \\ \textrm{a $T_2$}}} \Big) \]
+			Il risultato dell'uscita può essere rappresentata nel dominio del tempo tramite il grafico in figura \ref{scal2-c}. Si osserva che essendo la risposta esponenziale allora non si ha periodicità nel segnale e anche la sovra-elongazione $s_\%$ è nulla. Per quanto riguarda il tempo di assestamento è possibile osservare che, considerando per esempio $T_1>T_2$, il tempo di assestamento del sistema dovrà sempre essere compresa tra il valore minimo associato ad una funzione di trasferimento con polo singolo di costante $T_1$ e il valore massimo rappresentato da un sistema a polo doppio con medesima costante di tempo.
+						
+			\figura{5}{2}{scal2-c}{risposta allo scalino di un sistema con funzione di trasferimento $G(s) = \frac \mu {(T_1s + 1)(T_2s+1)}$ con parametri $\mu = 10$, $T_1=3$ e $T_2 = 1.5$ (in azzurro); in arancione è rappresentata la zona rispetto al quale il comportamento del sistema a due poli distinti può appartenere.}{scal2-c}
+			
+			Nel caso limite in cui $T_2 = T_1$ infatti il comportamento del sistema coincide con quello di una funzione di trasferimento a due poli reali coincidenti e per cui il tempo di assestamento vale $t_a = 6.64 T$ (eq. \ref{eq:lti:tempo2poli}). Al contrario nel caso in cui $T_2 \ll T_1$ l'esponenziale associato a $T_2$ si \textit{esaurisce} molto rapidamente (raggiunge la stazionarietà prima del polo associato a $T_1$) e dunque il tempo di assestamento può essere approssimato alla funzione di trasferimento ad un unico polo di tempo $T_1$ e dunque con tempo di assestamento $t_a =5T_1$.
+			
+		\subsubsection{Sistema a due poli complessi coniugati}
+			Si consideri un sistema la cui funzione di trasferimento presenta due poli complessi coniugati di pulsazione $\omega$ e smorzamento $\xi$ che, rappresentato in forma di Bode, assume la forma
+			\[ G(s) = \frac \mu {\dfrac{s^2}{\omega^2} + 2 \dfrac \xi \omega s + 1} \] 
+			
+			Dall'analisi tramite il teorema del valore iniziale e finale è possibile stabilire le caratteristiche iniziali dell'uscita pari per cui $y_0 = \dot y_0 = 0$ e $\ddot y_0 = \mu \omega^2$.	L'uscita asintotica, anche in questo caso, risulta valere $y_\infty = \mu$. \\
+			In questo caso tuttavia, analizzando il sistema tramite la scomposizione di Heaviside, si osserva che l'uscita presenta una componente sinusoidale; anti-trasformando $Y(s)$ si osserva infatti che
+			\[ y(t) = \anti{\frac 1 {s \left( \frac{s^2}{\omega^2} + 2 \frac \xi \omega s + 1 \right)}  } = y(t) = \mu \left[ 1 - \frac 1 {\sqrt{1-\xi^2}} e^{-\xi\omega t} \sin\big(\omega \sqrt{1-\xi^2} + \theta\big) \right] \]
+			
+			L'uscita $y(t)$, mostrata in figura \ref{scal3-a}, presenta dunque una \textbf{componente oscillatoria} il cui \textbf{periodo} può essere calcolato come
+			\begin{equation}
+				T = \frac{2\pi}{\omega \sqrt{1-\xi^2}} = \frac{2\pi}{\textrm{Im}}	
+			\end{equation}
+			Tale periodo dipende dunque solamente dal valore della parte immaginaria del sistema (maggiore è la parte immaginaria, più piccolo risulterà essere il periodo).
+			\begin{osservazione}
+				Con questa considerazione è possibile considerare i sistemi a poli puramente reali (per cui $\textrm{Im} = 0$) come delle funzioni oscillanti con periodo $T\rightarrow \infty$ verificando che
+				\[ T = \lim_{\textrm{Im}\rightarrow 0} \frac{2\pi}{\textrm{Im}} = \infty  \]
+			\end{osservazione}
+			
+			\figura{5}{1}{scal3-a}{risposta allo scalino di una funzione di trasferimento di guadagno $\mu = 2$ a due poli complessi coniugati di pulsazione $\omega = 1$ e smorzamento $\xi = 0.3$.}{scal3-a}
+			Questo tipo di sistema è anche caratterizzato dalla presenza di una \textbf{sovra-elongazione} il cui valore percentuale dipende dal rapporto tra parte reale e immaginaria secondo la relazione
+			\begin{equation}
+				s_\% = 100 \exp \left(-\frac{\xi \omega}{\sqrt{1-\xi^2}}\right) = 100 e^{-\textrm{Re} / \textrm{Im}}
+			\end{equation}
+			
+			\begin{nota}
+				Nel caso estremo in cui lo smorzamento è unitario ($\xi = 1$), allora i poli sono puramente immaginari (senza parte reale): in questo caso l'uscita non converge e inizia ad oscillare tra un valore compreso tra 0 e $2\mu$  come si può osservare nella figura che segue.
+				\begin{center}
+					\includegraphics[width=5cm]{scal3-b}
+				\end{center}
+			\end{nota}
+			Il \textbf{tempo di assestamento} associato all'esponenziale convergente può dunque essere calcolato e dipende solamente dalla parte reale del polo; in analogia al caso di polo unico puramente reale il tempo di assestamento viene calcolato come
+			\begin{equation}
+				t_a = \frac 5 {\xi \omega} = \frac 5 {\textrm{Re}}
+			\end{equation}
+			
 	
 	
 	

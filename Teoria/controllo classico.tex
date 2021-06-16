@@ -69,7 +69,7 @@
 	        \end{equation}
 	        
 	        \item e' possibile osservare la relazione per la \textbf{traslazione nel dominio del tempo}, ossia dato un ritardo $\tau$ appartenente a tale dominio è possibile verificare la trasformata di $f(t-\tau)$ come
-	        \begin{equation}
+	        \begin{equation} \label{eq:class:proptraslazionetempo}
 	            \L \Big( f(t-\tau)\Big) := \trasf{f(t)} e^{-s\tau} = F(s) e^{-s\tau} 
 	        \end{equation}
 	        
@@ -107,7 +107,7 @@
 		Una peculiarità di descrivere i sistemi dinamici nel dominio della variabile di Laplace è che tutte le derivate e integrali nel tempo di una funzione generica $f$ vengono ridotte a delle operazioni algebriche.
 		\begin{concetto}
 			La \textbf{trasformata della derivata} di una funzione generica $\dot f(t)$ (supponendo di conoscere $\trasf f = F(s)$ ) può essere calcolata immediatamente secondo l'operazione
-			\begin{equation}
+			\begin{equation} \label{eq:class:derivata}
 				\trasf{\dot f(t)} := s \, F(s) + f(0)
 			\end{equation}
 			dove $f(0)$ sono le condizioni iniziali del sistema. Da questa relazione deriva il fatto che l'operatore $s$ è spesso definito \textbf{\textit{operatore derivata}}.
@@ -165,7 +165,7 @@
 	
 		\begin{teorema}{teorema del valore finale}
 		
-			\texttt{Ipotesi:}  \label{teor:valfinale} La trasformata $F(s)$ rispetto al quale si può applicare tale teorema deve essere razionale e si deve verificare che le radici del denominatore $D(s)$ della stessa siano tutte a parte reale negativa non nulla. \vspace{3mm}
+			\texttt{Ipotesi:}  \label{teor:valfinale} La trasformata $F(s)$ rispetto al quale si può applicare tale teorema deve essere razionale e si deve verificare che le radici del denominatore $D(s)$ della stessa siano tutte a parte reale negativa (ed eventualmente nulla). \vspace{3mm}
 			
 			\texttt{Enunciato:} \textit{Data una trasformata di Laplace $F(s)$ razionale (che rispetta le ipotesi), allora il valore asintotico della funzione $f(t)$ valutata al tempo $t\rightarrow \infty$ può essere calcolato tramite la relazione}
 			\begin{equation}
