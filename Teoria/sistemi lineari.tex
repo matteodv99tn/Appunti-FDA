@@ -547,8 +547,179 @@
 				t_a = \frac 5 {\xi \omega} = \frac 5 {\textrm{Re}}
 			\end{equation}
 			
-	
-	
+		\subsubsection{Zero reale nell'origine}
+			Fino ad ora si è osservato l'effetto che la posizione dei poli ha nel calcolo delle caratteristiche salienti delle funzioni di trasferimento di sistemi lineari: si vuole analizzare ora invece come gli zeri influenzano la risposta (anche se le considerazioni che trarremo non saranno a carattere generale come nel caso dell'analisi dei poli).
+			
+			Considerando un primo esempio di funzione di trasferimento con zero reale nell'origine, ossia di tipo $g = -1$, e con un solo polo stabile (con costante di tempo $T>0$) allora $G(s)$ può essere espressa come
+			\[ G(s) = \frac{\mu s}{Ts+1} \qquad \xrightarrow[\textrm{scalino}]{\textrm{risposta allo}} \quad Y(s) = G(s) U(s) = \frac \mu {Ts+1} \]
+			Applicando il teorema del valore iniziale si osserva che lo stesso non parte più da un valore nullo, ma dal valore $y_0 = \mu/T$; anche il valore finale, tramite l'utilizzo del relativo teorema, si dimostra essere diverso dai casi precedenti e convergente al valore $y_\infty = 0$; questo fatto può essere intuitivamente dimostrato considerando che il polo nell'origine $s$ coincide con l'operatore derivata (eq. \ref{eq:class:derivata}, pag. \pageref{eq:class:derivata}): derivando la risposta ad un polo (figura \ref{scal1-b}) e osservando che la stessa tende asintoticamente ad una costante, allora la sua derivata è nulla. 
+			\begin{concetto}
+				L'effetto generale di introdurre un zero nell'origine è quello di annullare la risposta asintotica del sistema.
+			\end{concetto}
+			Anti-trasformando l'uscita con il metodo di Heaviside è possibile calcolare la risposta del sistema nel dominio del tempo secondo l'espressione
+			\[ y(t) = \anti{\frac{\mu s}{(Ts+1)s}} = \frac \mu T e^{-t/T} \]
+			Facendo riferimento alla rappresentazione dell'uscita in figura \ref{scal4-a} è possibile osservare come lo zero non cambi le proprietà del transitorio: in particolare esso è determinato ancora dalle caratteristiche del polo a parte reale negativa e dunque con tempo di assestamento $t_a = 5T$.
+			
+			
+			\figura{5}{1}{scal4-a}{risposta allo scalino di una funzione di trasferimento del tipo $\frac{\mu s}{Ts+1}$ con guadagno $\mu = 2$ e costante di tempo $T=2$.}{scal4-a}
+			
+		\subsubsection{Zero reale non nell'origine}
+			Si consideri una funzione di trasferimento del primo ordine con polo a parte reale negativa ($T>0$ per garantire l'asintotica stabilità del sistema) e con uno zero con costante di tempo $\tau \neq 0$ (in questo caso non è necessario imporre il \textit{segno} della posizione del polo in quanto non appartiene alle specifiche dei criteri di stabilità) e dunque nella forma
+			\[ G(s) = \mu \frac{\tau s + 1}{Ts+1}  \qquad \xrightarrow[\textrm{scalino}]{\textrm{risposta allo}} \quad Y(s) = G(s) U(s) = \mu \frac{\tau s + 1}{s(Ts+1)}\]
+			A questo punto dall'analisi dei teoremi del valore iniziale e finale è possibile calcolare sia il valore iniziale, che risulta valere $y_0  \mu \tau/T$, che il valore asintotico $y_\infty =\mu$ (che torna dunque a coincidere con il guadagno della funzione di trasferimento). Anti-trasformando con Heaviside si ottiene dunque la funzione $y$  pari a 
+			\[y(t) = \anti{\mu \frac{\tau s + 1}{s(Ts+1)}} = \mu \left(1 + \frac{\tau - T}T e^{-t/T}\right)  \]
+			Anche in questo caso gli zeri reali non influiscono sul transitorio (il cui tempo di assestamento è determinato dal polo e dunque $t_a = 5T$), tuttavia è possibile osservare come la costante di tempo $\tau$ cambia il valore iniziale $y_0$ dell'uscita: in particolare per $\tau <0$ (zero a parte reale positiva) l'uscita parte da un valore negativo, per $0<\tau<T$ l'uscita parte da un valore compreso tra 0 e $\mu$ mentre per $\tau > T$ il valore iniziale $y_0$ è maggiore del guadagno e si ha dunque un fenomeno di sovra-elongazione (figura \ref{fig:lti:sist1zero}).
+			
+			\begin{figure}[bht]
+				\centering
+				\begin{subfigure}{0.325\linewidth}
+					\centering
+					\includegraphics[width=4cm]{scal4-b} \caption{}
+				\end{subfigure}
+				\begin{subfigure}{0.325\linewidth}
+					\centering
+					\includegraphics[width=4cm]{scal4-c} \caption{}
+				\end{subfigure}
+				\begin{subfigure}{0.325\linewidth}
+					\centering
+					\includegraphics[width=4cm]{scal4-d} \caption{}
+				\end{subfigure}
+				\caption{risposta allo scalino di una funzione di trasferimento del tipo $\mu \frac{\tau s + 1}{Ts+1}$ con guadagno $\mu = 1$, costante di tempo $T=2$ e costanti di tempo degli zeri che cambiano: $\tau = -2$ (a), $\tau = 1$ (b) e $\tau = 4$ (c).} 
+				\label{fig:lti:sist1zero}
+			\end{figure}
+		
+		\subsubsection{Sistemi di ordine 2 con uno zero}
+			Si consideri il sistema asintoticamente stabile ($T_1,T_2>0$) con zero non nell'origine la cui funzione di trasferimento vale
+			\[ G(s) = \mu \frac{\tau s + 1}{\big(T_1s +1\big)\big(T_2s+1\big)} \qquad \xrightarrow[\textrm{scalino}]{\textrm{risposta allo}} \quad Y(s) = \mu \frac{\tau s + 1}{s\big(T_1s +1\big)\big(T_2s+1\big)} \]
+			Dall'analisi tramite i teoremi del valore iniziale e finale si conclude che $y_0=0$ mentre $\dot y_0 = \mu \dfrac{\tau}{T_1T_2}$, mentre l'uscita asintotica rimane pari al guadagno $y_\infty = \mu$.
+			\begin{concetto}
+				A livello generale l'ordine della prima derivata di $y(t)$ non nulla nell'origine dei tempi coincide con il grado relativo della funzione di trasferimento, ossia tra la differenza del numero di poli e il numero di zeri di $G(s)$.
+			\end{concetto}
+			
+			Anti-trasformando con il metodo di Heaviside è dunque possibile stabilire l'uscita in funzione del tempo:
+			\[ y(t) = \anti{\mu \frac{\tau s + 1}{s\big(T_1s +1\big)\big(T_2s+1\big)}} = \mu \left( 1 - \frac{T_1-\tau}{T_1-T_2} e^{-t/T_1} + \frac{T_2-\tau}{T_1-T_2}e^{-t/T_2} \right) \]
+			A livello intuitivo non è possibile capire quale sia il comportamento dell'uscita in funzione delle varie costanti di tempo $T_1,T_2,\tau$, tuttavia utilizzando i grafici (in figura \ref{fig:lti:sist2zero}, nella pagina seguente) è possibile osservare le seguenti proprietà:
+			\begin{itemize}
+				\item[a)] se lo zero è a parte reale positiva (ossia con $\tau <0$) allora si ha il fenomeno della cosiddetta \textbf{\textit{risposta inversa}} dove inizialmente l'uscita tende a valori negativi prima di riportarsi al valore del guadagno (più vicino è il polo dall'origine, più l'effetto sarà pronunciato);
+				
+				\item[b)] se lo zero è a parte reale negativa ma si trova più vicino all'origine dei poli (e dunque $\tau > T_1,T_2$) allora il sistema va incontro ad un fenomeno di sovra-elongazione che è tanto maggiore quanto più lo zero si avvicina all'origine dei numeri complessi;
+				
+				\item[c, d)] se lo zero determina una costante di tempo $\tau$ confrontabile con i valori $T_1,T_2$, allora l'effetto sarà quello di una \textit{cancellazione} e il comportamento viene approssimato ad una funzione di trasferimento ad un solo polo (complementare rispetto a quello cancellato);
+				
+				\item[e)] se lo zero ha una costante di tempo compresa tra quella dei poli ($T_2 < \tau < T_1$) allora il comportamento dell'uscita sarà compresa tra la risposte dei sistemi a un solo polo reale con costanti $T_1$ e $T_2$ rispettivamente;
+				
+				\item[f)] se lo zero si trova più \textit{lontano rispetto all'origine} dei poli (ossia per $\tau < T_1,T_2$) allora il comportamento dell'uscita convergerà al caso di una funzione a due poli reali in $T_1,T_2$ (senza effetto del polo).
+				
+			\end{itemize}
+			
+			\begin{figure}[p]
+				\centering
+				\begin{subfigure}{0.48\linewidth}
+					\centering
+					\includegraphics[width=6cm]{scal5-a} \caption{}
+				\end{subfigure}
+				\begin{subfigure}{0.48\linewidth}
+					\centering
+					\includegraphics[width=6cm]{scal5-b} \caption{}
+				\end{subfigure}
+				\begin{subfigure}{0.48\linewidth}
+					\centering
+					\includegraphics[width=6cm]{scal5-c} \caption{}
+				\end{subfigure}
+				\begin{subfigure}{0.48\linewidth}
+					\centering
+					\includegraphics[width=6cm]{scal5-d} \caption{}
+				\end{subfigure}
+				\begin{subfigure}{0.48\linewidth}
+					\centering
+					\includegraphics[width=6cm]{scal5-e} \caption{}
+				\end{subfigure}
+				\begin{subfigure}{0.48\linewidth}
+					\centering
+					\includegraphics[width=6cm]{scal5-f} \caption{}
+				\end{subfigure}
+			
+				\caption{risposta allo scalino di una funzione di trasferimento del tipo $\mu \frac{\tau s + 1}{(T_1s+1)(T_2s+1)}$ con guadagno $\mu = 1$, costanti di tempo $T_1 = 2$ e $T_1 = 1$. In arancione è mostrato il comportamento della funzione composta dai soli poli reali, mentre in grigio è mostrata la risposta dei sistemi ad un solo polo (di costanti $T_1$ e $T_2$ rispettivamente). In blu sono mostrate le risposte per valori $\tau = -4$ (a) cui è associato il fenomeno della risposta inversa, $\tau = 6$ (b) cui è associato il fenomeno della sovra-elongazione, $\tau = 0.9 \approx T_2$ (c) e  $\tau = 2.1 \approx T_1$ (d) cui è associato l'effetto di cancellazione, $\tau=1.5$ (e) e $\tau =0.3$ (f).}
+				\label{fig:lti:sist2zero}
+			\end{figure}
+		
+		\subsubsection{Effetto degli zeri sulla risposta allo scalino}
+			A questo punto è possibile riassumere in maniera sintetica gli effetti che l'aggiunta degli zeri provoca sul sistema, in particolare:
+			\begin{itemize}
+				\item zeri nell'origine ($G(s)$ con tipo $g\leq -1$) annullano la risposta asintotica del sistema (considerando che la stessa sia pari ad una costante);
+				\item gli zeri \textit{destri} (a parte reale positiva) determinano il fenomeno della risposta inversa, mentre gli zeri vicini all'asse immaginario determinano un fenomeno di sovra-elongazione;
+				\item gli zeri vicini ad un polo tendono a \textit{mascherarne} l'effetto, ossia come se vi fosse una cancellazione critica nel sistema;
+				\item gli zeri tendono a \textit{velocizzare} la risposta iniziale (che come visto dipende dal grado relativo tra polinomio a denominatore e numeratore).				
+			\end{itemize}
+			In generale gli zeri hanno un effetto sulla risposta allo scalino del sistema che non è facile da predire, che non è notevole e per le quali è difficile trovare delle soluzioni analitiche.
+			
+		\subsubsection{Risposta allo scalino di sistemi arbitrariamente complessi}
+			In generale un sistema lineare ha una funzione di trasferimento che presenta numerosi contributi di zeri e poli sia reali che complessi coniugati (come visto nelle possibili rappresentazioni nell'equazione \ref{eq:lti:parametrizzazione}, \pageref{eq:lti:parametrizzazione}):
+			\[ G(s) = \frac \mu {s^g} \frac{\prod\big(\textrm{zeri reali}\big) \prod \big(\textrm{zeri complessi coniugati}\big)}{\prod\big(\textrm{poli reali}\big) \prod \big(\textrm{poli complessi coniugati}\big)} \]
+			
+			Come visto analizzando gli effetti degli zeri, definendo il parametro $r$ come il grado relativo del polinomio a denominatore rispetto quella a numeratore al quale viene sottratto il valore unitario, allora si dimostra che
+			\[ r = \textrm{grado relativo} - 1 \qquad \Rightarrow \quad y_0,\dot y_0 ,\dots, y_0^{(r)} = 0 \]
+			Se il  sistema è asintoticamente stabile allora il valore asintotico coincide con il guadagno  ($y_\infty = \mu$) tranne nel caso in cui si hanno presenti zeri nell'origine dove la risposta si annulla (quindi se $g\leq -1$ allora $y_\infty = 0$). \\
+			\begin{concetto}
+				Per quanto riguarda le caratteristiche transitorie si può approssimare l'uscita considerando solamente le caratteristiche di \textbf{poli} e \textbf{zeri dominanti}, ossia le singolarità cui sono associati dei transitori più lenti (costanti di tempo maggiori e dunque poli/zeri più vicini all'asse dei numeri immaginari):
+				\[ t_a = \frac{5}{\left|\textrm{Re}_\textrm{polo dominante}\right|} \qquad T = \frac{2\pi}{\textrm{Im}_\textrm{polo dominante}} \]
+			\end{concetto}
+			\begin{osservazione}
+				Se un polo e uno zero sono molto vicini tra loro, allora vige l'\textit{idea} della cancellazione del polo con lo zero e dunque non si considerano gli effetti di tali singolarità.
+			\end{osservazione}
+			
+	\subsection{Risposta alla sinusoide}
+		Studiare la risposta di un sistema con funzione di trasferimento $G(s)$ rispetto ad un ingresso sinusoidale è utile per studiare la risposta in frequenza del sistema. In questo caso, essendo il sistema lineare, ci si aspetta che l'uscita sia anch'essa una sinusoide: questo significa che non è possibile applicare il teorema \ref{teor:valfinale} del valore finale (pag. \pageref{teor:valfinale}) per calcolare l'uscita asintotica del sistema, ma per questo è necessario introdurre il \textbf{teorema della risposta in frequenza}.
+		
+		\begin{teorema}{ teorema della risposta in frequenza \label{teor:rispostafrequenza} }
+				\texttt{Ipotesi:} Questo teorema può essere applicato ad una funzione di trasferimento $G(s)$ solo se essa è razionale con poli a parte reale negativa (o eventualmente immaginari con parte reale nulla), ossia per un sistema che risulta essere asintoticamente stabile. 
+				
+				\vspace{3mm}
+				
+				\texttt{Enunciato:} {\itshape Dato un sistema lineare tempo invariante con funzione di trasferimento $G(s)$ (rispetto alla quale valgono le ipotesi) soggetto ad un ingresso sinusoidale di ampiezza $A$, pulsazione $\overline \omega$ e fase $\phi$ del tipo
+				\[  u(t) = A \sin\big(\overline \omega t + \phi\big)\]
+				allora l'uscita asintotica del sistema, espressa nel dominio del tempo, può essere valutata tramite la relazione
+				\begin{equation}
+					y_\infty(t) = A \big|G(i\overline \omega)\big| \sin \big(\overline \omega t + \phi + \angle G(i\overline \omega)\big)
+				\end{equation}
+				dove $\big|G(i\overline \omega)\big|$ rappresenta il \textbf{modulo} della funzione di trasferimento valutata per la pulsazione $\overline \omega$, mentre $ \angle G(i\overline \omega)$ rappresenta lo \textbf{sfasamento} dovuto alla funzione di trasferimento. 			}
+		\end{teorema} 
+		\begin{osservazione}
+			Si osserva che per sistemi lineari tempo invarianti la pulsazione del segnale d'uscita è dunque pari a quella del segnale in ingresso: questo infatti non è necessariamente vero per le altre classi di sistemi!
+			
+			L'ampiezza del segnale in uscita in particolare risulta essere amplificata/ridotta in funzione del modulo della funzione di trasferimento; $G(s)$ introduce inoltre uno sfasamento tra ingresso e uscita.
+		\end{osservazione}
+		Va notato che il modulo e lo sfasamento introdotto dalla funzione di trasferimento non sono dei termini costanti, ma sono strettamente correlati al valore della pulsazione $\overline \omega$ rispetto alla quale si effettua il \textit{test}. In particolare per calcolare i valori di modulo e fase è necessario sostituire alla variabile $s$ nella funzione di trasferimento il numero immaginario $i\overline \omega$ e valutare (a partire da tale sostituzione) il modulo e fase.
+		
+		\vspace{3mm}
+		
+		Il teorema del valore finale permette solamente di determinare la risposta asintotica di un segnale sottoposto ad ingresso sinusoidale, mentre la parte transitoria (e in particolare il tempo di assestamento) viene valutato in maniere alternative, in particolare resta valida l'\textit{idea} di calcolare tale proprietà considerando la parte reale dei poli dominanti $t_a =  5 /\left|\textrm{Re}_\textrm{p.dom.}\right|$.
+		
+		\paragraph{Importanza della risposta in frequenza} Analizzare la risposta in frequenza di un sistema dinamico è molto importante; considerando infatti la teoria sviluppata da Teoria, ogni ingresso $u(t)$ di periodo $T$ (per segnali aperiodici si può considerare $T\rightarrow \infty$ ed estendere la sommatoria ad un integrale) può essere rappresentato tramite la cosiddetta \textbf{serie di Fourier} per cui
+		\[ u(t) = \sum_{k=0}^\infty H\big(\omega_k\big) \sin\big(\omega_k t + \phi(\omega_k)\big) \qquad \textrm{con } \omega_k = k \frac{2\pi}{T} \]
+		dove sia l'ampiezza $H(\omega)$ che lo sfasamento $\phi(\omega)$ sono dei coefficienti che possono essere determinati.
+		
+		Scomponendo dunque con Fourier un ingresso generico allora l'uscita asintotica del sistema può essere calcolata sfruttando anche il teorema della risposta in frequenza, e dunque
+		\begin{equation}
+			y_\infty(t) = \sum_{k=0}^\infty \Big[ H(\omega_k) \, \big|G(i\omega_k)\big| \sin\Big(\omega_kt + \phi(\omega_k) + \angle G(i\omega_k)\Big) \Big]
+		\end{equation}
+		Essendo il sistema lineare per determinare l'uscita di un generico ingresso è sufficiente analizzare la trasformata di ogni singola armonica sinusoidale che compone l'ingresso e poi sommare ogni contributo.	
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 	
 		
 		
