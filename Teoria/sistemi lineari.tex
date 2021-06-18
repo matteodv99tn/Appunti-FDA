@@ -668,7 +668,7 @@
 				Se un polo e uno zero sono molto vicini tra loro, allora vige l'\textit{idea} della cancellazione del polo con lo zero e dunque non si considerano gli effetti di tali singolarità.
 			\end{osservazione}
 			
-	\subsection{Risposta alla sinusoide}
+	\subsection{Risposta alla sinusoide: analisi nel dominio della frequenza}
 		Studiare la risposta di un sistema con funzione di trasferimento $G(s)$ rispetto ad un ingresso sinusoidale è utile per studiare la risposta in frequenza del sistema. In questo caso, essendo il sistema lineare, ci si aspetta che l'uscita sia anch'essa una sinusoide: questo significa che non è possibile applicare il teorema \ref{teor:valfinale} del valore finale (pag. \pageref{teor:valfinale}) per calcolare l'uscita asintotica del sistema, ma per questo è necessario introdurre il \textbf{teorema della risposta in frequenza}.
 		
 		\begin{teorema}{ teorema della risposta in frequenza \label{teor:rispostafrequenza} }
@@ -691,6 +691,11 @@
 		\end{osservazione}
 		Va notato che il modulo e lo sfasamento introdotto dalla funzione di trasferimento non sono dei termini costanti, ma sono strettamente correlati al valore della pulsazione $\overline \omega$ rispetto alla quale si effettua il \textit{test}. In particolare per calcolare i valori di modulo e fase è necessario sostituire alla variabile $s$ nella funzione di trasferimento il numero immaginario $i\overline \omega$ e valutare (a partire da tale sostituzione) il modulo e fase.
 		
+		\begin{esempio}{: funzione di trasferimento nel dominio della frequenza}
+			Considerando per esempio la funzione di trasferimento $G(s) = \frac 1 {s+2}$, allora essa può essere espressa nel dominio della frequenza sostituendo ad $s$ il numero puramente immaginario $i\omega$ e, tramite manipolazione algebrica, separare parte reale e immaginaria:
+			\[ G(i\omega) = \frac 1 {i\omega + 2} = \frac{2-i\omega}{(2+i\omega)(2-i\omega)} = \underbrace{\frac{2}{4+\omega^2}}_\textrm{Re} - i \underbrace{\frac \omega {4+\omega^2}}_\textrm{Im} \]
+		\end{esempio}
+		
 		\vspace{3mm}
 		
 		Il teorema del valore finale permette solamente di determinare la risposta asintotica di un segnale sottoposto ad ingresso sinusoidale, mentre la parte transitoria (e in particolare il tempo di assestamento) viene valutato in maniere alternative, in particolare resta valida l'\textit{idea} di calcolare tale proprietà considerando la parte reale dei poli dominanti $t_a =  5 /\left|\textrm{Re}_\textrm{p.dom.}\right|$.
@@ -700,18 +705,65 @@
 		dove sia l'ampiezza $H(\omega)$ che lo sfasamento $\phi(\omega)$ sono dei coefficienti che possono essere determinati.
 		
 		Scomponendo dunque con Fourier un ingresso generico allora l'uscita asintotica del sistema può essere calcolata sfruttando anche il teorema della risposta in frequenza, e dunque
-		\begin{equation}
+		\begin{equation} \label{eq:lti:fourier}
 			y_\infty(t) = \sum_{k=0}^\infty \Big[ H(\omega_k) \, \big|G(i\omega_k)\big| \sin\Big(\omega_kt + \phi(\omega_k) + \angle G(i\omega_k)\Big) \Big]
 		\end{equation}
-		Essendo il sistema lineare per determinare l'uscita di un generico ingresso è sufficiente analizzare la trasformata di ogni singola armonica sinusoidale che compone l'ingresso e poi sommare ogni contributo.	
+		Essendo il sistema lineare per determinare l'uscita di un generico ingresso è sufficiente analizzare la trasformata di ogni singola armonica sinusoidale che compone l'ingresso e poi sommare ogni contributo. Il \textbf{modulo} $H(\omega)$ (definito positivo) e la \textbf{fase} $\phi(\omega)$ presenti nell'equazione \ref{eq:lti:fourier} rappresentano lo \textbf{spettro del segnale} associato all'ingresso generico $u(t)$ nel dominio della frequenza.
+			
+		Di particolare interesse pratico è l'analisi del modulo $H(\omega)$ del segnale in ingresso: per esempio se lo stesso assume valori \textit{importanti} a frequenze elevate significa che l'ingresso $u(t)$ associato sarà molto \textit{rumoroso}, in quanto presenta grandi oscillazioni a frequenze alte; al contrario un segnale che dopo una certa frequenza $\omega^*$ (non troppo elevata) presenta modulo $H(\omega)$ basso/nullo può essere associato ad un ingresso $u(t)$ sufficientemente \textit{continuo} e senza molti picchi/disturbi.
+			
+		\vspace{3mm}
+		
+		\begin{concetto}
+			L'applicazione del teorema della risposta in frequenza dunque permette di analizzare ancora più nel dettaglio la risposta a ingressi sinusoidali generici del sistema. Nota la scrittura  in forma matriciale della rappresentazione di stato di un sistema lineare tempo invariante è possibile infatti determinare la funzione di trasferimento $G(s)$ nel dominio di Laplace: a questo punto analizzando $G$ nel dominio della frequenza è possibile analizzare la \textbf{risposta in frequenza di un sistema dinamico}, determinando una funzione complessa $G(i\omega)$ dipendente dal parametro $\omega$.
+		\end{concetto}
+		
+		Essendo questa funzione complessa essa può essere analizzata o tramite scomposizione in parte reale e immaginaria, oppure, come si preferisce, analizzando modulo $|G(i\omega)|$ e fase $\angle G(i\omega)$ della funzione di trasferimento. Le principali rappresentazioni delle funzioni di trasferimento nel dominio della frequenza sono determinate dai \textbf{diagrammi di Bode} e dai \textbf{diagrammi polari}.
 			
 			
+		\begin{figure}[bht]
+			\centering
+			\begin{subfigure}{0.48\linewidth}
+				\centering \includegraphics[width=6cm]{bode} \caption{}
+			\end{subfigure}
+			\begin{subfigure}{0.48\linewidth}
+				\centering \includegraphics[width=5.5cm]{nyquist} \caption{}
+			\end{subfigure}
+			\caption{esempi di rappresentazione di una funzione di trasferimento $G(i\omega)$ nel dominio della frequenza secondo i diagrammi di Bode (a) con modulo e fase oppure tramite diagramma polare (b).}
+			\label{fig:lti:bodenyquist}
+		\end{figure}
+		
+		
+	\subsection{Diagrammi di Bode}
+		Per poter analizzare in modo efficace la risposta in frequenza di un sistema dinamico lineare è necessario capire come rappresentare correttamente i diagrammi di $G(s)$; la rappresentazione più \textit{facile} e \textit{comoda} da determinare è quella di Bode.
+		
+		Questo tipo di diagrammi sono caratterizzati da un'asse delle ascisse non in scala lineare, ma in scala semi-logaritmica in base 10: questo significa che \textit{spostandosi} di un valore unitario nell'asse orizzontale del diagramma, si trova una pulsazione $\omega$ 10 vole più grande: per questo si parla spesso di \textbf{\textit{decadi}}. Si osserva inoltre che associata all'ascissa nulla non corrisponde la pulsazione nulla $\omega=0$, ma $\omega = \log_{10}(0) = 1$: per trovare la pulsazione nulla è necessario spostarsi infinitamente verso sinistra nel diagramma.
+		
+		Il modulo della funzione di trasferimento $G$ non viene misurato in \textit{unità}, ma in \textit{decibel} $dB$. La conversione tra grandezze scalari e decibel è data dalla relazione
+		\[ |G(i\omega)|_{dB} = 20 \log_{10} |G(i\omega)| \qquad \Leftrightarrow \qquad |G(i\omega)| = 10 ^{|G(i\omega)|_{dB}/20}  \]
+		
+		Determinare i diagrammi di Bode reali di funzioni di trasferimento non è mai in generale facile, per questo si fa spesso riferimento ai \textbf{diagrammi di Bode asintotici} che sono caratterizzati dalla presenza di sole rette e spezzate. I diagrammi sono detti \textit{asintotici} in quanto trascurano il comportamento di $G(i\omega)$ nell'intorno degli zeri e dei poli, ma determina un andamento qualitativo al di fuori di tali valori.
+		
+		\paragraph{Rappresentazione del diagramma del modulo} I diagrammi di Bode sono caratterizzati  dai grafici di modulo e fase. Analizzando ora il primo di questi diagrammi, si osserva che lo smorzamento di poli e zeri complessi coniugati non influenza il tracciamento del comportamento asintotico: questa situazione infatti può essere ricondotta a due poli o zeri a parte reale coincidente. Questo significa che di poli e zeri si deve sempre considerare la parte reale, e non quella immaginaria. Si osserva inoltre che il comportamento di poli e zeri nel diagramma di Bode è uguale a meno di un segno.
+		
+		In linea generale per tracciare i diagrammi di Bode della funzioni di trasferimento (fattorizzate nella forma di Bode, eq. \ref{eq:lti:parametrizzazione}, pag. \pageref{eq:lti:parametrizzazione}) è possibile procedere con i seguenti passaggi:
+		\begin{enumerate}
+			\item avendo determinato i parametri $\mu,,T,\tau,\omega,\alpha$ della funzione di trasferimento, si parte a tracciare il grafico \textit{da sinistra}, ossia per pulsazioni $\omega$ che tendono al valore nullo. In particolare si parte stabilendo il contributo dovuto a guadagno $\mu$ e tipo $g$ della funzione di trasferimento: esso è associato ad una retta la cui pendenza e intercetta $\overline \omega$ con l'asse a zero decibel vale
+			\[ \textrm{pendenza: } -20 g \ \frac{dB}{dec} \qquad \overline \omega = |\mu|^{1/g}_{dB} \]
+			\begin{center}
+				\includegraphics[width=4cm]{bode-a}
+			\end{center}
+			Nel caso particolare in cui il tipo $g$ sia  nullo, allora la retta è orizzontale e intercetta l'asse del modulo (in decibel) al valore del guadagno in decibel.
+			\begin{center}
+				\includegraphics[width=4cm]{bode-b}
+			\end{center}
 			
+			\item a questo punto è necessario determinare le pulsazioni angolari associate ai poli $\omega_r$ e agli zeri $\omega_z$, siano essi reali (pedice $r$) o complessi coniugati (pedice $cc$), tramite le relazioni
+			\[ \omega_{p,r} = \frac 1 {|T|} \qquad \omega_{p,cc} = \omega \qquad \omega_{z,r} = \frac 1 {|\tau|} \qquad \omega_{z,cc} = \alpha \]
 			
+			\item in corrispondenza delle pulsazioni trovate, \textit{andando da sinistra verso destra}, si modifica la retta iniziale nel seguente modo: in corrispondenza di un polo la pendenza della retta della caratteristica statica subisce una diminuzione pari a $-20dB/dec$, mentre in caso di poli complessi coniugati (due poli singoli sovrapposta) la variazione di pendenza associata è di $-40dB/dec$. Al contrario incontrando uno zero reale è necessario aumentare la pendenza di $20dB/dec$, in presenza di uno zero complesso coniugato invece la pendenza aumenta di $40dB/dec$.
 			
-			
-			
-			
+		\end{enumerate}
 			
 			
 			
