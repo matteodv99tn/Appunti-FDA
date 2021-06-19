@@ -765,7 +765,25 @@
 			
 		\end{enumerate}
 			
+		\paragraph{Rappresentazione del diagramma di fase} A questo punto per completare la rappresentazione asintotica di Bode è necessario considerare il diagramma della fase; una volta determinate le proprietà salienti della funzione di trasferimento (tipo, guadagno, costanti di tempo) allora, in maniera analoga al diagramma del modulo, si può disegnare il grafico seguendo questi passaggi:
+		\begin{enumerate}
+			\item partendo dall'estrema sinistra ($\omega\rightarrow 0$) si determina la fase iniziale $\angle G$ determinata solamente dal guadagno e dal tipo della funzione di trasferimento tramite la legge
+			\[ \angle G(\omega) = \angle \mu - g\,90^\circ \]
+			dove $\angle \mu$ è la fase dovuta al guadagno che è nulla per $\mu >0$, mentre è pari a $-180^\circ$ se $\mu < 0$;
 			
+			\item come nel punto 2 del grafico del modulo, è ora necessario determinare sull'ascissa le posizioni di poli $\omega_p$ e zeri $\omega_z$ (dove i numeri complessi coniugati possono essere considerate come due singolarità a parte reale uguale coincidenti);
+			\item procedendo \textit{da sinistra verso destra} lungo l'asse delle ascisse, ogni singolarità determina uno spostamento della retta della fase di un valore
+			\[ \Delta \phi = \pm 90^\circ \]
+			A questo punto è necessario \textit{capire} quando scegliere una variazione positiva o negativa di fase: a tale fine è sufficiente valutare il segno della parte reale dei poli/zeri secondo le leggi qua indicate
+			\[ + \textrm{ se } \begin{cases}
+				\textrm{zeri con Re}\leq 0 \\
+				\textrm{poli con Re}> 0 \\
+			\end{cases} \qquad - \textrm{ se } \begin{cases}
+			\textrm{zeri con Re}> 0 \\
+			\textrm{poli con Re}\leq 0 \\
+			\end{cases} \]
+			
+		\end{enumerate}
 			
 			
 			
