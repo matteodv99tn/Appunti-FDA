@@ -383,7 +383,7 @@
 		\figura{6}{1}{complessi}{rappresentazione nel piano dei numeri immaginari di un polo complesso coniugato.}{complessi}
 		Essendo i poli complessi coniugati, determinato un polo l'altro può essere ottenuto specchiando il primo rispetto all'asse dei numeri reali. Poli con smorzamento positivo sono posizionati nel semipiano a parte reale negativa, mentre smorzamenti negativi sono nel semipiano destro a parte reale positiva.
 		 
-	\subsection{Sistemi a ritardo di tempo}
+	\subsection{Sistemi a ritardo di tempo} \label{sec:ritardotempo}
 		\begin{concetto}
 			Sono detti \textbf{sistemi a ritardo di tempo} tutti quei sistemi che \textit{ritardano} l'uscita; in particolare l'uscita $y(t)$ è pari all'ingresso $u$ in ritardo di un coefficiente $\tau$, ossia $y(t) = u(t-\tau)$. Sfruttando la proprietà di traslazione nel dominio del tempo (eq. \ref{eq:class:proptraslazionetempo}, pag. \pageref{eq:class:proptraslazionetempo}) la funzione di trasferimento di questo sistema può dunque essere espressa come
 			\begin{equation}
@@ -785,12 +785,67 @@
 			
 		\end{enumerate}
 			
+		\paragraph{Confronto tra diagrammi asintotici e reali} I diagrammi asintotici, rappresentati da sole linee spezzate, fin'ora rappresentati sono solo della approssimazioni rispetto alla realtà.
+		
+		Considerando per semplicità una funzione di trasferimento ad un solo polo (ma tale effetto vale anche in presenza di un solo zero), si osserva (figura \ref{polo-realvsasint}) che per pulsazioni $\omega$ che sono \textit{distanti} (all'incirca dopo una decade) dalla pulsazione naturale $\omega_\textrm{polo}$ associata al polo allora il comportamento reale è ben approssimato dal diagramma asintotico, tuttavia nell'intorno del polo il comportamento risulta essere deviato. In particolare l'errore massimo si ha in corrispondenza della pulsazione $\omega_\textrm{polo}$ con un errore pari a $3dB$.
+		
+		\figura{7}{1}{polo-realvsasint}{diagramma asintotico (in nero)  e reale (in arancione) di una funzione di trasferimento ad un solo polo.}{polo-realvsasint} 
+		
+		Nel caso di presenza invece di poli complessi coniugati, come si può osservare in figura \ref{polo-complesso-diag}, il valore reale del guadagno dipende fortemente anche dallo smorzamento $\xi$ dei numeri complessi. In particolare per $\xi$ che tende al valore untario il comportamento del diagramma reale assomiglia al comportamento di una funzione di trasferimento a un polo reale (e dunque con errore pari a $3dB$), mentre se $\xi \rightarrow 0$ (numeri puramente immaginari) il diagramma soffre del fenomeno della \textbf{risonanza} e il modulo tende a valore infinito.
 			
-			
-			
-			
-			
+		\figura{7}{1}{polo-complesso-diag}{diagramma asintotico (in nero)  e reale (in rosso) di una funzione di trasferimento a poli complessi coniugati al variare dello smorzamento $\xi$.}{polo-complesso-diag} 
+		\begin{concetto}
+			Per smorzamenti $\xi < \sqrt 2 / 2$ è possibile determinare la \textbf{pulsazione di risonanza} $\omega_r$ nota la pulsazione naturale $\omega_n$ del polo e conseguentemente il modulo della funzione di trasferimento nelle due pulsazioni secondo le leggi
+			\begin{equation}
+			\omega_r = \omega_n \sqrt{1-\xi^2} \qquad \Rightarrow \quad |G(i\omega_r)| = \frac 1 {2|\xi| \sqrt{1-\xi^2}} \qquad |G(i\omega_n)| = \frac 1 {2|\xi|}
+			\end{equation}
+		\end{concetto}
+		Al contrario in corrispondenza di zeri complessi coniugati si ha il fenomeno dell'\textbf{anti-risonanza} dove il modulo invece che divergere a valore $+\infty$ tende al valore opposto $-\infty$.
+		
+		\vspace{3mm}
+		Analizzando invece i diagrammi di fase di Bode si osserva (figura \ref{fig:lti:fasebode}) che il comportamento reale diverge significativamente da quello asintotico. Nel caso di funzione di trasferimento ad un solo polo infatti alla pulsazione $\omega_\textrm{polo}$ si osserva che non si ha un \textit{salto} di fase di $-90^\circ$ istantaneo, ma lo stesso avviene nell'intorno di circa 2 decadi; nel caso di poli complessi coniugati (la cui variazione di fase associata è di $-180^\circ$) il comportamento reale è simile a quello asintotico solamente per smorzamenti $\xi \rightarrow 0$, mentre per $\xi \rightarrow 1$ il comportamento è associato a quello di due poli a parte reale.
+		
+		\begin{figure}[bht]
+			\centering
+			\includegraphics[width=13cm]{diag-fase}
+			\caption{diagramma asintotico (in nero) e reale (in rosso/arancione) per un polo a parte reale (a sinistra) e per due poli complessi coniugati (a destra) in funzione dello smorzamento $\xi$.}
+			\label{fig:lti:fasebode}
+		\end{figure}
 	
+	\subsection{Classificazione dei sistemi dinamici tramite i diagrammi di Bode}
+		I diagrammi di Bode possono anche essere utilizzati per classificare i sistemi dinamici; in particolare essi possono essere considerati \textbf{passa basso} (figura \ref{fig:lti:passabasso}) se permettono il passaggio \textit{in piena banda} della pulsazioni inferiori alla pulsazione di taglio (oltre la quale il modulo decresce).
+		
+		\begin{figure}[bht]
+			\centering
+			\begin{subfigure}{0.48\linewidth}
+				\centering 
+				\includegraphics[width=5cm]{passa-basso} \caption{}
+			\end{subfigure}
+			\begin{subfigure}{0.48\linewidth}
+				\centering 
+				\includegraphics[width=5cm]{passa-basso-risposta} \caption{}
+			\end{subfigure}
+			\caption{diagramma di Bode del modulo di una funzione di trasferimento di tipo passa basso (a) e relativa risposta nel dominio del tempo del sistema all'impulso (b).}
+			\label{fig:lti:passabasso}
+		\end{figure}	
+		
+		Analogamente esistono anche dei \textbf{filtri passa alto} (figura \ref{fig:lti:passaalto}) che permettono il passaggio solamente di frequenze \textit{veloci} mentre annullano le basse frequenze (rispetto alla pulsazione di taglio).
+		
+		\begin{figure}[bht]
+			\centering
+			\begin{subfigure}{0.48\linewidth}
+				\centering 
+				\includegraphics[width=5cm]{passa-alto} \caption{}
+			\end{subfigure}
+			\begin{subfigure}{0.48\linewidth}
+				\centering 
+				\includegraphics[width=5cm]{passa-alto-risposta} \caption{}
+			\end{subfigure}
+			\caption{diagramma di Bode del modulo di una funzione di trasferimento di tipo passa alto (a) e relativa risposta nel dominio del tempo del sistema all'impulso (b).}
+			\label{fig:lti:passaalto}
+		\end{figure}	
+		
+		Combinando opportunamente filtri passa alto e passa basso è possibile creare \textbf{filtri passa banda} ed \textbf{elimina banda}.
 		
 		
-	
+		\paragraph{Sistemi a ritardo di tempo} A pagina \pageref{sec:ritardotempo} sono
