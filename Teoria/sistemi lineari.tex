@@ -848,4 +848,39 @@
 		Combinando opportunamente filtri passa alto e passa basso è possibile creare \textbf{filtri passa banda} ed \textbf{elimina banda}.
 		
 		
-		\paragraph{Sistemi a ritardo di tempo} A pagina \pageref{sec:ritardotempo} sono
+		\paragraph{Sistemi a ritardo di tempo} A pagina \pageref{sec:ritardotempo} è stato descritto il sistema dinamico a ritardo di tempo (per cui nel dominio del tempo l'uscita vale $y(t) = u(t-\tau)$ ) come l'unico tipo di sistema la cui trasformata nel dominio di Laplace non è razionale ma è trascendente del tipo $G(s) = e^{-\tau s}$.
+		
+		Analizzare questo tipo di sistemi tramite le metodologie appena descritte (come la risposta allo scalino o alla sinusoide) è dunque necessario utilizzare degli appositi \textit{stratagemmi}. In particolare per analizzare un sistema con funzione di trasferimento del tipo
+		\[ G(s) = \tilde G(s) e^{-\tau s} \]
+		dove $\tilde G(s)$ è una trasformata razionale, allora è sufficiente studiare \textit{convenzionalmente} la trasformata $\tilde G(s)$ e successivamente traslare (nel dominio del tempo) l'uscita di un fattore $\tau$.
+		
+		\begin{esempio}{: risposta allo scalino di un sistema a ritardo di tempo}
+			Si consideri il sistema dinamico contenente il ritardo di tempo del tipo
+			\[ G(s) = \frac 1 {s+1} e^{-\tau s}  \]
+			Per studiare la \textbf{risposta allo scalino} del sistema, seguendo lo schema logico proposto, è sufficiente calcolare la risposta allo scalino della funzione $\tilde G(s) = \frac 1 {s+1}$ e conseguentemente traslare il sistema nel dominio del tempo.
+			\begin{center}
+				\includegraphics[width=4cm]{ritardo-a}
+			\end{center}
+			Considerando la trasformata dello scalino $U(s)$ allora è possibile calcolare l'uscita $\tilde Y(s)$ della trasformata razionale tramite i metodi mostrati in precedenza e dunque
+			\[  Y(s) = \frac 1 s \frac 1 {s+1} \qquad \xrightarrow{\aL} \qquad \tilde y(t) = 1 - e^{-t} \] 
+			A questo punto è possibile applicare il sistema a ritardo di tempo, traslando di fatto di un fattore $\tau$ l'uscita: $y(t) = 1 - e^{-(t-\tau)}$.
+			\begin{center}
+				\includegraphics[width=4cm]{ritardo-b}
+			\end{center}
+		\end{esempio}
+		
+		Analizzando invece la \textbf{risposta in frequenza} del sistema a ritardo di tempo è possibile osservare due considerazioni interessanti: il modulo della $G(s)$ associata è sempre unitario mentre la fase è proporzionale alla pulsazione, infatti
+		\[ G(i\omega) = e^{-i\tau \omega} \quad \Rightarrow \begin{cases}
+			|G(i\omega)| = 1 \quad \leftrightarrow \quad |G|_{dB} = 0 \\
+			\angle G(i\omega) = -\tau \omega
+		\end{cases} \] 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
